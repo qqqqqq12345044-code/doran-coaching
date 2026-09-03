@@ -36,12 +36,14 @@ export default function LanguageCard({ language }: { language: LanguageMeta }) {
   return (
     <Link
       href={language.href}
-      className={`group flex h-full flex-col rounded-xl2 border border-ink/8 bg-white p-8 transition-all duration-200 hover:-translate-y-1 hover:shadow-card ${styles.border}`}
+      className={`group flex h-full w-full min-w-0 flex-col rounded-xl2 border border-ink/8 bg-white p-8 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-card ${styles.border}`}
     >
       <span
-        className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl ${styles.tint} ${styles.text}`}
+        className={`inline-flex h-14 min-w-[3.5rem] items-center justify-center rounded-2xl px-3 ${styles.tint} ${styles.text}`}
       >
-        <span className={`${language.nativeFontClass} text-2xl font-medium`}>{language.nameNative}</span>
+        <span className={`${language.nativeFontClass} whitespace-nowrap text-2xl font-medium leading-none`}>
+          {language.nameNative}
+        </span>
       </span>
 
       <h3 className="mt-5 text-2xl font-bold text-ink">{language.nameKo}</h3>

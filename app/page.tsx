@@ -1,5 +1,6 @@
 import { Target, ListChecks, Users, TrendingUp } from "lucide-react";
 import HomeHero from "@/components/HomeHero";
+import HeroQuickNav from "@/components/HeroQuickNav";
 import LanguageSelectSection from "@/components/LanguageSelectSection";
 import SelfCheck from "@/components/SelfCheck";
 import TrustBar from "@/components/TrustBar";
@@ -70,9 +71,11 @@ export default function HomePage() {
         lines={brand.mainTagline.lines}
         subtitle={brand.mainTagline.subtitle}
         badgeLabel={brand.mainTagline.badgeLabel}
-        primaryCta={{ label: "무료 상담 신청", href: "#consultation" }}
-        secondaryCta={{ label: "내게 맞는 수업 찾기", href: "#self-check" }}
+        primaryCta={{ label: "내게 맞는 수업 찾기", href: "#self-check" }}
+        secondaryCta={{ label: "과정 둘러보기", href: "#course" }}
       />
+
+      <HeroQuickNav />
 
       <SelfCheck />
 
