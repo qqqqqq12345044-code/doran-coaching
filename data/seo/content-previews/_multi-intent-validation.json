@@ -1,0 +1,613 @@
+{
+  "generatedAt": "2026-09-02T07:57:58.043Z",
+  "note": "Exam Profile 도입 이후 7개 조합(conversation/tutoring/toeic/opic/jlpt/hsk/hskk) 비교로 갱신됨.",
+  "region": {
+    "sido": "서울특별시",
+    "sigungu": "마포구",
+    "regionName": "공덕동"
+  },
+  "comparedClusterIds": [
+    "english-conversation",
+    "english-tutoring",
+    "english-toeic",
+    "english-opic",
+    "japanese-jlpt",
+    "chinese-hsk",
+    "chinese-hskk"
+  ],
+  "unexpectedChanges": [],
+  "perPreviewChecks": [
+    {
+      "clusterId": "english-conversation",
+      "mainKeyword": "영어회화",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 11,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "english-tutoring",
+      "mainKeyword": "영어과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 8,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "english-toeic",
+      "mainKeyword": "토익과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 6,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "english-opic",
+      "mainKeyword": "오픽과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 6,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "japanese-jlpt",
+      "mainKeyword": "JLPT과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 6,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "chinese-hsk",
+      "mainKeyword": "HSK과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 6,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    },
+    {
+      "clusterId": "chinese-hskk",
+      "mainKeyword": "HSKK과외",
+      "regionRepeatCount": 9,
+      "keywordRepeatCount": 6,
+      "mechanicalRepeatFound": false,
+      "leftoverTemplateTokens": [],
+      "doubleSpaceFound": false,
+      "consecutiveDuplicateWordFound": [],
+      "exaggerationWords": [],
+      "unverifiedStatWords": [],
+      "offlineBranchPhrases": [],
+      "emptyFieldIssues": [],
+      "duplicateFaqQuestions": [],
+      "unknownCurriculumIds": [],
+      "hasIssues": false
+    }
+  ],
+  "examConfusionChecks": {
+    "jlptMentionsJpt": false,
+    "hskMentionsHskk": false,
+    "hskMentionsTscOrBct": false,
+    "hskkMentionsHskAsSameTest": false,
+    "toeicMentionsOpic": false,
+    "opicMentionsToeic": false
+  },
+  "keyPairResults": [
+    {
+      "a": "japanese-jlpt",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 6,
+      "identicalRatio": 0.261,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "목표 급수가 있는 분",
+        "목표 급수 설정: 목표 급수에 맞춰 준비 방향을 정합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 1,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "japanese-jlpt",
+      "b": "english-toeic",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "chinese-hsk",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 중국어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-toeic",
+      "b": "english-opic",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    }
+  ],
+  "allPairResults": [
+    {
+      "a": "english-conversation",
+      "b": "english-tutoring",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 1,
+      "overlappingCurriculumTopics": [
+        "여행영어"
+      ]
+    },
+    {
+      "a": "english-conversation",
+      "b": "english-toeic",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-conversation",
+      "b": "english-opic",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-conversation",
+      "b": "japanese-jlpt",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-conversation",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-conversation",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 24,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-tutoring",
+      "b": "english-toeic",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 1,
+      "overlappingCurriculumTopics": [
+        "토익"
+      ]
+    },
+    {
+      "a": "english-tutoring",
+      "b": "english-opic",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-tutoring",
+      "b": "japanese-jlpt",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 3,
+      "identicalRatio": 0.13,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-tutoring",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 3,
+      "identicalRatio": 0.13,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-tutoring",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 3,
+      "identicalRatio": 0.13,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-toeic",
+      "b": "english-opic",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 영어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-toeic",
+      "b": "japanese-jlpt",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-toeic",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-toeic",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-opic",
+      "b": "japanese-jlpt",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-opic",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "english-opic",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "japanese-jlpt",
+      "b": "chinese-hsk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 6,
+      "identicalRatio": 0.261,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "목표 급수가 있는 분",
+        "목표 급수 설정: 목표 급수에 맞춰 준비 방향을 정합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 1,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "japanese-jlpt",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 4,
+      "identicalRatio": 0.174,
+      "identicalSentences": [
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    },
+    {
+      "a": "chinese-hsk",
+      "b": "chinese-hskk",
+      "comparableSentenceCountA": 23,
+      "comparableSentenceCountB": 23,
+      "identicalSentenceCount": 5,
+      "identicalRatio": 0.217,
+      "identicalSentences": [
+        "공덕동에서 이동 없이 시작하는 중국어 1:1 화상수업입니다.",
+        "도란은 영어·일본어·중국어 1:1 온라인 화상 수업을 제공합니다.",
+        "상담을 통해 학습 목표와 현재 수준을 확인한 뒤 맞는 강사를 매칭합니다.",
+        "네, 온라인 화상으로 진행되어 공덕동에서도 동일하게 이용할 수 있습니다.",
+        "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+      ],
+      "identicalFaqCount": 0,
+      "identicalBenefitCount": 0,
+      "curriculumTopicOverlapCount": 0,
+      "overlappingCurriculumTopics": []
+    }
+  ]
+}

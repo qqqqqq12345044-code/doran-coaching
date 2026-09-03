@@ -1,0 +1,268 @@
+{
+  "generatedAt": "2026-09-02T03:15:30.586Z",
+  "counts": {
+    "administrativeDongs": 3628,
+    "legalDongs": 18868,
+    "mappingRows": 20100,
+    "cancelledAdmin": 0,
+    "cancelledLegal": 0,
+    "cancelledMapping": 0
+  },
+  "adminCountBySido": {
+    "서울특별시": 427,
+    "전남광주통합특별시": 420,
+    "부산광역시": 206,
+    "대구광역시": 152,
+    "인천광역시": 162,
+    "대전광역시": 82,
+    "울산광역시": 55,
+    "세종특별자치시": 25,
+    "경기도": 604,
+    "충청북도": 156,
+    "충청남도": 210,
+    "경상북도": 334,
+    "경상남도": 310,
+    "제주특별자치도": 43,
+    "강원특별자치도": 199,
+    "전북특별자치도": 243
+  },
+  "legalCountBySido": {
+    "서울특별시": 467,
+    "전남광주통합특별시": 2947,
+    "부산광역시": 249,
+    "대구광역시": 382,
+    "인천광역시": 258,
+    "대전광역시": 177,
+    "울산광역시": 190,
+    "세종특별자치시": 140,
+    "경기도": 2023,
+    "충청북도": 1517,
+    "충청남도": 2096,
+    "경상북도": 2987,
+    "경상남도": 2182,
+    "제주특별자치도": 203,
+    "강원특별자치도": 1335,
+    "전북특별자치도": 1715
+  },
+  "duplicateAdminCodes": [],
+  "duplicateLegalCodes": [],
+  "adminCodeNameConflicts": [],
+  "legalCodeNameConflicts": [],
+  "emptyAdminNames": [],
+  "emptyLegalNames": [],
+  "unmappedAdminDongs": [
+    {
+      "sido": "대구광역시",
+      "sigungu": "달성군",
+      "administrativeDong": "다사읍서재출장소",
+      "administrativeCode": "2771025700",
+      "createdAt": "2001-03-23"
+    },
+    {
+      "sido": "인천광역시",
+      "sigungu": "강화군",
+      "administrativeDong": "서도면볼음출장소",
+      "administrativeCode": "2871042500",
+      "createdAt": "1995-03-01"
+    },
+    {
+      "sido": "인천광역시",
+      "sigungu": "옹진군",
+      "administrativeDong": "북도면장봉출장소",
+      "administrativeCode": "2872031500",
+      "createdAt": "1995-03-01"
+    },
+    {
+      "sido": "인천광역시",
+      "sigungu": "옹진군",
+      "administrativeDong": "대청면소청출장소",
+      "administrativeCode": "2872034500",
+      "createdAt": "1995-03-01"
+    },
+    {
+      "sido": "경기도",
+      "sigungu": "남양주시",
+      "administrativeDong": "화도읍동부출장소",
+      "administrativeCode": "4136025700",
+      "createdAt": "2006-11-20"
+    },
+    {
+      "sido": "충청남도",
+      "sigungu": "보령시",
+      "administrativeDong": "오천면어항출장소",
+      "administrativeCode": "4418032500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "포항시 북구",
+      "administrativeDong": "죽장면상옥출장소",
+      "administrativeCode": "4711335500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "상주시",
+      "administrativeDong": "낙동면동부출장소",
+      "administrativeCode": "4725033500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "상주시",
+      "administrativeDong": "모서면서부출장소",
+      "administrativeCode": "4725039500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "상주시",
+      "administrativeDong": "화북면서부출장소",
+      "administrativeCode": "4725042600",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "상주시",
+      "administrativeDong": "은척면북부출장소",
+      "administrativeCode": "4725044500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "문경시",
+      "administrativeDong": "문경읍갈평출장소",
+      "administrativeCode": "4728025100",
+      "createdAt": "2001-01-26"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "문경시",
+      "administrativeDong": "가은읍북부출장소",
+      "administrativeCode": "4728025400",
+      "createdAt": "2001-01-26"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "영덕군",
+      "administrativeDong": "지품면원전출장소",
+      "administrativeCode": "4777034500",
+      "createdAt": "1988-04-23"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "영덕군",
+      "administrativeDong": "축산면축산출장소",
+      "administrativeCode": "4777035500",
+      "createdAt": "1988-04-23"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "청도군",
+      "administrativeDong": "화양읍남성현출장소",
+      "administrativeCode": "4782025100",
+      "createdAt": "2001-01-26"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "청도군",
+      "administrativeDong": "청도읍유호출장소",
+      "administrativeCode": "4782025400",
+      "createdAt": "2001-01-26"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "울진군",
+      "administrativeDong": "북면하당출장소",
+      "administrativeCode": "4793031500",
+      "createdAt": "1988-04-23"
+    },
+    {
+      "sido": "경상북도",
+      "sigungu": "울릉군",
+      "administrativeDong": "서면태하출장소",
+      "administrativeCode": "4794031500",
+      "createdAt": "1988-09-30"
+    },
+    {
+      "sido": "경상남도",
+      "sigungu": "밀양시",
+      "administrativeDong": "삼랑진임천출장소",
+      "administrativeCode": "4827025100",
+      "createdAt": "2001-01-26"
+    },
+    {
+      "sido": "경상남도",
+      "sigungu": "거제시",
+      "administrativeDong": "사등면가조출장소",
+      "administrativeCode": "4831036600",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상남도",
+      "sigungu": "거제시",
+      "administrativeDong": "하청면칠천출장소",
+      "administrativeCode": "4831038500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "경상남도",
+      "sigungu": "거제시",
+      "administrativeDong": "장목면외포출장소",
+      "administrativeCode": "4831039500",
+      "createdAt": "1995-01-01"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "삼척시",
+      "administrativeDong": "원덕읍임원출장소",
+      "administrativeCode": "5123025400",
+      "createdAt": "2023-06-11"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "영월군",
+      "administrativeDong": "한반도면쌍용출장소",
+      "administrativeCode": "5175035900",
+      "createdAt": "2023-06-11"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "평창군",
+      "administrativeDong": "방림면계촌출장소",
+      "administrativeCode": "5176032500",
+      "createdAt": "2023-06-11"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "정선군",
+      "administrativeDong": "신동읍함백출장소",
+      "administrativeCode": "5177026000",
+      "createdAt": "2023-06-11"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "철원군",
+      "administrativeDong": "서면와수출장소",
+      "administrativeCode": "5178031500",
+      "createdAt": "2023-06-11"
+    },
+    {
+      "sido": "강원특별자치도",
+      "sigungu": "인제군",
+      "administrativeDong": "인제읍귀둔출장소",
+      "administrativeCode": "5181025100",
+      "createdAt": "2023-06-11"
+    }
+  ],
+  "unmappedLegalDongs": [],
+  "mappingLegalCodesNotInLegalSource": [
+    "2811400000",
+    "2811800000",
+    "4122200000",
+    "4122400000",
+    "4136200000",
+    "4825200000",
+    "4833200000"
+  ]
+}

@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Header/StickySubNav 실제 높이 기반 Anchor Scroll Offset.
+       --header-height/--subnav-height는 Header.tsx/StickySubNav.tsx가
+       마운트 시 실제 렌더링 높이로 즉시 덮어쓴다. 아래 값은 JS 실행 전
+       (직접 URL 진입 시 최초 native anchor scroll 시점)에도 쓰이는
+       실측 기반 기본값이다: Header 64px(Mobile)/80px(Desktop),
+       StickySubNav는 py-2.5(20px) + pill(py-1.5 12px + 13px 텍스트 라인
+       약 20px) + border-y 2px ≈ 54px, 여유를 둬 56px로 지정한다. */
+    --header-height: 4rem;
+    --subnav-height: 3.5rem;
+    --anchor-gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      --header-height: 5rem;
+    }
+  }
+
+  body {
+    @apply bg-surface text-ink antialiased;
+    font-feature-settings: "tnum" 1;
+    /* 한글 문장이 단어 중간에서 줄바꿈되지 않도록 한다("학 / 습"처럼 잘리는
+       문제 방지). 긴 영문 단어/URL 등은 overflow-wrap으로 필요할 때만
+       줄바꿈해 가로 overflow를 막는다(영문 wrapping 규칙은 별도로 허용). */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  ::selection {
+    @apply bg-brand-tint text-brand-dark;
+  }
+
+  a,
+  button {
+    @apply outline-none;
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    @apply ring-2 ring-brand ring-offset-2 ring-offset-surface rounded-md;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .section-shell {
+    @apply mx-auto w-full max-w-content px-6 md:px-10 lg:px-12;
+  }
+
+  .section-pad {
+    @apply py-20 md:py-28;
+  }
+
+  .eyebrow {
+    @apply text-sm font-medium text-brand;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-brand px-7 py-3.5 text-[15px] font-semibold text-white transition-all duration-200 hover:scale-[1.01] hover:bg-brand-dark active:scale-[0.99] active:bg-brand-dark;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-ink/15 bg-white px-7 py-3.5 text-[15px] font-semibold text-ink transition-all duration-200 hover:scale-[1.01] hover:border-ink/30 hover:bg-surface-soft active:scale-[0.99];
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 text-[15px] font-semibold text-ink transition-colors duration-200 hover:text-brand;
+  }
+
+  /* 언어 페이지(/english, /japanese, /chinese)는 Header 아래에 Sticky Sub
+     Navigation이 하나 더 붙기 때문에, 해당 페이지 안의 앵커 대상 Section들만
+     스크롤 여백을 더 준다. 공용 컴포넌트(CoachSection 등)의 기본 scroll-mt-20은
+     다른 페이지(홈 등)에 영향 없이 그대로 두고, 이 wrapper 안에서만 덮어쓴다.
+     Header 높이 + Sticky SubNav 높이 + 여백을 더한 실제 값이라 Desktop/Mobile은
+     --header-height 미디어쿼리만으로 자동 반영된다(중복 breakpoint 불필요). */
+  .lang-page-sections section[id] {
+    scroll-margin-top: calc(var(--header-height) + var(--subnav-height) + var(--anchor-gap));
+  }
+}
