@@ -7,6 +7,7 @@ interface ProcessStep {
 }
 
 interface ProcessSectionProps {
+  id?: string;
   eyebrow?: string;
   title: string[];
   intro?: string;
@@ -15,6 +16,7 @@ interface ProcessSectionProps {
 }
 
 export default function ProcessSection({
+  id,
   eyebrow,
   title,
   intro,
@@ -23,7 +25,8 @@ export default function ProcessSection({
 }: ProcessSectionProps) {
   return (
     <section
-      className={`section-pad ${background === "soft" ? "bg-surface-soft" : "bg-surface"}`}
+      id={id}
+      className={`section-pad scroll-mt-20 ${background === "soft" ? "bg-surface-soft" : "bg-surface"}`}
     >
       <div className="section-shell">
         <Reveal className="max-w-lg">

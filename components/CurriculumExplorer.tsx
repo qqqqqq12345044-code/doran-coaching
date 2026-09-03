@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, MessagesSquare, Award, GraduationCap, LifeBuoy, type LucideIcon } from "lucide-react";
+import AnchorLink from "@/components/AnchorLink";
 import Reveal from "@/components/Reveal";
 import RoadmapTimeline from "@/components/curriculum/RoadmapTimeline";
 import CertificationExplorer from "@/components/curriculum/CertificationExplorer";
 import OtherPurposeGrid from "@/components/curriculum/OtherPurposeGrid";
+import CategoryOverviewGrid from "@/components/curriculum/CategoryOverviewGrid";
 import type { CurriculumLanguage } from "@/data/curriculum/powerCurriculum";
 import {
   getConversationRoadmap,
@@ -96,6 +98,24 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
 
   return (
     <>
+      <section className="pb-14 pt-7 md:pb-16 md:pt-9 bg-surface">
+        <div className="section-shell">
+          <Reveal className="max-w-2xl">
+            <p className="eyebrow">CURRICULUM EXPLORER</p>
+            <h2 className="mt-2 text-balance text-[26px] font-bold leading-snug text-ink md:text-[32px]">
+              {languageLabel} 과정, 카테고리로 살펴보세요
+            </h2>
+            <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-soft md:text-[15px]">
+              회화 · 자격증 · 내신 · 기타 4개 카테고리에서 필요한 과정을 먼저 확인하고, 더 자세한 내용은 각 페이지에서 이어서 볼 수 있습니다.
+            </p>
+          </Reveal>
+
+          <div className="mt-8">
+            <CategoryOverviewGrid language={language} iconTintClass={accent.iconTint} accentTextClass={accent.text} />
+          </div>
+        </div>
+      </section>
+
       <section id="conversation" className="pb-20 pt-7 md:pb-28 md:pt-9 bg-surface">
         <div className="section-shell">
           <SectionHeader
@@ -115,15 +135,18 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             />
           </Reveal>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href={`/${language}/conversation`} className="btn-secondary gap-2">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-ink/8 pt-6">
+            <Link
+              href={`/${language}/conversation`}
+              className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${accent.text} hover:underline`}
+            >
               {languageLabel} 회화 자세히 보기
-              <ArrowRight size={16} aria-hidden />
-            </Link>
-            <Link href="#consultation" className="btn-ghost gap-1">
-              상담하기
               <ArrowRight size={14} aria-hidden />
             </Link>
+            <AnchorLink href="#consultation" className="btn-ghost gap-1">
+              상담하기
+              <ArrowRight size={14} aria-hidden />
+            </AnchorLink>
           </div>
         </div>
       </section>
@@ -150,10 +173,15 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             </div>
           </Reveal>
 
-          <Link href={`/${language}/certification`} className="btn-secondary mt-8 gap-2">
-            {languageLabel} 자격증 자세히 보기
-            <ArrowRight size={16} aria-hidden />
-          </Link>
+          <div className="mt-8 border-t border-ink/8 pt-6">
+            <Link
+              href={`/${language}/certification`}
+              className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${accent.text} hover:underline`}
+            >
+              {languageLabel} 자격증 자세히 보기
+              <ArrowRight size={14} aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -176,15 +204,18 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             />
           </Reveal>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href={`/${language}/school`} className="btn-secondary gap-2">
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-ink/8 pt-6">
+            <Link
+              href={`/${language}/school`}
+              className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${accent.text} hover:underline`}
+            >
               {languageLabel} 내신 자세히 보기
-              <ArrowRight size={16} aria-hidden />
-            </Link>
-            <Link href="#consultation" className="btn-ghost gap-1">
-              상담하기
               <ArrowRight size={14} aria-hidden />
             </Link>
+            <AnchorLink href="#consultation" className="btn-ghost gap-1">
+              상담하기
+              <ArrowRight size={14} aria-hidden />
+            </AnchorLink>
           </div>
         </div>
       </section>
@@ -202,10 +233,15 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             <OtherPurposeGrid group={other} chipTintClass={accent.tint} />
           </Reveal>
 
-          <Link href={`/${language}/other`} className="btn-secondary mt-8 gap-2">
-            {languageLabel} 기타 과정 자세히 보기
-            <ArrowRight size={16} aria-hidden />
-          </Link>
+          <div className="mt-8 border-t border-ink/8 pt-6">
+            <Link
+              href={`/${language}/other`}
+              className={`inline-flex items-center gap-1.5 text-[14px] font-semibold ${accent.text} hover:underline`}
+            >
+              {languageLabel} 기타 과정 자세히 보기
+              <ArrowRight size={14} aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
     </>

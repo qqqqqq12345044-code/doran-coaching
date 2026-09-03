@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Sparkles } from "lucide-react";
+import AnchorLink from "@/components/AnchorLink";
 import { BrandSymbol } from "@/components/BrandLogo";
 
 interface HomeHeroCta {
@@ -122,17 +122,17 @@ export default function HomeHero({
           </div>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <Link href={primaryCta.href} className="btn-primary group">
+            <AnchorLink href={primaryCta.href} className="btn-primary group">
               {primaryCta.label}
               <ArrowRight
                 size={16}
                 className="transition-transform duration-200 group-hover:translate-x-0.5"
                 aria-hidden
               />
-            </Link>
-            <Link href={secondaryCta.href} className="btn-secondary">
+            </AnchorLink>
+            <AnchorLink href={secondaryCta.href} className="btn-secondary">
               {secondaryCta.label}
-            </Link>
+            </AnchorLink>
           </div>
         </div>
 

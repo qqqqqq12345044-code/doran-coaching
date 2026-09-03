@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import AnchorLink from "@/components/AnchorLink";
 import type { OtherCourseGroup } from "@/data/curriculum/courseDetails";
 import { getLinkedCurriculumLabels } from "@/data/curriculum/courseDetails";
 
@@ -38,10 +38,10 @@ export default function OtherPurposeGrid({ group, chipTintClass }: OtherPurposeG
         })}
       </div>
 
-      <Link href="#consultation" className="btn-secondary mt-8 gap-2">
+      <AnchorLink href="#consultation" className="btn-secondary mt-8 gap-2">
         내 목적에 맞는 수업 상담하기
         <ArrowRight size={16} aria-hidden />
-      </Link>
+      </AnchorLink>
     </div>
   );
 }

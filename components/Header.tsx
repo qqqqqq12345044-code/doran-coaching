@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
+import AnchorLink from "@/components/AnchorLink";
 import BrandLogo from "@/components/BrandLogo";
 import LanguageMegaMenu from "@/components/LanguageMegaMenu";
 import MobileLanguageAccordion from "@/components/MobileLanguageAccordion";
@@ -85,9 +86,9 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <Link href="#consultation" className="btn-primary">
+          <AnchorLink href="#consultation" className="btn-primary">
             무료 상담 신청
-          </Link>
+          </AnchorLink>
         </div>
 
         <button
@@ -124,9 +125,9 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <Link href="#consultation" onClick={closeMobileMenu} className="btn-primary mt-4 w-full">
+          <AnchorLink href="#consultation" onClick={closeMobileMenu} className="btn-primary mt-4 w-full">
             무료 상담 신청
-          </Link>
+          </AnchorLink>
         </div>
       )}
     </header>

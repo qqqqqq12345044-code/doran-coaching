@@ -123,6 +123,7 @@ export default function HomePage() {
       />
 
       <ProcessSection
+        id="how-it-works"
         eyebrow="이용 안내"
         title={["수업은 이렇게 시작해요."]}
         intro={"상담 신청부터 실제 수업 시작까지, 진행되는 절차입니다."}

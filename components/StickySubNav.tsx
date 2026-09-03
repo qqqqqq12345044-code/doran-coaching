@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import Link from "next/link";
+import AnchorLink from "@/components/AnchorLink";
 
 export interface StickySubNavItem {
   label: string;
@@ -90,7 +90,7 @@ export default function StickySubNav({ items, activeClass }: StickySubNavProps) 
     >
       <div className="section-shell flex gap-1 overflow-x-auto py-2.5">
         {items.map((item) => (
-          <Link
+          <AnchorLink
             key={item.id}
             href={`#${item.id}`}
             className={`shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-semibold transition-colors ${
@@ -98,7 +98,7 @@ export default function StickySubNav({ items, activeClass }: StickySubNavProps) 
             }`}
           >
             {item.label}
-          </Link>
+          </AnchorLink>
         ))}
       </div>
     </nav>

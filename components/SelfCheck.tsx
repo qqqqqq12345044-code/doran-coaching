@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import AnchorLink from "@/components/AnchorLink";
 import { ArrowLeft, ArrowRight, MessageCircle, RotateCcw } from "lucide-react";
 import { languages, type LanguageSlug } from "@/data/languages";
 import {
@@ -312,10 +313,10 @@ export default function SelfCheck() {
                     추천 과정 알아보기
                     <ArrowRight size={16} aria-hidden />
                   </Link>
-                  <Link href="#consultation" className="btn-secondary w-full sm:w-auto">
+                  <AnchorLink href="#consultation" className="btn-secondary w-full sm:w-auto">
                     <MessageCircle size={16} aria-hidden />
                     무료 상담 신청
-                  </Link>
+                  </AnchorLink>
                 </div>
 
                 <button type="button" onClick={reset} className="btn-ghost mx-auto mt-6 gap-1.5">

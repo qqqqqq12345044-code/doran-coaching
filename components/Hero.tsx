@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { ArrowRight, Sparkles, MessageCircle, BookOpenText } from "lucide-react";
+import AnchorLink from "@/components/AnchorLink";
 import Reveal from "@/components/Reveal";
 
 export type HeroAccent = "brand" | "english" | "japanese" | "chinese";
@@ -93,13 +93,13 @@ export default function Hero({
           </Reveal>
 
           <Reveal delay={150} className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link href={primaryCta.href} className="btn-primary group">
+            <AnchorLink href={primaryCta.href} className="btn-primary group">
               {primaryCta.label}
               <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
-            </Link>
-            <Link href={secondaryCta.href} className="btn-secondary">
+            </AnchorLink>
+            <AnchorLink href={secondaryCta.href} className="btn-secondary">
               {secondaryCta.label}
-            </Link>
+            </AnchorLink>
           </Reveal>
         </div>
 
