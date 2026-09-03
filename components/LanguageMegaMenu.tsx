@@ -124,7 +124,7 @@ export default function LanguageMegaMenu({ language }: { language: LanguageSlug 
               return (
                 <Link
                   key={category.id}
-                  href={`${meta.href}#${category.sectionId}`}
+                  href={`${meta.href}/${category.sectionId}`}
                   role="menuitem"
                   className="group flex items-start gap-3 rounded-xl2 p-3 transition-colors duration-150 hover:bg-surface-soft"
                   onClick={() => setOpen(false)}

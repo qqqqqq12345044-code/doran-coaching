@@ -115,10 +115,16 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             />
           </Reveal>
 
-          <Link href="#consultation" className="btn-secondary mt-8 gap-2">
-            상담하기
-            <ArrowRight size={16} aria-hidden />
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={`/${language}/conversation`} className="btn-secondary gap-2">
+              {languageLabel} 회화 자세히 보기
+              <ArrowRight size={16} aria-hidden />
+            </Link>
+            <Link href="#consultation" className="btn-ghost gap-1">
+              상담하기
+              <ArrowRight size={14} aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -143,6 +149,11 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
               />
             </div>
           </Reveal>
+
+          <Link href={`/${language}/certification`} className="btn-secondary mt-8 gap-2">
+            {languageLabel} 자격증 자세히 보기
+            <ArrowRight size={16} aria-hidden />
+          </Link>
         </div>
       </section>
 
@@ -165,10 +176,16 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
             />
           </Reveal>
 
-          <Link href="#consultation" className="btn-secondary mt-8 gap-2">
-            상담하기
-            <ArrowRight size={16} aria-hidden />
-          </Link>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href={`/${language}/school`} className="btn-secondary gap-2">
+              {languageLabel} 내신 자세히 보기
+              <ArrowRight size={16} aria-hidden />
+            </Link>
+            <Link href="#consultation" className="btn-ghost gap-1">
+              상담하기
+              <ArrowRight size={14} aria-hidden />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -184,6 +201,11 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
           <Reveal delay={80} className="mt-8">
             <OtherPurposeGrid group={other} chipTintClass={accent.tint} />
           </Reveal>
+
+          <Link href={`/${language}/other`} className="btn-secondary mt-8 gap-2">
+            {languageLabel} 기타 과정 자세히 보기
+            <ArrowRight size={16} aria-hidden />
+          </Link>
         </div>
       </section>
     </>

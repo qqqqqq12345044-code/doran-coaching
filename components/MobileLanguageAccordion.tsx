@@ -64,7 +64,7 @@ export default function MobileLanguageAccordion({
             {categories.map((category) => (
               <Link
                 key={category.id}
-                href={`${meta.href}#${category.sectionId}`}
+                href={`${meta.href}/${category.sectionId}`}
                 onClick={onNavigate}
                 className="rounded-lg px-3 py-2.5 text-[14px] text-ink-soft transition-colors hover:bg-surface-soft hover:text-ink"
               >

@@ -14,7 +14,8 @@
     "build:seo-regions": "node scripts/build-seo-regions.mjs",
     "preview:content": "node scripts/preview-local-seo-content.mts",
     "preview:multi-intent": "node scripts/preview-multi-intent-content.mts",
-    "preview:exam-profiles": "node scripts/preview-exam-profiles.mts"
+    "preview:exam-profiles": "node scripts/preview-exam-profiles.mts",
+    "validate:detail-content": "node scripts/validate-detail-content.mts"
   },
   "dependencies": {
     "lucide-react": "^0.451.0",
