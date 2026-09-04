@@ -1,6 +1,7 @@
 import type { Coach } from "@/data/coaches";
 import Reveal from "@/components/Reveal";
 import CoachCard from "./CoachCard";
+import { trustStats } from "@/data/trustStats";
 
 interface CoachSectionProps {
   id?: string;
@@ -8,12 +9,17 @@ interface CoachSectionProps {
   coaches: Coach[];
 }
 
+// 코치 소개는 개별 실명 프로필이 아니라 "코치 유형" 카드이므로, 섹션
+// 상단에 실제 검증된 강사진 조건(data/trustStats.ts, 안내받은 문구 그대로)을
+// 작게 재사용해 근거를 밝힌다. "검증된 강사진"처럼 근거 불명확한 표현은
+// 쓰지 않는다.
 export default function CoachSection({ id, title, coaches }: CoachSectionProps) {
   return (
     <section id={id} className="section-pad scroll-mt-20 bg-surface">
       <div className="section-shell">
         <Reveal className="max-w-lg">
-          <h2 className="text-[28px] font-bold leading-snug text-ink md:text-[34px]">
+          <p className="eyebrow">{trustStats.instructorCondition.label}</p>
+          <h2 className="mt-2 text-[28px] font-bold leading-snug text-ink md:text-[34px]">
             {title.map((line) => (
               <span key={line} className="block">
                 {line}

@@ -30,7 +30,7 @@ const SOLUTION_STEPS = [
   { title: "전문 코치 매칭" },
   { title: "맞춤 학습 계획" },
   { title: "1:1 수업 진행" },
-  { title: "학습 관리" },
+  { title: "학습 관리", description: "정기 상담으로 학습 상황을 점검합니다." },
 ];
 
 const FEATURES = [

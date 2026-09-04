@@ -85,7 +85,7 @@ const LEARNING_STEPS = [
   { title: "학습 목표 설정" },
   { title: "중국어 코치 매칭" },
   { title: "1:1 수업" },
-  { title: "발음 / 회화 / 시험 피드백" },
+  { title: "발음 / 회화 / 시험 피드백", description: "정기 상담으로 학습 상황을 점검합니다." },
 ];
 
 export default function ChinesePage() {

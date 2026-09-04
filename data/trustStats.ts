@@ -2,8 +2,13 @@
 // 하드코딩하지 않고 이 파일 하나에서 관리한다. 값이 바뀌면 여기만 수정한다.
 //
 // cumulativeStudents(1.2K+)와 satisfaction(4.9 / 5)은 공식적으로 사용 가능한
-// 값으로 확정되었다(sourceNoteVerified: true). 나머지 항목(강사진 조건,
-// 언어 커버리지)은 공식 근거 없이 새로운 숫자/성과 수치를 추가하지 않는다.
+// 값으로 확정되었다(sourceNoteVerified: true). instructorScale(200여 명 /
+// 20여 년)은 2026-09-04 https://www.plcenter.co.kr/ 원문 "20년 이상의
+// 노하우를 가진 200명 이상의 우수한 강사진!"을 그대로 근거로 한다(동일
+// 문구가 반복 확인됨). 그 외 항목(강사진 조건, 언어 커버리지)은 공식 근거
+// 없이 새로운 숫자/성과 수치를 추가하지 않는다. china.asp/japan.asp에서
+// 언급된 "북경 현지 강사진", "일본인/교포/한국인 선택 가능" 등은 반복 조회
+// 에도 원문에서 확인되지 않아 반영하지 않았다.
 export const trustStats = {
   cumulativeStudents: {
     value: "1.2K+",
@@ -12,6 +17,10 @@ export const trustStats = {
   satisfaction: {
     value: "4.9 / 5",
     label: "수강생 만족도",
+  },
+  instructorScale: {
+    value: "200여 명",
+    label: "20년 노하우 · 전문 강사진",
   },
   instructorCondition: {
     // 강사진 조건은 임의로 단정하지 않고 안내받은 조건 문구를 그대로 사용한다.

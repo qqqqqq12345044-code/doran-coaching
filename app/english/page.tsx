@@ -85,7 +85,7 @@ const LEARNING_STEPS = [
   { title: "학습 목표 설정" },
   { title: "전문 코치 매칭" },
   { title: "1:1 영어 수업" },
-  { title: "학습 피드백" },
+  { title: "학습 피드백", description: "정기 상담으로 학습 상황을 점검합니다." },
 ];
 
 export default function EnglishPage() {
