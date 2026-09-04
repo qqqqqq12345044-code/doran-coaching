@@ -71,24 +71,38 @@ export default function HomeHero({
 
   return (
     <section className="relative flex min-h-[540px] w-full items-center overflow-hidden sm:min-h-[600px] lg:min-h-[680px]">
-      {SLIDES.map((slide, index) => (
-        <div
-          key={slide.imageSrc}
-          aria-hidden={index !== activeIndex}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-            index === activeIndex ? "opacity-100" : "opacity-0"
-          }`}
-        >
-          <Image
-            src={slide.imageSrc}
-            alt={slide.imageAlt}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-      ))}
+      {SLIDES.map((slide, index) => {
+        const isActive = index === activeIndex;
+        return (
+          <div
+            key={slide.imageSrc}
+            aria-hidden={!isActive}
+            className={`absolute inset-0 transition-opacity duration-[1300ms] ease-in-out ${
+              isActive ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            {/* 매우 약한 Ken Burns: opacity 전환(1300ms)과 별개로 scale은 활성 구간 6초
+                동안 아주 천천히 1 → 1.025로만 움직인다. duration을 SLIDE_INTERVAL보다
+                길게(6500ms) 잡아 다음 opacity fade가 시작되기 전까지 거의 눈에 띄지
+                않게 이어지고, 비활성으로 돌아가는 동안(보이지 않는 상태) 같은 속도로
+                scale-100으로 리셋되어 다음 노출 때 다시 자연스럽게 시작한다. */}
+            <div
+              className={`absolute inset-0 transition-transform duration-[6500ms] ease-out ${
+                isActive ? "scale-[1.025]" : "scale-100"
+              }`}
+            >
+              <Image
+                src={slide.imageSrc}
+                alt={slide.imageAlt}
+                fill
+                priority={index === 0}
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        );
+      })}
 
       <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/50 to-ink/25" />
       <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-ink/15 to-transparent" />

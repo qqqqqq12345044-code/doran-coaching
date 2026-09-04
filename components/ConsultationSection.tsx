@@ -1,12 +1,15 @@
 "use client";
 
-import type { FormEvent } from "react";
+import { useState, type FormEvent } from "react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
 const INTEREST_OPTIONS = [...languages.map((lang) => lang.nameKo), "아직 고민 중이에요"];
+
+type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
 interface ConsultationSectionProps {
   title?: string[];
@@ -20,13 +23,71 @@ export default function ConsultationSection({
   subtitle = "먼저 상담을 통해 나에게 맞는 학습 방법을 찾아보세요.",
   defaultInterest,
 }: ConsultationSectionProps) {
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    // 현재 단계에서는 실제 상담 신청 기능(API 연동)을 구현하지 않는다.
-    // "접수/전송 완료"처럼 실제 접수를 암시하는 문구를 쓰지 않는다(오인 방지).
+  const [status, setStatus] = useState<SubmitStatus>("idle");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    window.alert(
-      "입력하신 내용을 확인했습니다. 이 화면은 프로토타입으로, 실제 상담 접수·전송은 이루어지지 않습니다."
-    );
+    if (status === "submitting") return;
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    // Honeypot: 사람 눈에는 보이지 않는 필드. 값이 채워져 있으면 봇으로 간주해
+    // 실제 전송 없이 성공한 것처럼만 화면을 마무리한다(봇에게 실패를 알리지 않음).
+    if (String(formData.get("company") ?? "").trim() !== "") {
+      form.reset();
+      setStatus("success");
+      return;
+    }
+
+    const endpoint = process.env.NEXT_PUBLIC_CONSULTATION_ENDPOINT;
+    if (!endpoint) {
+      // 운영 endpoint가 아직 설정되지 않은 상태. 사용자에게는 실패로만 안내하고,
+      // 원인은 콘솔에만 남겨 UI에 내부 설정 상태를 노출하지 않는다.
+      // eslint-disable-next-line no-console
+      console.error("NEXT_PUBLIC_CONSULTATION_ENDPOINT가 설정되지 않았습니다.");
+      setStatus("error");
+      return;
+    }
+
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      phone: String(formData.get("phone") ?? ""),
+      address: String(formData.get("address") ?? ""),
+      interest: formData.getAll("interest").map(String),
+      message: String(formData.get("message") ?? ""),
+      privacyConsent: formData.get("privacyConsent") === "on",
+      pageUrl: typeof window !== "undefined" ? window.location.href : "",
+      userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
+    };
+
+    setStatus("submitting");
+
+    try {
+      // Google Apps Script Web App으로 전송. Content-Type을 text/plain으로 두는
+      // 이유: application/json으로 보내면 브라우저가 먼저 OPTIONS preflight를
+      // 보내는데 Apps Script Web App은 이를 처리하지 않아 요청이 막힌다.
+      // text/plain은 "simple request"라 preflight 없이 바로 전송되고, Apps
+      // Script 쪽(doPost)에서는 e.postData.contents를 JSON.parse해서 그대로
+      // 읽는다. no-cors는 쓰지 않는다 — 그러면 응답을 읽을 수 없어 성공/실패를
+      // 구분하지 못한다(41/39 항목).
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = (await response.json().catch(() => null)) as { success?: boolean } | null;
+
+      if (response.ok && result?.success) {
+        form.reset();
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
   }
 
   return (
@@ -51,9 +112,23 @@ export default function ConsultationSection({
         <Reveal delay={120}>
           <form
             onSubmit={handleSubmit}
-            className="rounded-xl3 bg-white p-7 shadow-soft md:p-9"
+            className="relative rounded-xl3 bg-white p-7 shadow-soft md:p-9"
           >
             <div className="grid gap-5 sm:grid-cols-2">
+              {/* Honeypot: 시각적으로 숨기되 display:none/aria-hidden만으로 숨기지
+                  않는다(일부 봇은 이를 감지해 우회). 화면 밖으로 이동시키고 tab
+                  순서/스크린리더에서도 제외한다. */}
+              <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+                <label htmlFor="company">회사명</label>
+                <input
+                  id="company"
+                  name="company"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               <div className="sm:col-span-2">
                 <label htmlFor="name" className="text-[14px] font-medium text-ink">
                   이름
@@ -135,11 +210,11 @@ export default function ConsultationSection({
                 />
               </div>
 
-              {/* TODO(개인정보 정책 확정 전 실제 상담 접수 기능 오픈 금지):
+              {/* TODO(개인정보 정책 확정 전 문구 확장 금지):
                   수집 목적/수집 항목/보유·이용 기간/처리 주체(사업자명)/
                   개인정보처리방침 링크가 아직 확정되지 않았다. 확정 전까지는
-                  아래 동의 문구에 정책 링크를 추가하지 않는다. 사용자 화면에는
-                  "정책 확인 중" 같은 내부 상태 문구를 노출하지 않는다. */}
+                  아래 동의 문구에 정책 링크나 구체적인 보유기간을 추가하지
+                  않는다. */}
               <div className="sm:col-span-2">
                 <label className="flex cursor-pointer items-start gap-2.5 text-[13px] leading-relaxed text-ink-soft">
                   <input
@@ -153,9 +228,26 @@ export default function ConsultationSection({
               </div>
             </div>
 
-            <button type="submit" className="btn-primary mt-6 w-full">
-              상담 신청하기
+            <button
+              type="submit"
+              disabled={status === "submitting"}
+              className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {status === "submitting" ? "접수 중..." : "무료 상담 신청"}
             </button>
+
+            {status === "success" && (
+              <p className="mt-4 flex items-start gap-2 rounded-xl bg-brand-tint px-4 py-3 text-[13.5px] leading-relaxed text-brand-dark">
+                <CheckCircle2 size={18} className="mt-0.5 shrink-0" aria-hidden />
+                상담 신청이 접수되었습니다. 확인 후 연락드리겠습니다.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="mt-4 flex items-start gap-2 rounded-xl bg-red-50 px-4 py-3 text-[13.5px] leading-relaxed text-red-700">
+                <AlertCircle size={18} className="mt-0.5 shrink-0" aria-hidden />
+                접수 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.
+              </p>
+            )}
           </form>
         </Reveal>
       </div>
