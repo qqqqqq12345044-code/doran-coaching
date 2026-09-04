@@ -80,11 +80,11 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   japanese: {
     conversation: {
       hero: { src: "/images/detail/japanese/conversation/hero.jpg", alt: "아키하바라풍 네온 거리의 밤 풍경" },
-      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북으로 편안하게 학습하는 모습" },
+      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북으로 집중해서 학습하는 모습" },
     },
     certification: {
       hero: { src: "/images/detail/japanese/certification/hero.jpg", alt: "헤드폰과 노트, 키보드가 놓인 학습 책상" },
-      mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "노트에 펜으로 필기하는 손" },
+      mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "펜과 노트, 안경이 놓인 깔끔한 학습 책상" },
     },
     school: {
       hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "빈 교실에서 혼자 책을 보는 학생" },
@@ -97,7 +97,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   },
   chinese: {
     conversation: {
-      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북으로 온라인 대화를 준비하는 손 클로즈업" },
+      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북으로 온라인 학습을 준비하는 손 클로즈업" },
       mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "키보드를 치는 손 클로즈업" },
     },
     certification: {
@@ -106,11 +106,11 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
     },
     school: {
       hero: { src: "/images/detail/chinese/school/hero.jpg", alt: "교복 차림의 학생이 혼자 책상에서 책을 보며 중국어 내신을 공부하는 모습" },
-      mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "펼쳐진 빈 노트와 펜·연필이 놓인 책상" },
+      mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "안경과 펜이 놓인 노트, 노트북이 있는 책상" },
     },
     other: {
-      hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "서류에 서명하는 손 클로즈업" },
-      mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "노트북 키보드로 실무를 준비하는 모습" },
+      hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "공항에서 항공편 안내판을 확인하는 여행객" },
+      mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "홍콩 컨테이너 항구의 야간 물류 현장" },
     },
   },
 };

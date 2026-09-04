@@ -40,8 +40,8 @@ export default function DetailHero({
       <div className="section-shell grid gap-8 py-8 sm:py-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14 lg:py-14">
         <div>
           <Breadcrumb items={breadcrumbItems} />
-
           <p className="eyebrow mt-5">{eyebrow}</p>
+
           <h1 className="text-balance mt-2 text-[28px] font-extrabold leading-[1.25] tracking-tight text-ink sm:text-[36px] lg:text-[40px]">
             {h1}
           </h1>

@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { ArrowRight, Sparkles, MessageCircle, BookOpenText } from "lucide-react";
 import AnchorLink from "@/components/AnchorLink";
-import Reveal from "@/components/Reveal";
 
 export type HeroAccent = "brand" | "english" | "japanese" | "chinese";
 
@@ -76,23 +75,21 @@ export default function Hero({
 
       <div className="section-shell grid gap-14 pb-16 pt-14 md:pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-10 lg:pb-24">
         <div className="max-w-xl">
-          <Reveal>
-            {eyebrow && (
-              <p className={`mb-5 text-sm font-semibold ${styles.text}`}>{eyebrow}</p>
-            )}
-            <h1 className="text-[34px] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[44px] md:text-[52px] lg:leading-[1.15]">
-              {lines.map((line) => (
-                <span key={line} className="block">
-                  {line}
-                </span>
-              ))}
-            </h1>
-            <p className="mt-6 whitespace-pre-line text-[16px] leading-relaxed text-ink-soft md:text-[17px]">
-              {subtitle}
-            </p>
-          </Reveal>
+          {eyebrow && (
+            <p className={`mb-5 text-sm font-semibold ${styles.text}`}>{eyebrow}</p>
+          )}
+          <h1 className="text-[34px] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[44px] md:text-[52px] lg:leading-[1.15]">
+            {lines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
+          <p className="mt-6 whitespace-pre-line text-[16px] leading-relaxed text-ink-soft md:text-[17px]">
+            {subtitle}
+          </p>
 
-          <Reveal delay={150} className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
             <AnchorLink href={primaryCta.href} className="btn-primary group">
               {primaryCta.label}
               <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden />
@@ -100,7 +97,7 @@ export default function Hero({
             <AnchorLink href={secondaryCta.href} className="btn-secondary">
               {secondaryCta.label}
             </AnchorLink>
-          </Reveal>
+          </div>
         </div>
 
         <div className="relative mx-auto w-full max-w-md lg:max-w-none">

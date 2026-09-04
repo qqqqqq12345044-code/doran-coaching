@@ -16,7 +16,6 @@ import { purposeCourses } from "@/data/courses";
 import { coaches } from "@/data/coaches";
 import { getPublishedReviews } from "@/data/reviews";
 import { faqItems } from "@/data/faq";
-import { brand } from "@/data/brand";
 
 const PROBLEMS = [
   "몇 년을 공부했는데 막상 말하려면 입이 안 떨어져요.",
@@ -66,14 +65,7 @@ const HOW_IT_WORKS_STEPS = [
 export default function HomePage() {
   return (
     <>
-      <HomeHero
-        eyebrow={brand.brandLabel}
-        lines={brand.mainTagline.lines}
-        subtitle={brand.mainTagline.subtitle}
-        badgeLabel={brand.mainTagline.badgeLabel}
-        primaryCta={{ label: "내게 맞는 수업 찾기", href: "#self-check" }}
-        secondaryCta={{ label: "과정 둘러보기", href: "#course" }}
-      />
+      <HomeHero />
 
       <HeroQuickNav />
 

@@ -16,10 +16,4 @@ export const brand = {
   },
   footerServiceLine: "영어 · 일본어 · 중국어",
   footerSubLine: "1:1 맞춤 외국어 과외",
-  mainTagline: {
-    lines: ["말이 통하면,", "세상이 조금 더 가까워지니까."],
-    subtitle: "영어부터 일본어, 중국어까지\n내 수준과 목표에 맞는 1:1 외국어 과외",
-    badgeLabel: "1:1 맞춤 외국어 과외",
-    heroWord: "Talk",
-  },
 } as const;

@@ -213,9 +213,10 @@ export const imageCredits: ImageCredit[] = [
     photographerUrl: "https://unsplash.com/@mimithian",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 서구권 외모가 뚜렷한 인물이라 일본어 페이지 정체성과 맞지
-    // 않아 동아시아 인물 사진으로 교체(2026-09-04).
-    usage: "일본어 회화 상세페이지 중간 Visual Break — 노트북으로 편안하게 학습하는 모습",
+    // 노점/카페 외관(인물 없음) 사진으로 잠깐 바뀌었으나, "회화" 페이지는
+    // 관광 이미지보다 실제 학습/소통 분위기를 우선한다는 원칙에 따라 동아시아
+    // 인물이 노트북을 보는 원래 사진으로 되돌림(2026-09-04).
+    usage: "일본어 회화 상세페이지 중간 Visual Break — 노트북으로 집중해서 학습하는 모습",
   },
   {
     id: "detail-japanese-certification-hero",
@@ -234,12 +235,14 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-certification-mid",
     localPath: "/images/detail/japanese/certification/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/a-person-writing-on-a-notebook-with-a-pen-ZDDF6LMvh2s",
-    photographer: "Priscilla Du Preez",
-    photographerUrl: "https://unsplash.com/@priscilladupreez",
+    sourceUrl: "https://unsplash.com/photos/q10VITrVYUM",
+    photographer: "Jess Bailey",
+    photographerUrl: "https://unsplash.com/@jessbaileydesigns",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 자격증 상세페이지 중간 Visual Break — 노트에 펜으로 필기하는 손",
+    // 이전 사진은 크롭이 어색해 더 안정적으로 보이는 미니멀 학습 책상
+    // 사진으로 교체(2026-09-04).
+    usage: "일본어 자격증 상세페이지 중간 Visual Break — 펜과 노트, 안경이 놓인 깔끔한 학습 책상",
   },
   {
     id: "detail-japanese-school-hero",
@@ -297,25 +300,27 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-conversation-hero",
     localPath: "/images/detail/chinese/conversation/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/hands-typing-on-a-laptop-computer-keyboard-AnB0zwEeuYU",
+    sourceUrl: "https://unsplash.com/photos/AnB0zwEeuYU",
     photographer: "Vitaly Gariev",
     photographerUrl: "https://unsplash.com/@silverkblack",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 서구권 외모의 인물이 얼굴 중심으로 나와 교체(2026-09-04).
-    // 얼굴 없이 손+노트북 클로즈업으로 인물 국적을 특정하지 않는 사진으로 대체.
-    usage: "중국어 회화 상세페이지 Hero 비주얼 — 노트북으로 온라인 대화를 준비하는 손 클로즈업",
+    // 길거리 음식 노점(인물 거의 없음) 사진으로 잠깐 바뀌었으나, "회화" 페이지는
+    // 여행/관광 이미지보다 1:1 온라인 학습 분위기를 우선한다는 원칙에 따라
+    // 노트북을 쓰는 손 클로즈업으로 되돌림(2026-09-04).
+    usage: "중국어 회화 상세페이지 Hero 비주얼 — 노트북으로 온라인 학습을 준비하는 손 클로즈업",
   },
   {
     id: "detail-chinese-conversation-mid",
     localPath: "/images/detail/chinese/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/close-up-of-a-hand-typing-on-a-computer-keyboard-Qh1degtlisQ",
+    sourceUrl: "https://unsplash.com/photos/Qh1degtlisQ",
     photographer: "Alicia Christin Gerald",
     photographerUrl: "https://unsplash.com/@allysphotos",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 서구권 외모의 인물이 얼굴 중심으로 나와 교체(2026-09-04).
+    // 현지 상점가 거리 사진으로 잠깐 바뀌었으나, 같은 이유(관광 이미지보다
+    // 학습 분위기 우선)로 키보드 타이핑 손 클로즈업으로 되돌림(2026-09-04).
     usage: "중국어 회화 상세페이지 중간 Visual Break — 키보드를 치는 손 클로즈업",
   },
   {
@@ -359,36 +364,42 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-school-mid",
     localPath: "/images/detail/chinese/school/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/open-notebook-with-pen-and-pencils-on-desk-n9AaeihA9HI",
-    photographer: "Clay Banks",
-    photographerUrl: "https://unsplash.com/@claybanks",
+    sourceUrl: "https://unsplash.com/photos/UgA3Xvi3SkA",
+    photographer: "Trent Erwin",
+    photographerUrl: "https://unsplash.com/@tjerwin",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 내신 상세페이지 중간 Visual Break — 펼쳐진 빈 노트와 펜·연필이 놓인 책상",
+    // 이전 사진(Clay Banks, n9AaeihA9HI)이 영어 자격증 페이지(english/certification/mid.jpg)와
+    // 완전히 동일한 파일로 중복 사용되고 있어 교체(2026-09-04).
+    usage: "중국어 내신 상세페이지 중간 Visual Break — 안경과 펜이 놓인 노트, 노트북이 있는 책상",
   },
   {
     id: "detail-chinese-other-hero",
     localPath: "/images/detail/chinese/other/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/man-signing-a-document-with-a-pen-QI6NLgN5XnM",
-    photographer: "Jakub Żerdzicki",
-    photographerUrl: "https://unsplash.com/@jakubzerdzicki",
+    sourceUrl: "https://unsplash.com/photos/person-looking-up-to-the-flight-schedules-jbQvJx2EWnU",
+    photographer: "Erik Odiin",
+    photographerUrl: "https://unsplash.com/@odiin",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 금발의 서구권 외모 여성이 얼굴 중심으로 나와 교체(2026-09-04).
-    // 얼굴 없이 서류에 서명하는 손 클로즈업으로 대체.
-    usage: "중국어 기타(유학·취업·무역) 상세페이지 Hero 비주얼 — 서류에 서명하는 손 클로즈업",
+    // 이전 사진(서류 서명 손 클로즈업)은 유학·취업·무역이라는 페이지 목적이
+    // 바로 읽히지 않아, 출국 전 항공편 안내판을 확인하는 여행객 사진으로
+    // 교체(2026-09-04). 배경에 다른 여행객이 흐릿하게 보이나 단체 수업/회의
+    // 장면이 아닌 공항의 자연스러운 배경 인파.
+    usage: "중국어 기타(유학·취업·무역) 상세페이지 Hero 비주얼 — 공항에서 항공편 안내판을 확인하는 여행객",
   },
   {
     id: "detail-chinese-other-mid",
     localPath: "/images/detail/chinese/other/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/hands-typing-on-a-laptop-keyboard-at-a-desk-lMScFOdgRNg",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/shipping-port-with-containers-and-cranes-sWOvgOOFk1g",
+    photographer: "Timelab",
+    photographerUrl: "https://unsplash.com/@timelabpro",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 기타 상세페이지 중간 Visual Break — 노트북 키보드로 실무를 준비하는 모습",
+    // 홍콩 컨테이너 항구 야경. 이전 사진(노트북 키보드 타이핑)은 무역·실무
+    // 맥락이 약해, 무역/물류를 직관적으로 연상시키는 사진으로 교체(2026-09-04).
+    usage: "중국어 기타 상세페이지 중간 Visual Break — 홍콩 컨테이너 항구의 야간 물류 현장",
   },
 ];
 
