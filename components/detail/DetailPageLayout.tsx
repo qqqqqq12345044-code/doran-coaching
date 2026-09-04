@@ -11,6 +11,7 @@ import DetailFAQ from "./DetailFAQ";
 import RelatedLinks from "./RelatedLinks";
 import DetailCTABand from "./DetailCTABand";
 import CurriculumVisualBanner from "@/components/CurriculumVisualBanner";
+import ProcessSection from "@/components/ProcessSection";
 import RoadmapTimeline from "@/components/curriculum/RoadmapTimeline";
 import CertificationExplorer from "@/components/curriculum/CertificationExplorer";
 import OtherPurposeGrid from "@/components/curriculum/OtherPurposeGrid";
@@ -42,20 +43,76 @@ interface DetailPageLayoutProps {
   languageHref: string;
 }
 
-// 언어 페이지(/english 등)와 동일한 기존 Hero 이미지를 재사용한다. 새 이미지를
-// 만들지 않고, 4개 카테고리 페이지가 언어별로 같은 이미지를 공유한다.
-const HERO_IMAGE: Record<CurriculumLanguage, { src: string; alt: string }> = {
-  english: { src: "/images/language/english-hero.jpg", alt: "밝은 카페에서 대화를 나누는 두 사람" },
-  japanese: { src: "/images/language/japanese-hero.jpg", alt: "일본 도쿄 아키하바라 거리의 밤 풍경" },
-  chinese: { src: "/images/language/chinese-hero.jpg", alt: "중국어 서예가 담긴 책" },
-};
+interface DetailImage {
+  src: string;
+  alt: string;
+}
 
-// Wide Visual Break용 이미지. 각 언어 종합페이지의 CurriculumVisualBanner와
-// 동일한 이미지를 재사용한다(새 이미지 다운로드 없음).
-const VISUAL_BREAK_IMAGE: Record<CurriculumLanguage, { src: string; alt: string }> = {
-  english: { src: "/images/language/english-online-learning.jpg", alt: "노트북으로 함께 공부하는 모습" },
-  japanese: { src: "/images/language/japanese-business.jpg", alt: "회의실에서 발표하는 모습" },
-  chinese: { src: "/images/language/chinese-study.jpg", alt: "책과 노트로 공부하는 책상" },
+interface DetailImageSet {
+  hero: DetailImage;
+  mid: DetailImage;
+}
+
+// 12개 상세페이지 각각에 고유한 상단(hero)/중간(mid) 이미지를 지정한다.
+// 언어 하나당 이미지를 돌려쓰던 이전 방식에서 "카테고리별로 다른 이미지"로
+// 바꿔, 같은 언어 안에서도 회화/자격증/내신/기타 페이지가 시각적으로
+// 구분되게 한다. 실제 파일은 public/images/detail/<language>/<category>/
+// {hero,mid}.jpg. 출처는 data/media/imageCredits.ts에서 관리한다.
+const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailImageSet>> = {
+  english: {
+    conversation: {
+      hero: { src: "/images/detail/english/conversation/hero.jpg", alt: "노트북으로 화상통화하며 웃으며 대화하는 여성" },
+      mid: { src: "/images/detail/english/conversation/mid.jpg", alt: "책상에서 노트북 화상통화로 대화하는 여성" },
+    },
+    certification: {
+      hero: { src: "/images/detail/english/certification/hero.jpg", alt: "책상에서 책을 펴고 집중해서 공부하는 모습" },
+      mid: { src: "/images/detail/english/certification/mid.jpg", alt: "펼쳐진 책과 노트, 펜이 놓인 시험 준비 학습자료" },
+    },
+    school: {
+      hero: { src: "/images/detail/english/school/hero.jpg", alt: "교실에서 학생들과 함께하는 학습 장면" },
+      mid: { src: "/images/detail/english/school/mid.jpg", alt: "형광펜과 필기 자료가 놓인 책상" },
+    },
+    other: {
+      hero: { src: "/images/detail/english/other/hero.jpg", alt: "테이블 너머로 악수하는 두 사람" },
+      mid: { src: "/images/detail/english/other/mid.jpg", alt: "책상에서 노트북으로 타이핑하는 모습" },
+    },
+  },
+  japanese: {
+    conversation: {
+      hero: { src: "/images/detail/japanese/conversation/hero.jpg", alt: "아키하바라풍 네온 거리의 밤 풍경" },
+      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북 화상통화로 인사하는 모습" },
+    },
+    certification: {
+      hero: { src: "/images/detail/japanese/certification/hero.jpg", alt: "헤드폰을 쓰고 집중해서 학습하는 모습" },
+      mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "노트에 필기하는 손" },
+    },
+    school: {
+      hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "책상에서 집중해서 필기하며 공부하는 모습" },
+      mid: { src: "/images/detail/japanese/school/mid.jpg", alt: "펼쳐진 노트와 펜들이 놓인 책상" },
+    },
+    other: {
+      hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "발표가 있는 비즈니스 미팅 장면" },
+      mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "카메라·여권 등 유학·여행 준비물" },
+    },
+  },
+  chinese: {
+    conversation: {
+      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "헤드폰을 쓰고 통화하며 웃는 모습" },
+      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "노트북 화상통화 중 손을 흔드는 모습" },
+    },
+    certification: {
+      hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "칠판 앞 책상에서 집중해서 공부하는 모습" },
+      mid: { src: "/images/detail/chinese/certification/mid.jpg", alt: "중국어 글씨가 쓰인 종이" },
+    },
+    school: {
+      hero: { src: "/images/detail/chinese/school/hero.jpg", alt: "노트에 펜으로 필기하는 모습" },
+      mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "필기구와 형광펜이 놓인 책상" },
+    },
+    other: {
+      hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "책상 너머로 악수하는 두 사람" },
+      mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "현대적 사무실에서 발표를 듣는 모습" },
+    },
+  },
 };
 
 const VISUAL_BREAK_EYEBROW: Record<DetailCategory, string> = {
@@ -67,6 +124,17 @@ const VISUAL_BREAK_EYEBROW: Record<DetailCategory, string> = {
 
 const CLASS_TEXT_BRAND = "전문 코치와 1:1로 진행되는 온라인 화상 수업입니다.";
 
+// "시작 방법" compact process. 언어 종합페이지의 ProcessSection(수준 확인→
+// 목표 설정→코치 매칭→수업→피드백)과 같은 실제 흐름을, 상세페이지에서는
+// 4단계로 축약해 상담→매칭→수업→점검 흐름만 보여준다. 카테고리와 무관하게
+// 동일한 실제 절차이므로 언어/카테고리별로 다시 만들지 않는다.
+const START_STEPS = [
+  { title: "상담 신청", description: "학습 목표와 현재 수준을 먼저 확인합니다." },
+  { title: "코치 매칭", description: "목표와 수준에 맞는 전문 코치를 연결합니다." },
+  { title: "1:1 온라인 수업", description: "화상으로 맞춤 커리큘럼 수업을 진행합니다." },
+  { title: "정기 점검·피드백", description: "정기 상담으로 학습 상황을 점검합니다." },
+];
+
 // 12개 세부 과정 페이지가 공유하는 유일한 레이아웃. 본문 문구는 모두
 // data/detailPages에서 오고 글자 수/내용은 그대로 유지한다 — 이 컴포넌트는
 // 같은 데이터를 "제목 → 본문 → 제목 → 본문"으로 세로 나열하던 방식 대신,
@@ -76,8 +144,9 @@ const CLASS_TEXT_BRAND = "전문 코치와 1:1로 진행되는 온라인 화상 
 export default function DetailPageLayout({ content, accent, languageNameKo, languageHref }: DetailPageLayoutProps) {
   const otherCategories = COURSE_CATEGORIES.filter((category) => category.id !== content.category);
   const categoryMeta = COURSE_CATEGORIES.find((category) => category.id === content.category)!;
-  const heroImage = HERO_IMAGE[content.language];
-  const breakImage = VISUAL_BREAK_IMAGE[content.language];
+  const images = DETAIL_IMAGES[content.language][content.category];
+  const heroImage = images.hero;
+  const breakImage = images.mid;
 
   const heroChips = ["온라인 화상 수업", categoryMeta.label, "1:1 맞춤 수업"];
 
@@ -208,6 +277,8 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
           </Reveal>
         </div>
       </div>
+
+      <ProcessSection eyebrow="HOW TO START" title={["이렇게 시작합니다"]} steps={START_STEPS} background="soft" />
 
       <Reveal>
         <DetailCTABand

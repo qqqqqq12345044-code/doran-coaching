@@ -9,6 +9,7 @@ import CourseSection from "@/components/CourseSection";
 import CurriculumVisualBanner from "@/components/CurriculumVisualBanner";
 import CurriculumExplorer from "@/components/CurriculumExplorer";
 import ProcessSection from "@/components/ProcessSection";
+import ComparisonSection from "@/components/ComparisonSection";
 import CoachSection from "@/components/CoachSection";
 import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
@@ -157,6 +158,20 @@ export default function ChinesePage() {
         title={["코치와 함께", "목표까지 이어갑니다."]}
         steps={LEARNING_STEPS}
         background="soft"
+      />
+
+      <ComparisonSection
+        title={["학원 수업과", "무엇이 다를까요?"]}
+        before={{
+          label: "오프라인 학원",
+          points: ["여러 명이 함께 듣는 정해진 진도", "학원까지 이동하는 시간", "정해진 시간표에 맞춰야 함", "성조·발음 교정 기회가 제한적"],
+        }}
+        after={{
+          label: "도란 1:1 온라인 화상",
+          points: ["현재 수준에 맞춘 개인 진도", "이동 없이 온라인으로 수업", "상담 후 일정 조율 가능", "성조·발음 교정과 개별 피드백 중심"],
+        }}
+        accentClass="border-chinese/30 bg-chinese-tint"
+        badgeAccentClass="bg-chinese"
       />
 
       <CoachSection
