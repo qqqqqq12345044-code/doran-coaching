@@ -65,12 +65,12 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
       mid: { src: "/images/detail/english/conversation/mid.jpg", alt: "책상에서 노트북 화상통화로 대화하는 여성" },
     },
     certification: {
-      hero: { src: "/images/detail/english/certification/hero.jpg", alt: "책상에서 책을 펴고 집중해서 공부하는 모습" },
-      mid: { src: "/images/detail/english/certification/mid.jpg", alt: "펼쳐진 책과 노트, 펜이 놓인 시험 준비 학습자료" },
+      hero: { src: "/images/detail/english/certification/hero.jpg", alt: "듀얼 모니터 앞에서 헤드폰을 쓰고 집중해서 영어 시험을 준비하는 모습" },
+      mid: { src: "/images/detail/english/certification/mid.jpg", alt: "빈 노트와 펜이 놓인 시험 준비 책상" },
     },
     school: {
-      hero: { src: "/images/detail/english/school/hero.jpg", alt: "교실에서 학생들과 함께하는 학습 장면" },
-      mid: { src: "/images/detail/english/school/mid.jpg", alt: "형광펜과 필기 자료가 놓인 책상" },
+      hero: { src: "/images/detail/english/school/hero.jpg", alt: "노트를 옆에 두고 혼자 집중해서 영어 내신을 공부하는 모습" },
+      mid: { src: "/images/detail/english/school/mid.jpg", alt: "노트와 연필, 안경이 놓인 깔끔한 학습 책상" },
     },
     other: {
       hero: { src: "/images/detail/english/other/hero.jpg", alt: "테이블 너머로 악수하는 두 사람" },
@@ -80,37 +80,37 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   japanese: {
     conversation: {
       hero: { src: "/images/detail/japanese/conversation/hero.jpg", alt: "아키하바라풍 네온 거리의 밤 풍경" },
-      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북 화상통화로 인사하는 모습" },
+      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북으로 집중해서 학습하는 모습" },
     },
     certification: {
       hero: { src: "/images/detail/japanese/certification/hero.jpg", alt: "헤드폰을 쓰고 집중해서 학습하는 모습" },
-      mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "노트에 필기하는 손" },
+      mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "노트에 펜으로 필기하는 손" },
     },
     school: {
       hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "책상에서 집중해서 필기하며 공부하는 모습" },
       mid: { src: "/images/detail/japanese/school/mid.jpg", alt: "펼쳐진 노트와 펜들이 놓인 책상" },
     },
     other: {
-      hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "발표가 있는 비즈니스 미팅 장면" },
-      mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "카메라·여권 등 유학·여행 준비물" },
+      hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "혼자 집중해서 노트북으로 업무·자료를 준비하는 모습" },
+      mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "책·노트북·헤드폰이 놓인 미니멀한 워크스페이스" },
     },
   },
   chinese: {
     conversation: {
-      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "헤드폰을 쓰고 통화하며 웃는 모습" },
-      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "노트북 화상통화 중 손을 흔드는 모습" },
+      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북 화상통화 중 인사하며 손을 흔드는 모습" },
+      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "헤드폰을 쓰고 노트북으로 학습하는 모습" },
     },
     certification: {
-      hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "칠판 앞 책상에서 집중해서 공부하는 모습" },
+      hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "헤드폰을 쓰고 집중해서 학습하는 모습" },
       mid: { src: "/images/detail/chinese/certification/mid.jpg", alt: "중국어 글씨가 쓰인 종이" },
     },
     school: {
-      hero: { src: "/images/detail/chinese/school/hero.jpg", alt: "노트에 펜으로 필기하는 모습" },
-      mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "필기구와 형광펜이 놓인 책상" },
+      hero: { src: "/images/detail/chinese/school/hero.jpg", alt: "교복 차림의 학생이 혼자 책상에서 책을 보며 중국어 내신을 공부하는 모습" },
+      mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "펼쳐진 빈 노트와 펜·연필이 놓인 책상" },
     },
     other: {
       hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "책상 너머로 악수하는 두 사람" },
-      mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "현대적 사무실에서 발표를 듣는 모습" },
+      mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "노트북 키보드로 실무를 준비하는 모습" },
     },
   },
 };

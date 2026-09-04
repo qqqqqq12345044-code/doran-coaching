@@ -137,7 +137,7 @@ export default function ChinesePage() {
 
       <CurriculumVisualBanner
         imageSrc="/images/language/chinese-study.jpg"
-        imageAlt="책과 노트로 공부하는 책상"
+        imageAlt="한자가 인쇄된 고서를 펼친 모습"
         eyebrow="CHINESE FOR YOUR GOAL"
         copy="기초 발음부터 여행·시험·비즈니스 상황까지, 목적에 맞게."
       />
