@@ -61,14 +61,14 @@ export const imageCredits: ImageCredit[] = [
     id: "japanese-business",
     localPath: "/images/language/japanese-business.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/smiling-woman-presenting-at-whiteboard-TXxiFuQLBKQ",
-    photographer: "ThisisEngineering",
-    photographerUrl: "https://unsplash.com/@thisisengineering",
+    sourceUrl: "https://unsplash.com/photos/woman-using-black-laptop-computer-near-turned-on-flat-screen-computer-monitor-5ZnS3wK6sUg",
+    photographer: "Mimi Thian",
+    photographerUrl: "https://unsplash.com/@mimithian",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 4명이 회의실에서 함께 화면을 보는 장면에 독일어 텍스트("Vertriebsstrategie")가
-    // 크게 보여, 1:1 서비스 톤 및 언어 정체성과 맞지 않아 교체(2026-09-04).
-    usage: "일본어 페이지 Curriculum 영역 Supporting 비주얼 — 화이트보드 앞에서 이야기하는 1인 비즈니스 장면",
+    // 1차 교체(그룹+독일어 텍스트 제거)로도 서구권 외모가 뚜렷한 인물이
+    // 남아있어, 동아시아 인물이 혼자 업무에 집중하는 사진으로 재교체(2026-09-04).
+    usage: "일본어 페이지 Curriculum 영역 Supporting 비주얼 — 사무실에서 혼자 집중해서 업무를 처리하는 모습",
   },
   {
     id: "chinese-hero",
@@ -208,23 +208,27 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-conversation-mid",
     localPath: "/images/detail/japanese/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/a-woman-wearing-glasses-works-on-a-laptop-gxpXLflKzao",
-    photographer: "Aleksei Zhivilov",
-    photographerUrl: "https://unsplash.com/@bb009x",
+    sourceUrl: "https://unsplash.com/photos/macbook-on-womans-lap-i5cd_SlY8XY",
+    photographer: "Mimi Thian",
+    photographerUrl: "https://unsplash.com/@mimithian",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 회화 상세페이지 중간 Visual Break — 노트북으로 집중해서 학습하는 모습",
+    // 이전 사진은 서구권 외모가 뚜렷한 인물이라 일본어 페이지 정체성과 맞지
+    // 않아 동아시아 인물 사진으로 교체(2026-09-04).
+    usage: "일본어 회화 상세페이지 중간 Visual Break — 노트북으로 편안하게 학습하는 모습",
   },
   {
     id: "detail-japanese-certification-hero",
     localPath: "/images/detail/japanese/certification/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/Imz-pn2LMbg",
-    photographer: "Julio Lopez",
-    photographerUrl: "https://unsplash.com/@juliolopez",
+    sourceUrl: "https://unsplash.com/photos/a-pair-of-headphones-on-a-desk-h0mhW7Wv-I0",
+    photographer: "Amr Taha™",
+    photographerUrl: "https://unsplash.com/@amr_taha",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 자격증(JLPT·JPT) 상세페이지 Hero 비주얼 — 헤드폰을 쓰고 집중해서 학습하는 모습",
+    // 이전 사진은 인종이 모호해 일본어 문맥을 분명히 하기 어려워, 인물 없이
+    // 헤드폰·노트·키보드만 보이는 중립적인 학습 도구 사진으로 교체(2026-09-04).
+    usage: "일본어 자격증(JLPT·JPT) 상세페이지 Hero 비주얼 — 헤드폰과 노트, 키보드가 놓인 학습 책상",
   },
   {
     id: "detail-japanese-certification-mid",
@@ -241,12 +245,14 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-school-hero",
     localPath: "/images/detail/japanese/school/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/woman-working-at-a-desk-with-a-laptop-and-notebook-Ad2TAPEhliE",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/woman-reading-book-sitting-on-chair-in-room-i5nMmbr8JYg",
+    photographer: "sean Kong",
+    photographerUrl: "https://unsplash.com/@seankkkkkkkkkkkkkk",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 내신 상세페이지 Hero 비주얼 — 책상에서 집중해서 필기하며 공부하는 모습",
+    // 이전 사진은 서구권 외모의 성인 여성이라 일본어 내신 맥락과 맞지 않아,
+    // 동아시아 학생이 빈 교실에서 혼자 책을 보는 사진으로 교체(2026-09-04).
+    usage: "일본어 내신 상세페이지 Hero 비주얼 — 빈 교실에서 혼자 책을 보는 학생",
   },
   {
     id: "detail-japanese-school-mid",
@@ -263,12 +269,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-other-hero",
     localPath: "/images/detail/japanese/other/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/woman-working-on-a-laptop-in-a-modern-office-WrlIRaC9t-A",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/young-man-typing-on-laptop-in-a-modern-office-KYlqBrKQ-i4",
+    photographer: "Gorilla ROI Data Connector",
+    photographerUrl: "https://unsplash.com/@gorillaroi",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 기타(유학·취업·비즈니스) 상세페이지 Hero 비주얼 — 혼자 집중해서 노트북으로 업무·자료를 준비하는 모습",
+    // 이전 사진은 서구권 외모가 뚜렷한 인물이라 일본 유학·취업·비즈니스
+    // 맥락과 맞지 않아, 동아시아 남성이 사무실에서 혼자 업무 중인 사진으로
+    // 교체(2026-09-04). chinese/conversation/hero.jpg와 동일 인물이던 이전
+    // 사진의 중복 문제도 함께 해소됨.
+    usage: "일본어 기타(유학·취업·비즈니스) 상세페이지 Hero 비주얼 — 사무실에서 혼자 집중해서 노트북으로 업무를 처리하는 모습",
   },
   {
     id: "detail-japanese-other-mid",
@@ -287,34 +297,39 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-conversation-hero",
     localPath: "/images/detail/chinese/conversation/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/woman-waving-hello-during-a-video-call-at-desk-s2uH89aClpE",
+    sourceUrl: "https://unsplash.com/photos/hands-typing-on-a-laptop-computer-keyboard-AnB0zwEeuYU",
     photographer: "Vitaly Gariev",
     photographerUrl: "https://unsplash.com/@silverkblack",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 회화 상세페이지 Hero 비주얼 — 노트북 화상통화 중 인사하며 손 흔드는 모습",
+    // 이전 사진은 서구권 외모의 인물이 얼굴 중심으로 나와 교체(2026-09-04).
+    // 얼굴 없이 손+노트북 클로즈업으로 인물 국적을 특정하지 않는 사진으로 대체.
+    usage: "중국어 회화 상세페이지 Hero 비주얼 — 노트북으로 온라인 대화를 준비하는 손 클로즈업",
   },
   {
     id: "detail-chinese-conversation-mid",
     localPath: "/images/detail/chinese/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/man-wearing-headphones-works-on-laptop-at-desk-6OA05PwDzKw",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/close-up-of-a-hand-typing-on-a-computer-keyboard-Qh1degtlisQ",
+    photographer: "Alicia Christin Gerald",
+    photographerUrl: "https://unsplash.com/@allysphotos",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 회화 상세페이지 중간 Visual Break — 헤드폰을 쓰고 노트북으로 학습하는 모습",
+    // 이전 사진은 서구권 외모의 인물이 얼굴 중심으로 나와 교체(2026-09-04).
+    usage: "중국어 회화 상세페이지 중간 Visual Break — 키보드를 치는 손 클로즈업",
   },
   {
     id: "detail-chinese-certification-hero",
     localPath: "/images/detail/chinese/certification/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/woman-wearing-headphones-works-at-desk-with-laptop-IaCvRgokDBo",
-    photographer: "Julio Lopez",
-    photographerUrl: "https://unsplash.com/@juliolopez",
+    sourceUrl: "https://unsplash.com/photos/a-desk-with-a-notebook-headphones-and-a-potted-plant-T7yUACjd3hU",
+    photographer: "Kelly Sikkema",
+    photographerUrl: "https://unsplash.com/@kellysikkema",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 자격증(HSK 등) 상세페이지 Hero 비주얼 — 헤드폰을 쓰고 집중해서 학습하는 모습",
+    // 이전 사진(Julio Lopez)이 japanese-certification-hero와 인종/구도가 유사해 헷갈릴
+    // 수 있어, 인물 없는 헤드폰+노트 flatlay로 교체(2026-09-04).
+    usage: "중국어 자격증(HSK 등) 상세페이지 Hero 비주얼 — 헤드폰과 노트가 놓인 창가 책상",
   },
   {
     id: "detail-chinese-certification-mid",
@@ -355,12 +370,14 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-other-hero",
     localPath: "/images/detail/chinese/other/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/two-women-shaking-hands-across-a-desk-9TF9pMrCFMo",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/man-signing-a-document-with-a-pen-QI6NLgN5XnM",
+    photographer: "Jakub Żerdzicki",
+    photographerUrl: "https://unsplash.com/@jakubzerdzicki",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 기타(유학·취업·무역) 상세페이지 Hero 비주얼 — 책상 너머로 악수하는 모습",
+    // 이전 사진은 금발의 서구권 외모 여성이 얼굴 중심으로 나와 교체(2026-09-04).
+    // 얼굴 없이 서류에 서명하는 손 클로즈업으로 대체.
+    usage: "중국어 기타(유학·취업·무역) 상세페이지 Hero 비주얼 — 서류에 서명하는 손 클로즈업",
   },
   {
     id: "detail-chinese-other-mid",

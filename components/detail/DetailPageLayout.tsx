@@ -80,28 +80,28 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   japanese: {
     conversation: {
       hero: { src: "/images/detail/japanese/conversation/hero.jpg", alt: "아키하바라풍 네온 거리의 밤 풍경" },
-      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북으로 집중해서 학습하는 모습" },
+      mid: { src: "/images/detail/japanese/conversation/mid.jpg", alt: "노트북으로 편안하게 학습하는 모습" },
     },
     certification: {
-      hero: { src: "/images/detail/japanese/certification/hero.jpg", alt: "헤드폰을 쓰고 집중해서 학습하는 모습" },
+      hero: { src: "/images/detail/japanese/certification/hero.jpg", alt: "헤드폰과 노트, 키보드가 놓인 학습 책상" },
       mid: { src: "/images/detail/japanese/certification/mid.jpg", alt: "노트에 펜으로 필기하는 손" },
     },
     school: {
-      hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "책상에서 집중해서 필기하며 공부하는 모습" },
+      hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "빈 교실에서 혼자 책을 보는 학생" },
       mid: { src: "/images/detail/japanese/school/mid.jpg", alt: "펼쳐진 노트와 펜들이 놓인 책상" },
     },
     other: {
-      hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "혼자 집중해서 노트북으로 업무·자료를 준비하는 모습" },
+      hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "사무실에서 혼자 집중해서 노트북으로 업무를 처리하는 모습" },
       mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "책·노트북·헤드폰이 놓인 미니멀한 워크스페이스" },
     },
   },
   chinese: {
     conversation: {
-      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북 화상통화 중 인사하며 손을 흔드는 모습" },
-      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "헤드폰을 쓰고 노트북으로 학습하는 모습" },
+      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북으로 온라인 대화를 준비하는 손 클로즈업" },
+      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "키보드를 치는 손 클로즈업" },
     },
     certification: {
-      hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "헤드폰을 쓰고 집중해서 학습하는 모습" },
+      hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "헤드폰과 노트가 놓인 창가 책상" },
       mid: { src: "/images/detail/chinese/certification/mid.jpg", alt: "중국어 글씨가 쓰인 종이" },
     },
     school: {
@@ -109,7 +109,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
       mid: { src: "/images/detail/chinese/school/mid.jpg", alt: "펼쳐진 빈 노트와 펜·연필이 놓인 책상" },
     },
     other: {
-      hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "책상 너머로 악수하는 두 사람" },
+      hero: { src: "/images/detail/chinese/other/hero.jpg", alt: "서류에 서명하는 손 클로즈업" },
       mid: { src: "/images/detail/chinese/other/mid.jpg", alt: "노트북 키보드로 실무를 준비하는 모습" },
     },
   },
