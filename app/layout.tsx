@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingConsultationButton from "@/components/FloatingConsultationButton";
+import { brand } from "@/data/brand";
 
 const notoSansKR = Noto_Sans_KR({
   subsets: ["latin"],
@@ -28,8 +29,7 @@ const notoSerifSC = Noto_Serif_SC({
 
 const siteUrl = "https://dorancoaching.com";
 const siteTitle = "도란 DORAN | 영어·일본어·중국어 1:1 외국어 과외";
-const siteDescription =
-  "영어, 일본어, 중국어를 각 분야 전문 코치와 1:1로 배우는 도란. 회화부터 내신, JLPT·HSK 시험 대비까지 목표에 맞춘 맞춤 커리큘럼을 제공합니다.";
+const siteDescription = brand.seoDescription;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

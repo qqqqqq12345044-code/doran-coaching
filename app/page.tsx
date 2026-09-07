@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { Target, ListChecks, Users, TrendingUp } from "lucide-react";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildWebSiteSchema, buildOrganizationSchema, buildFaqPageSchema } from "@/lib/seo/schema";
 import HomeHero from "@/components/HomeHero";
 import HeroQuickNav from "@/components/HeroQuickNav";
 import LanguageSelectSection from "@/components/LanguageSelectSection";
@@ -62,9 +65,17 @@ const HOW_IT_WORKS_STEPS = [
   { title: "1:1 수업 시작" },
 ];
 
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
+
 export default function HomePage() {
   return (
     <>
+      <JsonLd data={buildWebSiteSchema()} />
+      <JsonLd data={buildOrganizationSchema()} />
+      <JsonLd data={buildFaqPageSchema(faqItems)} />
+
       <HomeHero />
 
       <HeroQuickNav />

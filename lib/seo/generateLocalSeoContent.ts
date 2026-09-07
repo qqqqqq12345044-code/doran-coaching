@@ -1,5 +1,5 @@
 import type { LanguageSlug } from "../../data/languages";
-import type { SeoKeywordCluster } from "../../data/seo/keywords";
+import type { SeoIntent, SeoKeywordCluster } from "../../data/seo/keywords";
 import { getIntentBlueprint, type IntentBlueprint } from "../../data/seo/contentBlueprints.ts";
 import { getExamProfileForCluster, type ExamContentProfile } from "../../data/seo/examProfiles.ts";
 import {
@@ -7,6 +7,7 @@ import {
   type PowerCurriculumItem,
 } from "../../data/curriculum/powerCurriculum.ts";
 import { serviceFacts } from "../../data/seo/serviceFacts.ts";
+import { COURSE_CATEGORIES, type CourseCategoryId } from "../../data/navigation/languageNavigation.ts";
 
 // "지역 x Keyword Cluster" 조합 하나에 대해 SEO/AEO/GEO 원칙을 반영한 페이지
 // 콘텐츠를 만드는 Content Engine.
@@ -48,6 +49,10 @@ export interface LocalSeoContent {
   process: { title: string; description: string }[];
   faq: { question: string; answer: string }[];
   finalCta: { heading: string; description: string };
+  /** 이 Keyword Cluster와 가장 맞닿아 있는 실제 과정 상세페이지(/[language]/[category])
+   *  로의 내부 링크. data/navigation/languageNavigation.ts 의 4개 카테고리를 그대로
+   *  재사용하며, 존재하지 않는 과정 경로를 새로 만들지 않는다. */
+  relatedCourse: { label: string; href: string };
 }
 
 export interface LocalSeoContentResult {
@@ -163,6 +168,33 @@ export function getRelatedCurriculum(
     .sort((a, b) => b.score - a.score)
     .slice(0, maxItems)
     .map((entry) => entry.item);
+}
+
+// ---------------------------------------------------------------------------
+// 추천 과정 상세페이지 연결 (섹션 11 내부 링크) — Cluster마다 새 과정명을 만들지
+// 않고, 이미 존재하는 4개 과정 상세페이지(회화/자격증/내신/기타) 중 검색
+// Intent와 가장 가까운 하나로만 연결한다. 사람이 직접 판단해 고정한 매핑이며,
+// data/navigation/languageNavigation.ts 의 CATEGORY_BY_ITEM_ID(Curriculum
+// item 단위 분류)와 같은 성격의 Presentation 판단이다.
+// ---------------------------------------------------------------------------
+
+const INTENT_TO_CATEGORY: Record<SeoIntent, CourseCategoryId> = {
+  conversation: "conversation",
+  online: "conversation",
+  native: "conversation",
+  beginner: "conversation",
+  adult: "conversation",
+  worker: "conversation",
+  business: "conversation",
+  tutoring: "other",
+  workingholiday: "other",
+  exam: "certification",
+};
+
+function getRelatedCourse(cluster: SeoKeywordCluster): { label: string; href: string } {
+  const categoryId = INTENT_TO_CATEGORY[cluster.intent];
+  const category = COURSE_CATEGORIES.find((c) => c.id === categoryId)!;
+  return { label: category.label, href: `/${cluster.language}/${category.sectionId}` };
 }
 
 // ---------------------------------------------------------------------------
@@ -291,6 +323,7 @@ export function generateLocalSeoContent(
       process,
       faq,
       finalCta,
+      relatedCourse: getRelatedCourse(cluster),
     },
     metadata: {
       title: metadataTitle,

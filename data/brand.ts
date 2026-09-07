@@ -16,4 +16,8 @@ export const brand = {
   },
   footerServiceLine: "영어 · 일본어 · 중국어",
   footerSubLine: "1:1 맞춤 외국어 과외",
+  /** 사이트 전체 metadata description / WebSite·Organization schema에서 공유하는
+   *  서비스 설명. 여러 곳에 같은 문구를 다시 적지 않기 위한 단일 출처. */
+  seoDescription:
+    "영어, 일본어, 중국어를 각 분야 전문 코치와 1:1로 배우는 도란. 회화부터 내신, JLPT·HSK 시험 대비까지 목표에 맞춘 맞춤 커리큘럼을 제공합니다.",
 } as const;

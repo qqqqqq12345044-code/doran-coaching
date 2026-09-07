@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "매거진 | 도란 DORAN",
   description:
     "미드, 팝송, 뉴스, 애니메이션, 드라마 등 실제 소재로 배우는 도란 매거진. 회화 학습에 도움이 되는 주제를 모았습니다.",
+  alternates: { canonical: "/magazine" },
 };
 
 const LANGUAGE_ACCENT: Record<LanguageSlug, string> = {

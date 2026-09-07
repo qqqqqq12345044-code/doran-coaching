@@ -6,6 +6,8 @@ import Hero from "@/components/Hero";
 import BirdsHeroVisual from "@/components/BirdsHeroVisual";
 import HeroBackgroundBlobs from "@/components/HeroBackgroundBlobs";
 import Breadcrumb from "@/components/Breadcrumb";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildBreadcrumbListSchema, buildFaqPageSchema, buildCourseSchema } from "@/lib/seo/schema";
 import DirectAnswerSection from "@/components/DirectAnswerSection";
 import RecommendedForSection from "@/components/RecommendedForSection";
 import ProcessSection from "@/components/ProcessSection";
@@ -38,6 +40,10 @@ import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLo
 // data/seo/content-previews/gongdeok-english-conversation.json 을 하드코딩해
 // 복사해오지 않는다.
 
+// 실제 production 도메인. app/layout.tsx의 siteUrl과 동일하게 고정 상수로 관리한다.
+// localhost/vercel.app/상대 경로가 canonical에 섞이지 않도록 env 변수에 의존하지 않는다.
+const SITE_URL = "https://dorancoaching.com";
+
 interface LocalSeoPageParams {
   sido: string;
   sigungu: string;
@@ -53,6 +59,12 @@ export function generateStaticParams(): LocalSeoPageParams[] {
     keyword: p.keyword,
   }));
 }
+
+// generateStaticParams가 반환한 화이트리스트 조합 외에는 Next.js가 요청 시점에
+// 페이지를 새로 만들지 않고 즉시 404 처리하도록 강제한다(전국/전체 Cluster
+// 조합이 실수로 SSR되어 열리는 것을 막는 이중 안전장치. notFound() 런타임
+// 체크와 함께 사용).
+export const dynamicParams = false;
 
 // Next.js가 URL Dynamic Segment를 decode하지 않고 그대로 넘겨주는 경우가 있어
 // (예: "공덕동" 대신 "%EA%B3%B5%EB%8D%95%EB%8F%99") 안전하게 한 번 더 decode한다.
@@ -96,15 +108,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { preview, result } = await loadPageData(params);
 
-  // TODO: 실제 production 도메인이 확정되면 NEXT_PUBLIC_SITE_URL 등으로
-  // 절대 URL을 구성한다. 아직 도메인이 없어 pathname만 canonical로 지정한다.
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
-
   return {
     title: result.metadata.title,
     description: result.metadata.description,
     alternates: {
-      canonical: siteUrl ? `${siteUrl}${preview.url}` : preview.url,
+      canonical: `${SITE_URL}${preview.url}`,
     },
   };
 }
@@ -116,20 +124,32 @@ export default async function LocalSeoLandingPage({
 }: {
   params: Promise<LocalSeoPageParams>;
 }) {
-  const { cluster, region, result } = await loadPageData(params);
+  const { preview, cluster, region, result } = await loadPageData(params);
   const { content } = result;
+
+  // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
+  // 같은 배열을 두 곳(Breadcrumb 컴포넌트 / schema builder)에서 그대로 재사용한다.
+  const breadcrumbItems = [
+    { label: "홈", href: "/" },
+    { label: "영어", href: "/english" },
+    { label: region.sido },
+    { label: region.sigungu ?? "" },
+    { label: result.searchPhrase },
+  ];
 
   return (
     <>
-      <Breadcrumb
-        items={[
-          { label: "홈", href: "/" },
-          { label: "영어", href: "/english" },
-          { label: region.sido },
-          { label: region.sigungu ?? "" },
-          { label: result.searchPhrase },
-        ]}
+      <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
+      {content.faq.length > 0 && <JsonLd data={buildFaqPageSchema(content.faq)} />}
+      <JsonLd
+        data={buildCourseSchema({
+          name: result.searchPhrase,
+          description: result.metadata.description,
+          url: preview.url,
+        })}
       />
+
+      <Breadcrumb items={breadcrumbItems} />
 
       <Hero
         eyebrow={content.hero.eyebrow}
@@ -171,6 +191,15 @@ export default async function LocalSeoLandingPage({
         courses={coursesByLanguage.english}
         accentClass="bg-english-tint text-english-dark"
       />
+
+      <div className="bg-surface-soft px-6 pb-12 text-center">
+        <Link
+          href={content.relatedCourse.href}
+          className="text-[14px] font-semibold text-english underline-offset-4 hover:underline"
+        >
+          {cluster.mainKeyword} 관련 {content.relatedCourse.label} 자세히 보기
+        </Link>
+      </div>
 
       <CurriculumTopicsSection
         eyebrow="CURRICULUM"

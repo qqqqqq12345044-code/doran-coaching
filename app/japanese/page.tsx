@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { BookOpenText, MessagesSquare, ListChecks, Plane } from "lucide-react";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildFaqPageSchema } from "@/lib/seo/schema";
 import Hero from "@/components/Hero";
 import LanguageHeroVisual from "@/components/LanguageHeroVisual";
 import StickySubNav from "@/components/StickySubNav";
@@ -37,6 +39,7 @@ const pageDescription = "일본어 회화 · JLPT · 내신까지, 목표와 수
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
+  alternates: { canonical: "/japanese" },
   openGraph: {
     title: pageTitle,
     description: pageDescription,
@@ -92,6 +95,8 @@ const LEARNING_STEPS = [
 export default function JapanesePage() {
   return (
     <div className="lang-page-sections">
+      <JsonLd data={buildFaqPageSchema(faqByLanguage.japanese)} />
+
       <Hero
         eyebrow="DORAN 日本語"
         lines={language.hero.lines}

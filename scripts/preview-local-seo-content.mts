@@ -77,6 +77,7 @@ const OFFLINE_BRANCH_PATTERNS = [
   `${region.regionName} 학원`,
   `${region.regionName}점`,
   `${region.regionName} 센터`,
+  `${region.regionName} 방문`,
 ];
 
 function flattenText(content: typeof result.content, metadata: typeof result.metadata): string {

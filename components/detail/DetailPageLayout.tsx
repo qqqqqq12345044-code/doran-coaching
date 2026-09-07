@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildBreadcrumbListSchema, buildFaqPageSchema, buildCourseSchema } from "@/lib/seo/schema";
 import DetailHero from "./DetailHero";
 import DirectAnswer from "./DirectAnswer";
 import KeySummaryPanel, { type KeySummaryColumn } from "./KeySummaryPanel";
@@ -170,16 +172,30 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
 
   const breakIndex = content.sections.length >= 2 ? Math.floor(content.sections.length / 2) : -1;
 
+  // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
+  // 같은 배열을 두 곳(DetailHero prop / schema builder)에서 그대로 재사용한다.
+  const breadcrumbItems = [
+    { label: "홈", href: "/" },
+    { label: languageNameKo, href: languageHref },
+    { label: content.breadcrumbLabel },
+  ];
+
   return (
     <article className="bg-surface">
+      <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
+      {content.faq.length > 0 && <JsonLd data={buildFaqPageSchema(content.faq)} />}
+      <JsonLd
+        data={buildCourseSchema({
+          name: content.breadcrumbLabel,
+          description: content.metaDescription,
+          url: content.path,
+        })}
+      />
+
       <DetailHero
         eyebrow={content.eyebrow}
         h1={content.h1}
-        breadcrumbItems={[
-          { label: "홈", href: "/" },
-          { label: languageNameKo, href: languageHref },
-          { label: content.breadcrumbLabel },
-        ]}
+        breadcrumbItems={breadcrumbItems}
         language={content.language}
         imageSrc={heroImage.src}
         imageAlt={heroImage.alt}

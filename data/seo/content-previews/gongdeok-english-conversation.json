@@ -99,6 +99,10 @@
     "finalCta": {
       "heading": "영어회화,\n이제 직접 시작해보세요.",
       "description": "공덕동에서 이동 없이 시작하는 1:1 화상수업을 상담을 통해 시작할 수 있습니다."
+    },
+    "relatedCourse": {
+      "label": "회화 과정",
+      "href": "/english/conversation"
     }
   },
   "metadata": {

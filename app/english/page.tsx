@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Users, MessagesSquare, Target, ListChecks } from "lucide-react";
+import JsonLd from "@/components/seo/JsonLd";
+import { buildFaqPageSchema } from "@/lib/seo/schema";
 import Hero from "@/components/Hero";
 import LanguageHeroVisual from "@/components/LanguageHeroVisual";
 import StickySubNav from "@/components/StickySubNav";
@@ -37,6 +39,7 @@ const pageDescription = "영어 회화 · 자격증 · 내신까지, 목표와 �
 export const metadata: Metadata = {
   title: pageTitle,
   description: pageDescription,
+  alternates: { canonical: "/english" },
   openGraph: {
     title: pageTitle,
     description: pageDescription,
@@ -92,6 +95,8 @@ const LEARNING_STEPS = [
 export default function EnglishPage() {
   return (
     <div className="lang-page-sections">
+      <JsonLd data={buildFaqPageSchema(faqByLanguage.english)} />
+
       <Hero
         eyebrow="DORAN ENGLISH"
         lines={language.hero.lines}
