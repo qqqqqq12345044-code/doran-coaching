@@ -19,6 +19,7 @@ import ComparisonSection from "@/components/ComparisonSection";
 import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
 import { getLanguageBySlug } from "@/data/languages";
+import type { LanguageSlug } from "@/data/languages";
 import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
@@ -117,7 +118,14 @@ export async function generateMetadata({
   };
 }
 
-const language = getLanguageBySlug("english");
+// 언어별 accent 클래스. 12개 상세페이지(app/[language]/[category]/page.tsx)의
+// ACCENT 상수와 동일한 규칙(bg-{lang}, text-{lang}, {lang}-tint/{lang}-dark)을
+// 재사용한다 — 새 색상 토큰을 만들지 않는다.
+const ACCENT_BY_LANGUAGE: Record<LanguageSlug, { solid: string; text: string; tint: string; card: string }> = {
+  english: { solid: "bg-english", text: "text-english", tint: "bg-english-tint text-english-dark", card: "border-english/30 bg-english-tint" },
+  japanese: { solid: "bg-japanese", text: "text-japanese", tint: "bg-japanese-tint text-japanese-dark", card: "border-japanese/30 bg-japanese-tint" },
+  chinese: { solid: "bg-chinese", text: "text-chinese", tint: "bg-chinese-tint text-chinese-dark", card: "border-chinese/30 bg-chinese-tint" },
+};
 
 export default async function LocalSeoLandingPage({
   params,
@@ -126,12 +134,17 @@ export default async function LocalSeoLandingPage({
 }) {
   const { preview, cluster, region, result } = await loadPageData(params);
   const { content } = result;
+  const language = getLanguageBySlug(cluster.language);
+  const accent = ACCENT_BY_LANGUAGE[cluster.language];
+  const courses = coursesByLanguage[cluster.language];
+  const coaches = getCoachesByLanguage(cluster.language);
+  const reviews = getPublishedReviewsByLanguage(cluster.language);
 
   // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
   // 같은 배열을 두 곳(Breadcrumb 컴포넌트 / schema builder)에서 그대로 재사용한다.
   const breadcrumbItems = [
     { label: "홈", href: "/" },
-    { label: "영어", href: "/english" },
+    { label: language.nameKo, href: language.href },
     { label: region.sido },
     { label: region.sigungu ?? "" },
     { label: result.searchPhrase },
@@ -156,8 +169,8 @@ export default async function LocalSeoLandingPage({
         lines={content.hero.h1.split("\n")}
         subtitle={content.hero.description}
         primaryCta={{ label: "무료 상담 신청", href: "#consultation" }}
-        secondaryCta={{ label: "영어 과정 알아보기", href: "#course" }}
-        accent="english"
+        secondaryCta={{ label: `${language.nameKo} 과정 알아보기`, href: "#course" }}
+        accent={cluster.language}
         nativeWord={language.hero.nativeWord}
         nativeWordFontClass={language.hero.nativeWordFontClass}
         badgeLabel={`${region.regionName} · 1:1 화상 ${cluster.mainKeyword}`}
@@ -175,7 +188,7 @@ export default async function LocalSeoLandingPage({
       <RecommendedForSection
         title={[`이런 ${cluster.mainKeyword} 수업을 찾고 있다면`]}
         items={content.recommendedFor}
-        accentClass="text-english"
+        accentClass={accent.text}
       />
 
       <ProcessSection
@@ -186,16 +199,16 @@ export default async function LocalSeoLandingPage({
 
       <CourseSection
         id="course"
-        eyebrow="영어 과정"
-        title={["목표에 맞는", "영어 과정을 선택하세요."]}
-        courses={coursesByLanguage.english}
-        accentClass="bg-english-tint text-english-dark"
+        eyebrow={`${language.nameKo} 과정`}
+        title={["목표에 맞는", `${language.nameKo} 과정을 선택하세요.`]}
+        courses={courses}
+        accentClass={accent.tint}
       />
 
       <div className="bg-surface-soft px-6 pb-12 text-center">
         <Link
           href={content.relatedCourse.href}
-          className="text-[14px] font-semibold text-english underline-offset-4 hover:underline"
+          className={`text-[14px] font-semibold underline-offset-4 hover:underline ${accent.text}`}
         >
           {cluster.mainKeyword} 관련 {content.relatedCourse.label} 자세히 보기
         </Link>
@@ -206,7 +219,7 @@ export default async function LocalSeoLandingPage({
         title={[content.curriculum.heading]}
         description={content.curriculum.description}
         topics={content.curriculum.topics}
-        accentClass="bg-english-tint text-english-dark"
+        accentClass={accent.tint}
       />
 
       <ProcessSection
@@ -218,8 +231,8 @@ export default async function LocalSeoLandingPage({
 
       <CoachSection
         id="coach"
-        title={["영어 전문 코치와", "함께 시작하세요."]}
-        coaches={getCoachesByLanguage("english")}
+        title={[`${language.nameKo} 전문 코치와`, "함께 시작하세요."]}
+        coaches={coaches}
       />
       <div className="bg-surface px-6 pb-20 text-center md:pb-24">
         <Link href="#consultation" className="btn-secondary group">
@@ -231,7 +244,7 @@ export default async function LocalSeoLandingPage({
       <ReviewSection
         id="review"
         title={["먼저 시작한 수강생들의 이야기"]}
-        reviews={getPublishedReviewsByLanguage("english")}
+        reviews={reviews}
       />
 
       <ComparisonSection
@@ -244,8 +257,8 @@ export default async function LocalSeoLandingPage({
           label: "도란 1:1 화상수업",
           points: ["선생님과 1:1", "개인 맞춤 진도", "이동 없이 온라인 수업", "말하는 시간에 집중"],
         }}
-        accentClass="border-english/30 bg-english-tint"
-        badgeAccentClass="bg-english"
+        accentClass={accent.card}
+        badgeAccentClass={accent.solid}
       />
 
       <FAQ items={content.faq} />
@@ -253,7 +266,7 @@ export default async function LocalSeoLandingPage({
       <ConsultationSection
         title={content.finalCta.heading.split("\n")}
         subtitle={content.finalCta.description}
-        defaultInterest={["영어"]}
+        defaultInterest={[language.nameKo]}
       />
     </>
   );
