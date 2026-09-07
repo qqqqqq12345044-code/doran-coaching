@@ -4,7 +4,7 @@ export interface Course {
   title: string;
 }
 
-// Used in the main page "목적이 달라도 배우는 방법은 달라야 하니까" section.
+// Used in the main page "목적이 다르면, 배우는 방법도 달라야 하니까" section.
 export const purposeCourses: Course[] = [
   { title: "외국어 입문" },
   { title: "일상 회화" },

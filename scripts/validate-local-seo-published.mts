@@ -19,6 +19,7 @@
 import { computePublishedLocalSeoPages } from "../data/seo/publishBatches.ts";
 import { getEnabledClusters } from "../data/seo/keywords.ts";
 import { generateLocalSeoContent, type TargetRegion } from "../lib/seo/generateLocalSeoContent.ts";
+import { buildDisambiguatedRegionName } from "../lib/seo/buildLocalPreview.ts";
 
 const PUBLISHED_LOCAL_SEO_PAGES = computePublishedLocalSeoPages();
 
@@ -75,7 +76,7 @@ for (const page of PUBLISHED_LOCAL_SEO_PAGES) {
   const region: TargetRegion = {
     sido: page.sido,
     sigungu: page.sigungu,
-    regionName: page.dong,
+    regionName: buildDisambiguatedRegionName(page.sido, page.sigungu, page.dong),
   };
   const result = generateLocalSeoContent(region, cluster);
   const url = `/local/${page.sido}/${page.sigungu}/${page.dong}/${page.keyword}`;

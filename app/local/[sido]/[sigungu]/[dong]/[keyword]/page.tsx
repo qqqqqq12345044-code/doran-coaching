@@ -26,14 +26,32 @@ import { getPublishedReviewsByLanguage } from "@/data/reviews";
 import { getEnabledClusters } from "@/data/seo/keywords";
 import { PUBLISHED_LOCAL_SEO_PAGES, findLocalSeoPreview } from "@/data/seo/previewRegistry";
 import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLocalSeoContent";
+import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
 
-// 이 라우트는 "서울특별시/마포구/공덕동/영어회화" 단 하나만 실제로 공개한다.
-// generateStaticParams 로 그 조합만 빌드 시 미리 정적 생성하고, 그 외 모든
-// (지역, 키워드) 조합은 요청이 들어와도 findLocalSeoPreview()의 화이트리스트
-// (PUBLISHED_LOCAL_SEO_PAGES) 검사를 통과하지 못해 notFound()로 404 처리된다.
-// 전국 단위 페이지가 실수로 열리는 구조를 만들지 않기 위한 안전장치다.
-// 향후 다른 지역/언어/Cluster를 공개할 때는 data/seo/previewRegistry.ts 의
-// PUBLISHED_LOCAL_SEO_PAGES 에 항목을 추가하면 된다.
+// 공개 대상은 data/seo/previewRegistry.ts의 PUBLISHED_LOCAL_SEO_PAGES
+// 화이트리스트(전국 21,798개, 2026-09 nationwide 확장) 전부다. 다만 그 전부를
+// build 시점에 SSG하면(.next/server 4.7GB, build 5분) Vercel 배포에 비효율적
+// 이라 판단해, ISR(On-Demand Incremental Static Regeneration)로 전환했다.
+//
+//   - generateStaticParams는 build-time 스모크 테스트 겸 항상 즉시 응답해야
+//     하는 대표 페이지(최초 공개 지역 공덕동, keyword당 1개씩 6개)만 미리
+//     만든다. 나머지 21,792개는 build에 포함되지 않는다.
+//   - dynamicParams = true(App Router 기본값, 명시적으로 남겨 의도를 분명히
+//     한다)라서 generateStaticParams에 없는 조합도 요청이 오면 Next.js가
+//     그 자리에서 렌더링을 시도한다.
+//   - 어떤 조합이든 렌더링 전에 findLocalSeoPreview()가 여전히 whitelist
+//     (PUBLISHED_LOCAL_SEO_PAGES) 검사를 하므로, dynamicParams=true로 바뀌어도
+//     "아무 URL이나 생성"되지 않는다 — whitelist 밖 조합은 그대로 notFound().
+//     즉 이 검사가 실질적인 보안/SEO 안전장치이고, generateStaticParams는
+//     순수히 build 최적화(무엇을 미리 만들어둘지)만 담당한다.
+//   - 최초 요청 시 생성된 페이지는 revalidate(아래) 동안 Vercel CDN에 캐시돼
+//     이후 요청은 재생성 없이 바로 응답한다.
+//
+// sitemap.ts는 이 파일과 무관하게 PUBLISHED_LOCAL_SEO_PAGES 21,798개를 그대로
+// 전부 사용한다 — "sitemap에 실리는 공개 URL 목록"과 "build 시 미리 만들어둘
+// 페이지 목록"은 서로 다른 개념이며 이번 변경으로 분리되었다(sitemap은 원래도
+// PUBLISHED_LOCAL_SEO_PAGES를 직접 참조해 이 파일의 generateStaticParams와는
+// 무관했다).
 //
 // 페이지 실제 콘텐츠(Hero 문구/Direct Answer/추천 대상/Benefits/Curriculum/FAQ/CTA/
 // Metadata)는 lib/seo/generateLocalSeoContent.ts 의 Content Engine 결과를 그대로
@@ -52,20 +70,27 @@ interface LocalSeoPageParams {
   keyword: string;
 }
 
+// build-time에 미리 만들어둘 대표 subset. 최초 공개 지역(공덕동)의 keyword당
+// 1페이지씩 6개만 — "실제로 렌더링되는지" build가 매번 검증하는 최소 스모크
+// 테스트 용도다. 이 목록에 없는 나머지 21,792개는 아래 dynamicParams=true에
+// 의해 첫 요청 시 on-demand로 생성된다(=21,798개 전부 여전히 공개 대상).
 export function generateStaticParams(): LocalSeoPageParams[] {
-  return PUBLISHED_LOCAL_SEO_PAGES.map((p) => ({
-    sido: p.sido,
-    sigungu: p.sigungu,
-    dong: p.dong,
-    keyword: p.keyword,
-  }));
+  return PUBLISHED_LOCAL_SEO_PAGES.filter((p) => p.sido === "서울특별시" && p.sigungu === "마포구" && p.dong === "공덕동").map(
+    (p) => ({ sido: p.sido, sigungu: p.sigungu, dong: p.dong, keyword: p.keyword })
+  );
 }
 
-// generateStaticParams가 반환한 화이트리스트 조합 외에는 Next.js가 요청 시점에
-// 페이지를 새로 만들지 않고 즉시 404 처리하도록 강제한다(전국/전체 Cluster
-// 조합이 실수로 SSR되어 열리는 것을 막는 이중 안전장치. notFound() 런타임
-// 체크와 함께 사용).
-export const dynamicParams = false;
+// true(App Router 기본값)를 명시: generateStaticParams에 없는 조합도 요청이
+// 오면 그 자리에서 렌더링을 시도한다. 실제로 만들어질지는 아래 loadPageData의
+// findLocalSeoPreview() whitelist 검사가 결정한다 — 그 검사를 통과하지 못하면
+// 여전히 notFound()로 404다. 즉 "전국 아무 URL이나 열리는" 구조가 아니다.
+export const dynamicParams = true;
+
+// Local SEO 콘텐츠는 generateLocalSeoContent.ts의 순수 함수 결과라 지역/
+// keyword 데이터가 바뀌지 않는 한(=재배포하지 않는 한) 완전히 결정적이다.
+// 매 요청마다 다시 만들 이유가 없어 하루 단위로 재검증한다. 재배포가 일어나면
+// Vercel이 캐시를 새로 시작하므로 이 값이 "낡은 콘텐츠"를 오래 방치하지 않는다.
+export const revalidate = 86400;
 
 // Next.js가 URL Dynamic Segment를 decode하지 않고 그대로 넘겨주는 경우가 있어
 // (예: "공덕동" 대신 "%EA%B3%B5%EB%8D%95%EB%8F%99") 안전하게 한 번 더 decode한다.
@@ -91,10 +116,14 @@ async function loadPageData(paramsPromise: Promise<LocalSeoPageParams>) {
   const cluster = getEnabledClusters().find((c) => c.id === preview.clusterId);
   if (!cluster) notFound();
 
+  // 전국 확장 시 "신교동"처럼 서로 다른 시/군/구에 같은 법정동 이름이 존재하는
+  // 경우가 있어(lib/seo/buildLocalPreview.ts 참고), 본문에 노출되는 지역명은
+  // 시/군/구(필요 시 시/도)까지 포함해 전국적으로 유일하게 만든다. URL 자체는
+  // preview.url이 이미 법정동 단독 표기로 고정돼 있어 변하지 않는다.
   const region: TargetRegion = {
     sido: preview.region.sido,
     sigungu: preview.region.sigungu,
-    regionName: preview.region.legalDong,
+    regionName: buildDisambiguatedRegionName(preview.region.sido, preview.region.sigungu, preview.region.legalDong),
   };
 
   const result = generateLocalSeoContent(region, cluster);

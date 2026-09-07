@@ -151,12 +151,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-english-school-hero",
     localPath: "/images/detail/english/school/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/man-typing-on-laptop-with-notebook-on-desk-4CAKsgjJuEM",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/r2WhdAwJPxM",
+    photographer: "sean Kong",
+    photographerUrl: "https://unsplash.com/@seankkkkkkkkkkkkkk",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 내신 상세페이지 Hero 비주얼 — 노트를 옆에 두고 혼자 집중해서 노트북으로 공부하는 모습",
+    // 이전 사진은 "노트북 작업" 느낌이 강해 영어 내신(학교 시험) 맥락이 잘
+    // 드러나지 않아, 교실에서 혼자 책을 보며 생각에 잠긴 학생 사진으로
+    // 교체(2026-09-07) — 일본어 내신 페이지와 같은 촬영자의 다른 사진이지만
+    // 파일 자체는 서로 다르다.
+    usage: "영어 내신 상세페이지 Hero 비주얼 — 교실 책상에서 책을 펼쳐두고 생각에 잠긴 학생",
   },
   {
     id: "detail-english-school-mid",
@@ -300,15 +304,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-conversation-hero",
     localPath: "/images/detail/chinese/conversation/hero.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/AnB0zwEeuYU",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/746eIIJLw5E",
+    photographer: "Rendy Novantino",
+    photographerUrl: "https://unsplash.com/@novantino",
     attributionRequired: false,
     license: "Unsplash License",
-    // 길거리 음식 노점(인물 거의 없음) 사진으로 잠깐 바뀌었으나, "회화" 페이지는
-    // 여행/관광 이미지보다 1:1 온라인 학습 분위기를 우선한다는 원칙에 따라
-    // 노트북을 쓰는 손 클로즈업으로 되돌림(2026-09-04).
-    usage: "중국어 회화 상세페이지 Hero 비주얼 — 노트북으로 온라인 학습을 준비하는 손 클로즈업",
+    // 이전 사진(노트북 타이핑 손 클로즈업)은 "회화"라는 페이지 목적이 바로
+    // 읽히지 않아, 중국풍 홍등이 있는 카페에서 실제로 대화를 나누는 두 사람
+    // 사진으로 교체(2026-09-07) — 노트북/사무 이미지를 피하면서도 여행
+    // 홍보컷처럼 과하지 않은, 회화가 실제로 쓰이는 상황을 보여준다.
+    usage: "중국어 회화 상세페이지 Hero 비주얼 — 중국풍 카페에서 마주 앉아 대화를 나누는 두 사람",
   },
   {
     id: "detail-chinese-conversation-mid",

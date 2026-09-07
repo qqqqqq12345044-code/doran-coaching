@@ -71,7 +71,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
       mid: { src: "/images/detail/english/certification/mid.jpg", alt: "빈 노트와 펜이 놓인 시험 준비 책상" },
     },
     school: {
-      hero: { src: "/images/detail/english/school/hero.jpg", alt: "노트를 옆에 두고 혼자 집중해서 영어 내신을 공부하는 모습" },
+      hero: { src: "/images/detail/english/school/hero.jpg", alt: "교실 책상에서 책을 펼쳐두고 영어 내신을 생각하며 공부하는 학생" },
       mid: { src: "/images/detail/english/school/mid.jpg", alt: "노트와 연필, 안경이 놓인 깔끔한 학습 책상" },
     },
     other: {
@@ -99,7 +99,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   },
   chinese: {
     conversation: {
-      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "노트북으로 온라인 학습을 준비하는 손 클로즈업" },
+      hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "중국풍 카페에서 마주 앉아 중국어로 대화를 나누는 두 사람" },
       mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "키보드를 치는 손 클로즈업" },
     },
     certification: {

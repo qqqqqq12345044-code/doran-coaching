@@ -1,8 +1,13 @@
 // 법정동 1개 x 활성 SEO Keyword Cluster 전체를 조합해 Preview(후보) 데이터를
-// data/seo/previews/*.json 으로 생성한다.
+// data/seo/previews/*.json 으로 생성한다. 사람이 특정 지역을 whitelist에
+// 추가하기 전에 title/h1이 어떻게 나오는지 미리 검토하는 수동 QA 도구다.
 //
-// 이 스크립트는 실제 Next.js 페이지나 sitemap을 생성하지 않는다.
-// 오직 "URL 후보 + 기본 메타(title/h1) Preview"만 만든다.
+// 이 스크립트는 실제 Next.js 페이지나 sitemap을 생성하지 않는다(app/local/...
+// page.tsx는 이 파일이 만드는 *.json을 더 이상 읽지 않는다 — 전국 규모로
+// 확장하면서 지역마다 별도 파일을 두는 대신 lib/seo/buildLocalPreview.ts의
+// 순수 함수로 그 자리에서 계산하는 방식으로 바꿨다. data/seo/previewRegistry.ts
+// 상단 주석 참고). title/H1 계산 로직은 그 파일과 완전히 동일한 함수를
+// 공유하므로, 여기서 만든 미리보기는 실제 운영 결과와 항상 일치한다.
 //
 // 사용법:
 //   npm run preview:seo                              (기본값: 서울특별시 마포구 공덕동)
@@ -11,8 +16,8 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { getEnabledClusters, type SeoKeywordCluster, type SeoIntent } from "../data/seo/keywords.ts";
-import type { LanguageSlug } from "../data/languages.ts";
+import { getEnabledClusters } from "../data/seo/keywords.ts";
+import { buildLocalPreview } from "../lib/seo/buildLocalPreview.ts";
 
 const ROOT = process.cwd();
 
@@ -73,138 +78,26 @@ if (matches.length > 1) {
 
 const region = matches[0];
 console.log(`[preview-seo] 대상 법정동 확인: ${region.sido} ${region.sigungu} ${region.legalDong} (legalCode: ${region.legalCode})`);
-
-// ---------------------------------------------------------------------------
-// 3. Title / H1 템플릿 (intent 기준, 일부는 clusterId로 세분화)
-// ---------------------------------------------------------------------------
-
-const LANGUAGE_NAME: Record<LanguageSlug, string> = {
-  english: "영어",
-  japanese: "일본어",
-  chinese: "중국어",
-};
-
-// 급수(등급) 체계 시험 vs 점수 체계 시험 vs 말하기 시험 — "exam" intent 안에서도
-// 자연스러운 표현이 달라 clusterId 기준으로 세분화한다.
-const GRADE_BASED_EXAMS = new Set(["japanese-jlpt", "chinese-hsk"]);
-const SCORE_BASED_EXAMS = new Set(["english-opic", "english-toeic"]);
-const SPEAKING_EXAMS = new Set(["chinese-hskk"]);
-
-function buildTitle(cluster: SeoKeywordCluster, legalDong: string): string {
-  const lang = LANGUAGE_NAME[cluster.language];
-  switch (cluster.intent) {
-    case "conversation":
-      return `${legalDong} ${cluster.mainKeyword} | 1:1 화상 ${lang}수업 도란`;
-    case "tutoring":
-      return `${legalDong} ${cluster.mainKeyword} | 1:1 맞춤 화상과외 도란`;
-    case "online":
-      return `${legalDong} ${cluster.mainKeyword} | 화상으로 듣는 1:1 ${lang}수업 도란`;
-    case "native":
-      return `${legalDong} ${cluster.mainKeyword} | 원어민 1:1 화상수업 도란`;
-    case "beginner":
-      return `${legalDong} ${cluster.mainKeyword} | 왕초보를 위한 1:1 맞춤수업 도란`;
-    case "adult":
-      return `${legalDong} ${cluster.mainKeyword} | 성인 눈높이 1:1 화상수업 도란`;
-    case "worker":
-      return `${legalDong} ${cluster.mainKeyword} | 직장인 맞춤 1:1 화상수업 도란`;
-    case "business":
-      return `${legalDong} ${cluster.mainKeyword} | 실무 중심 1:1 ${lang} 과외 도란`;
-    case "exam":
-      return `${legalDong} ${cluster.mainKeyword} | 1:1 맞춤 시험대비 도란`;
-    case "workingholiday":
-      return `${legalDong} ${cluster.mainKeyword} | 워킹홀리데이 준비 1:1 ${lang}수업 도란`;
-    default:
-      return `${legalDong} ${cluster.mainKeyword} | 1:1 맞춤 화상수업 도란`;
-  }
+if (!region.sigungu) {
+  console.error("[preview-seo] 이 법정동은 sigungu가 없습니다(예: 세종). 현재 route 구조(4-segment)가 지원하지 않아 미리보기를 만들 수 없습니다.");
+  process.exit(1);
 }
 
-function buildH1(cluster: SeoKeywordCluster, legalDong: string): string {
-  const lang = LANGUAGE_NAME[cluster.language];
-  let subline: string;
-  switch (cluster.intent) {
-    case "conversation":
-      subline = "1:1 맞춤 화상수업";
-      break;
-    case "tutoring":
-      subline = "1:1 맞춤 화상과외";
-      break;
-    case "online":
-      subline = "화상으로 만나는 1:1 수업";
-      break;
-    case "native":
-      subline = "대화 중심 1:1 화상수업";
-      break;
-    case "beginner":
-      subline = "왕초보를 위한 1:1 맞춤수업";
-      break;
-    case "adult":
-      subline = "성인 눈높이에 맞춘 1:1 수업";
-      break;
-    case "worker":
-      subline = "퇴근 후 듣는 1:1 화상수업";
-      break;
-    case "business":
-      subline = "실무 중심 1:1 비즈니스 수업";
-      break;
-    case "exam":
-      if (GRADE_BASED_EXAMS.has(cluster.id)) {
-        subline = `목표 급수에 맞춘 1:1 ${lang} 수업`;
-      } else if (SCORE_BASED_EXAMS.has(cluster.id)) {
-        subline = "목표 점수에 맞춘 1:1 수업";
-      } else if (SPEAKING_EXAMS.has(cluster.id)) {
-        subline = "말하기 시험 대비 1:1 회화 수업";
-      } else {
-        subline = "목표에 맞춘 1:1 시험대비 수업";
-      }
-      break;
-    case "workingholiday":
-      subline = `워킹홀리데이 준비 1:1 ${lang} 수업`;
-      break;
-    default:
-      subline = "1:1 맞춤수업";
-  }
-  return `${legalDong} ${cluster.mainKeyword},\n${subline}`;
-}
-
-// 사람이 보기에 검색어로 다소 어색할 수 있어 검토가 필요한 Cluster.
-// (예: "일본워홀일본어"는 "일본"이 중복돼 실제 검색 표현과는 다소 거리가 있음)
-const NEEDS_REVIEW: Record<string, string> = {};
-
 // ---------------------------------------------------------------------------
-// 4. Preview 생성
+// 3. Preview 생성 — lib/seo/buildLocalPreview.ts와 완전히 동일한 로직 재사용
 // ---------------------------------------------------------------------------
 
 const clusters = getEnabledClusters();
 
-const previews = clusters.map((cluster) => {
-  const searchPhrase = `${region.legalDong} ${cluster.mainKeyword}`;
-  const url = `/local/${region.sido}/${region.sigungu}/${region.legalDong}/${cluster.mainKeyword}`;
-  const needsReviewReason = NEEDS_REVIEW[cluster.id];
-
-  return {
-    region: {
-      sido: region.sido,
-      sigungu: region.sigungu,
-      legalDong: region.legalDong,
-      legalCode: region.legalCode,
-    },
-    language: cluster.language,
-    clusterId: cluster.id,
-    mainKeyword: cluster.mainKeyword,
-    aliases: cluster.aliases,
-    searchPhrase,
-    url,
-    title: buildTitle(cluster, region.legalDong),
-    h1: buildH1(cluster, region.legalDong),
-    pageType: cluster.pageType,
-    intent: cluster.intent as SeoIntent,
-    needsReview: Boolean(needsReviewReason),
-    ...(needsReviewReason ? { needsReviewReason } : {}),
-  };
-});
+const previews = clusters.map((cluster) =>
+  buildLocalPreview(
+    { sido: region.sido, sigungu: region.sigungu!, legalDong: region.legalDong, legalCode: region.legalCode },
+    cluster
+  )
+);
 
 // ---------------------------------------------------------------------------
-// 5. Validation
+// 4. Validation
 // ---------------------------------------------------------------------------
 
 function findDuplicates(values: string[]): string[] {
@@ -241,7 +134,7 @@ const hasIssues =
   emptyH1s.length > 0;
 
 // ---------------------------------------------------------------------------
-// 6. 파일 출력
+// 5. 파일 출력
 // ---------------------------------------------------------------------------
 
 const outDir = path.join(ROOT, "data", "seo", "previews");
@@ -252,7 +145,7 @@ const outPath = path.join(outDir, `${fileSlug}.json`);
 fs.writeFileSync(outPath, JSON.stringify(previews, null, 2) + "\n", "utf-8");
 
 // ---------------------------------------------------------------------------
-// 7. 리포트
+// 6. 리포트
 // ---------------------------------------------------------------------------
 
 console.log("=".repeat(70));
@@ -275,7 +168,7 @@ const reviewList = previews.filter((p) => p.needsReview);
 if (reviewList.length === 0) {
   console.log("  없음");
 } else {
-  for (const p of reviewList) console.log(`  ${p.searchPhrase} (${p.clusterId}): ${(p as any).needsReviewReason}`);
+  for (const p of reviewList) console.log(`  ${p.searchPhrase} (${p.clusterId}): ${p.needsReviewReason}`);
 }
 
 console.log("\n--- 검증 결과 ---");

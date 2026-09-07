@@ -116,7 +116,7 @@ export default function HomePage() {
 
       <CourseSection
         id="course"
-        title={["목적이 달라도", "배우는 방법은 달라야 하니까."]}
+        title={["목적이 다르면,", "배우는 방법도 달라야 하니까."]}
         courses={purposeCourses}
       />
 
