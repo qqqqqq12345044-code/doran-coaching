@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { DETAIL_CATEGORIES } from "@/data/detailPages";
 import { PUBLISHED_LOCAL_SEO_PAGES } from "@/data/seo/previewRegistry";
+import { getAllMagazineSlugs } from "@/data/magazine";
 import { absoluteUrl } from "@/lib/seo/schema";
 
 // 실제 공개 페이지만 포함한다. data/regions/generated/seo-regions.json의
@@ -41,5 +42,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticEntries, ...localEntries];
+  const magazineEntries: MetadataRoute.Sitemap = getAllMagazineSlugs().map((slug) => ({
+    url: absoluteUrl(`/magazine/${slug}`),
+    lastModified,
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
+  return [...staticEntries, ...localEntries, ...magazineEntries];
 }

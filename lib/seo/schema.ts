@@ -70,6 +70,34 @@ export function buildFaqPageSchema(items: { question: string; answer: string }[]
   };
 }
 
+/** 매거진 글 전용. author/publisher는 실제 발행 주체인 브랜드
+ *  Organization으로만 채운다(가짜 개인 필자·평점·리뷰를 만들지 않는다).
+ *  datePublished는 data/magazine의 실제 publishedAt을 그대로 쓴다. */
+export function buildArticleSchema(params: {
+  headline: string;
+  description: string;
+  url: string;
+  datePublished: string;
+  dateModified?: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: params.headline,
+    description: params.description,
+    url: absoluteUrl(params.url),
+    datePublished: params.datePublished,
+    dateModified: params.dateModified ?? params.datePublished,
+    author: { "@type": "Organization", name: brand.brandLabel, url: SITE_URL },
+    publisher: {
+      "@type": "Organization",
+      name: brand.brandLabel,
+      url: SITE_URL,
+      logo: { "@type": "ImageObject", url: absoluteUrl("/apple-icon") },
+    },
+  };
+}
+
 /** 가격/기간/수료증처럼 실제 값이 없는 필드는 넣지 않는다(name/description/
  *  provider만 정확히 구성 가능할 때만 사용). */
 export function buildCourseSchema(params: { name: string; description: string; url: string }) {
