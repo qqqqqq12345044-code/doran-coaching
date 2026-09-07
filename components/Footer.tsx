@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import type { MouseEvent } from "react";
 import { brand } from "@/data/brand";
 import BrandLogo from "@/components/BrandLogo";
 
@@ -13,6 +16,17 @@ const INFO_LINKS = [
   { label: "수강후기", href: "/reviews" },
   { label: "상담 신청", href: "#consultation" },
 ];
+
+// Footer는 모든 페이지에 공통으로 뜨지만 "#consultation" 섹션은 12개 세부
+// 과정 상세페이지·매거진·수강후기 페이지에는 없다. Header.tsx /
+// FloatingConsultationButton.tsx와 동일한 fallback: 현재 페이지에 대상이
+// 없으면 죽은 anchor가 되지 않도록 홈의 상담 섹션으로 보낸다.
+function handleConsultationClick(event: MouseEvent<HTMLAnchorElement>) {
+  if (!document.getElementById("consultation")) {
+    event.preventDefault();
+    window.location.href = "/#consultation";
+  }
+}
 
 export default function Footer() {
   return (
@@ -53,6 +67,7 @@ export default function Footer() {
               <li key={link.label}>
                 <Link
                   href={link.href}
+                  onClick={link.href.startsWith("#") ? handleConsultationClick : undefined}
                   className="text-sm text-ink-soft transition-colors hover:text-ink"
                 >
                   {link.label}

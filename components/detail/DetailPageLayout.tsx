@@ -230,7 +230,13 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
         <CertificationRoadmap language={content.language} accent={accent} categoryLabel={categoryMeta.label} description={categoryMeta.description} />
       )}
       {content.category === "other" && (
-        <OtherRoadmap language={content.language} accent={accent} categoryLabel={categoryMeta.label} description={categoryMeta.description} />
+        <OtherRoadmap
+          language={content.language}
+          accent={accent}
+          categoryLabel={categoryMeta.label}
+          description={categoryMeta.description}
+          languageHref={languageHref}
+        />
       )}
 
       <div className="bg-surface py-10 sm:py-12">
@@ -312,6 +318,9 @@ interface RoadmapBlockProps {
   accent: DetailPageAccent;
   categoryLabel: string;
   description: string;
+  /** OtherRoadmap 전용. 이 상세페이지에는 "#consultation" 섹션이 없어
+   *  OtherPurposeGrid의 CTA를 언어 종합페이지의 상담 섹션으로 보낸다. */
+  languageHref?: string;
 }
 
 function ConversationRoadmap({ language, accent, description }: RoadmapBlockProps) {
@@ -347,11 +356,15 @@ function CertificationRoadmap({ language, accent, categoryLabel, description }: 
   );
 }
 
-function OtherRoadmap({ language, accent, description }: RoadmapBlockProps) {
+function OtherRoadmap({ language, accent, description, languageHref }: RoadmapBlockProps) {
   const group = getOtherCourseGroup(language);
   return (
     <DetailRoadmapBlock eyebrow="목적별 과정" title="어떤 목적에 가까우신가요" description={description}>
-      <OtherPurposeGrid group={group} chipTintClass={accent.tint} />
+      <OtherPurposeGrid
+        group={group}
+        chipTintClass={accent.tint}
+        consultationHref={`${languageHref ?? ""}#consultation`}
+      />
     </DetailRoadmapBlock>
   );
 }

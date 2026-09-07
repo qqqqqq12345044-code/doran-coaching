@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import AnchorLink from "@/components/AnchorLink";
 import BrandLogo from "@/components/BrandLogo";
@@ -59,6 +59,18 @@ export default function Header() {
     setExpandedLang(null);
   }
 
+  // Header는 모든 페이지에 공통으로 뜨지만 "#consultation" 섹션은 12개 세부
+  // 과정 상세페이지(/[language]/[category])에는 없다(그 페이지들은 자체 CTA에서
+  // "{languageHref}#consultation"으로 이동한다). 이 전역 CTA만은 현재 페이지에
+  // 대상이 없을 때 홈의 상담 섹션으로 보내 죽은 anchor가 되지 않게 한다.
+  // FloatingConsultationButton.tsx와 동일한 fallback 방식이다.
+  function handleConsultationClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!document.getElementById("consultation")) {
+      event.preventDefault();
+      window.location.href = "/#consultation";
+    }
+  }
+
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b transition-all duration-300 ${
@@ -86,7 +98,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden lg:block">
-          <AnchorLink href="#consultation" className="btn-primary">
+          <AnchorLink href="#consultation" onClick={handleConsultationClick} className="btn-primary">
             무료 상담 신청
           </AnchorLink>
         </div>
@@ -125,7 +137,14 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <AnchorLink href="#consultation" onClick={closeMobileMenu} className="btn-primary mt-4 w-full">
+          <AnchorLink
+            href="#consultation"
+            onClick={(event) => {
+              handleConsultationClick(event);
+              closeMobileMenu();
+            }}
+            className="btn-primary mt-4 w-full"
+          >
             무료 상담 신청
           </AnchorLink>
         </div>
