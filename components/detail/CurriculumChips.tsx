@@ -15,8 +15,11 @@ export default function CurriculumChips({ ids, tintClass }: CurriculumChipsProps
   return (
     <div className="mt-10 flex flex-wrap items-center gap-2 border-t border-ink/8 pt-6">
       <span className="text-[12px] font-semibold text-ink-faint">관련 Power Curriculum</span>
-      {labels.map((label) => (
-        <span key={label} className={`rounded-full px-3 py-1 text-[12px] font-semibold ${tintClass}`}>
+      {labels.map((label, index) => (
+        // 서로 다른 Power Curriculum 항목이 같은 normalizedTopics[0](예: "영어내신")을
+        // 공유해 label 문자열이 중복될 수 있어, index를 더해 key만 유일하게 만든다
+        // (렌더링되는 label 텍스트/순서는 그대로 유지).
+        <span key={`${label}-${index}`} className={`rounded-full px-3 py-1 text-[12px] font-semibold ${tintClass}`}>
           {label}
         </span>
       ))}

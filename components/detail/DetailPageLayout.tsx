@@ -68,15 +68,15 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
     },
     certification: {
       hero: { src: "/images/detail/english/certification/hero.jpg", alt: "듀얼 모니터 앞에서 헤드폰을 쓰고 집중해서 영어 시험을 준비하는 모습" },
-      mid: { src: "/images/detail/english/certification/mid.jpg", alt: "빈 노트와 펜이 놓인 시험 준비 책상" },
+      mid: { src: "/images/detail/english/certification/mid.jpg", alt: "TOEIC·JPT가 표기된 연필과 OMR 답안지" },
     },
     school: {
       hero: { src: "/images/detail/english/school/hero.jpg", alt: "교실 책상에서 책을 펼쳐두고 영어 내신을 생각하며 공부하는 학생" },
-      mid: { src: "/images/detail/english/school/mid.jpg", alt: "노트와 연필, 안경이 놓인 깔끔한 학습 책상" },
+      mid: { src: "/images/detail/english/school/mid.jpg", alt: "빈 교실 책상에서 혼자 필기하며 시험을 준비하는 학생" },
     },
     other: {
       hero: { src: "/images/detail/english/other/hero.jpg", alt: "테이블 너머로 악수하는 두 사람" },
-      mid: { src: "/images/detail/english/other/mid.jpg", alt: "책상에서 노트북으로 타이핑하는 모습" },
+      mid: { src: "/images/detail/english/other/mid.jpg", alt: "여권 여러 개가 겹쳐 놓인 모습" },
     },
   },
   japanese: {
@@ -94,13 +94,13 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
     },
     other: {
       hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "사무실에서 혼자 집중해서 노트북으로 업무를 처리하는 모습" },
-      mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "책·노트북·헤드폰이 놓인 미니멀한 워크스페이스" },
+      mid: { src: "/images/detail/japanese/other/mid.jpg", alt: "정장을 입은 남성이 혼자 횡단보도를 건너는 모습" },
     },
   },
   chinese: {
     conversation: {
       hero: { src: "/images/detail/chinese/conversation/hero.jpg", alt: "중국풍 카페에서 마주 앉아 중국어로 대화를 나누는 두 사람" },
-      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "키보드를 치는 손 클로즈업" },
+      mid: { src: "/images/detail/chinese/conversation/mid.jpg", alt: "홍콩 골목 노포에서 두 사람이 마주 앉아 대화하는 모습" },
     },
     certification: {
       hero: { src: "/images/detail/chinese/certification/hero.jpg", alt: "헤드폰과 노트가 놓인 창가 책상" },

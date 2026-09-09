@@ -140,12 +140,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-english-certification-mid",
     localPath: "/images/detail/english/certification/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/open-notebook-with-pen-and-pencils-on-desk-n9AaeihA9HI",
-    photographer: "Clay Banks",
-    photographerUrl: "https://unsplash.com/@claybanks",
+    sourceUrl: "https://unsplash.com/photos/pencil-on-multiple-choice-answer-sheet-cbEvoHbJnIE",
+    photographer: "Nguyen Dang Hoang Nhu",
+    photographerUrl: "https://unsplash.com/@nguyendhn",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 자격증 상세페이지 중간 Visual Break — 빈 노트와 펜·연필이 놓인 책상",
+    // 이전 사진(빈 노트+펜·연필)은 "자격증 시험 대비"라는 페이지 목적이 이미지에서
+    // 바로 읽히지 않아, TOEIC/TOEIC Bridge/JPT 등이 표기된 연필과 OMR 답안지
+    // 사진으로 교체(2026-09-09).
+    usage: "영어 자격증 상세페이지 중간 Visual Break — TOEIC·JPT 표기가 있는 연필과 OMR 답안지",
   },
   {
     id: "detail-english-school-hero",
@@ -166,12 +169,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-english-school-mid",
     localPath: "/images/detail/english/school/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/6GPBVYLapYQ",
-    photographer: "Lauren Sauder",
-    photographerUrl: "https://unsplash.com/@laurensauderstudio",
+    sourceUrl: "https://unsplash.com/photos/student-writing-at-classroom-desk--hgJu2ykh4E",
+    photographer: "Jeswin Thomas",
+    photographerUrl: "https://unsplash.com/@jeswinthomas",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 내신 상세페이지 중간 Visual Break — 노트·연필·안경이 놓인 깔끔한 책상",
+    // 이전 사진(노트·연필·안경 flatlay)은 "학교 내신 시험 대비"라는 맥락이
+    // 드러나지 않아, 빈 교실 책상에서 혼자 시험지를 푸는 학생 사진으로
+    // 교체(2026-09-09) — 노트북 없음, 그룹 수업 장면 아님.
+    usage: "영어 내신 상세페이지 중간 Visual Break — 빈 교실 책상에서 혼자 필기하며 시험을 준비하는 학생",
   },
   {
     id: "detail-english-other-hero",
@@ -188,12 +194,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-english-other-mid",
     localPath: "/images/detail/english/other/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/a-person-typing-on-a-laptop-on-a-desk-a1MHEv62kdo",
-    photographer: "Jakub Żerdzicki",
-    photographerUrl: "https://unsplash.com/@jakubzerdzicki",
+    sourceUrl: "https://unsplash.com/photos/four-green-passports-Hid-yhommOg",
+    photographer: "Jon Tyson",
+    photographerUrl: "https://unsplash.com/@jontyson",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 기타 상세페이지 중간 Visual Break — 노트북으로 실무를 준비하는 모습",
+    // 이전 사진(코드 에디터처럼 보이는 화면+손 클로즈업)은 유학·취업·비즈니스 목적이
+    // 전혀 읽히지 않고 개발자 화면처럼 오인될 수 있어, 여권 여러 개가 쌓인 사진으로
+    // 교체(2026-09-09) — 특정 직군 하나로 좁혀지지 않으면서 "해외로 나가는 준비"를
+    // 보편적으로 전달한다.
+    usage: "영어 기타 상세페이지 중간 Visual Break — 여권 여러 개가 겹쳐 놓인 모습(해외 유학·취업 준비)",
   },
 
   // 일본어 ---------------------------------------------------------------
@@ -291,12 +301,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-other-mid",
     localPath: "/images/detail/japanese/other/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/a-modern-desk-setup-with-laptop-and-books-xjyHDnA93Pk",
-    photographer: "LOGAN WEAVER",
-    photographerUrl: "https://unsplash.com/@lgnwvr",
+    sourceUrl: "https://unsplash.com/photos/wUZjnOv7t0g",
+    photographer: "Ryoji Iwata",
+    photographerUrl: "https://unsplash.com/@ryoji__iwata",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 기타 상세페이지 중간 Visual Break — 책·노트북·헤드폰이 놓인 미니멀한 워크스페이스",
+    // 이전 사진(캔들·칵테일북 등 감성 데스크 flatlay)은 일본 유학·취업·비즈니스
+    // 목적과 무관하고 브랜드 톤과도 맞지 않아, 정장을 입은 남성이 혼자 횡단보도를
+    // 건너는 사진으로 교체(2026-09-09) — 일본 특유의 도심 횡단보도 구도로 일본
+    // 현지 취업·비즈니스 맥락을 자연스럽게 전달하며, 그룹 장면이 아닌 1인 구도.
+    usage: "일본어 기타 상세페이지 중간 Visual Break — 정장을 입은 남성이 혼자 횡단보도를 건너는 모습(일본 현지 취업·비즈니스)",
   },
 
   // 중국어 ---------------------------------------------------------------
@@ -319,14 +333,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-conversation-mid",
     localPath: "/images/detail/chinese/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/Qh1degtlisQ",
-    photographer: "Alicia Christin Gerald",
-    photographerUrl: "https://unsplash.com/@allysphotos",
+    sourceUrl: "https://unsplash.com/photos/two-men-sitting-at-a-table-talking-ZvzfXlZUwIc",
+    photographer: "Alex Safareli",
+    photographerUrl: "https://unsplash.com/@alexsafareli",
     attributionRequired: false,
     license: "Unsplash License",
-    // 현지 상점가 거리 사진으로 잠깐 바뀌었으나, 같은 이유(관광 이미지보다
-    // 학습 분위기 우선)로 키보드 타이핑 손 클로즈업으로 되돌림(2026-09-04).
-    usage: "중국어 회화 상세페이지 중간 Visual Break — 키보드를 치는 손 클로즈업",
+    // 키보드 타이핑 손 클로즈업은 "회화(대화)" 페이지 목적과 정반대로 읽혀
+    // (타이핑=업무, 대화 아님) 교체(2026-09-09) — 홍콩 골목 노포에서 두 사람이
+    // 실제로 마주 앉아 대화하는 사진으로, 관광 홍보컷이 아닌 현지 생활 속
+    // 대화 장면을 보여준다.
+    usage: "중국어 회화 상세페이지 중간 Visual Break — 홍콩 골목 노포에서 두 사람이 마주 앉아 대화하는 모습",
   },
   {
     id: "detail-chinese-certification-hero",

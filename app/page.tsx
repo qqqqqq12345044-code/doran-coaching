@@ -17,7 +17,7 @@ import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
 import { purposeCourses } from "@/data/courses";
 import { coaches } from "@/data/coaches";
-import { getPublishedReviews } from "@/data/reviews";
+import { getFeaturedReviews } from "@/data/reviews";
 import { faqItems } from "@/data/faq";
 
 const PROBLEMS = [
@@ -87,8 +87,7 @@ export default function HomePage() {
       <ReviewSection
         id="review"
         title={["비슷한 고민으로", "시작한 사람들의 이야기"]}
-        reviews={getPublishedReviews()}
-        limit={3}
+        reviews={getFeaturedReviews(4)}
         moreHref="/reviews"
       />
 

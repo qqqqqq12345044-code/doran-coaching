@@ -88,6 +88,10 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(6px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        "hero-item": {
+          "0%": { opacity: "0", transform: "translateY(16px)", filter: "blur(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+        },
       },
       animation: {
         "fade-up": "fade-up 0.6s ease-out both",
@@ -97,6 +101,7 @@ const config: Config = {
         "float-slow-delayed": "float-slow 12s ease-in-out infinite 1.2s",
         "dot-fade": "dot-fade 1.6s ease-in-out infinite",
         "mega-menu-in": "mega-menu-in 0.16s ease-out both",
+        "hero-item": "hero-item 0.5s cubic-bezier(0.16,1,0.3,1) both",
       },
     },
   },

@@ -38,8 +38,11 @@ export default function KeySummaryPanel({ columns, accentTintClass }: KeySummary
 
           {column.variant === "chips" && (
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {column.items.map((item) => (
-                <span key={item} className={`rounded-full px-2.5 py-1 text-[11.5px] font-semibold ${accentTintClass}`}>
+              {column.items.map((item, index) => (
+                // "실제 커리큘럼 기반" 칩은 서로 다른 Power Curriculum 항목이 같은
+                // normalizedTopics[0]을 공유해 item 문자열이 중복될 수 있어, index를
+                // 더해 key만 유일하게 만든다(렌더링되는 텍스트/순서는 그대로 유지).
+                <span key={`${item}-${index}`} className={`rounded-full px-2.5 py-1 text-[11.5px] font-semibold ${accentTintClass}`}>
                   {item}
                 </span>
               ))}

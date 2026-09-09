@@ -3,7 +3,8 @@ import type { LanguageSlug } from "./languages";
 // 이 파일은 두 종류의 후기를 함께 관리한다. sourceType으로 구분하며 섞여서
 // 출처를 잃어버리지 않게 한다.
 // - "official-case": 파워 외국어(파워잉글리시/파워차이나/파워재팬) 공식 홍보
-//   채널(Google Sites "회원성장/성공사례")에서 공개적으로 연결되는 vinemagazine.co.kr
+//   채널(Google Sites "https://sites.google.com/view/growth-success" 등
+//   회원성장/성공사례 페이지)에서 공개적으로 연결되는 vinemagazine.co.kr
 //   기사 원문을 바탕으로, 사실만 짧게 요약·재구성한 실제 수강 사례다. 원문을
 //   그대로 복사하지 않았고, 원문에 없는 나이/점수/기간 등은 추가하지 않았다.
 //   원문 기사에 실명(또는 부분 마스킹 이름)이 있어도 이 프로젝트에서는 이름을
@@ -69,6 +70,51 @@ export const reviews: Review[] = [
     language: "japanese",
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/start-studying-japanese-with-powerjapan",
+    sourceLabel: "vinemagazine.co.kr",
+  },
+  {
+    id: "review-official-en-04",
+    quote: "전화영어로 매일 짧게 대화를 반복하다 보니 표현이 늘어서, 학교 원어민 프로그램에도 뽑힐 수 있었어요.",
+    meta: "영어 회화 · 고등학생",
+    language: "english",
+    sourceType: "official-case",
+    sourceUrl: "https://www.vinemagazine.co.kr/attractive-power-english",
+    sourceLabel: "vinemagazine.co.kr",
+  },
+  {
+    id: "review-official-en-05",
+    quote: "화상 수업이 끝나면 배운 문장을 소리 내어 몇 번씩 반복했는데, 그렇게 하니 훨씬 오래 기억에 남고 토익 수업도 병행할 수 있었어요.",
+    meta: "영어 토익 · 대학생",
+    language: "english",
+    sourceType: "official-case",
+    sourceUrl: "https://www.vinemagazine.co.kr/anytime-anywhere-with-powerenglish",
+    sourceLabel: "vinemagazine.co.kr",
+  },
+  {
+    id: "review-official-en-06",
+    quote: "중학교 때 놓쳤던 기초를 다시 다지면서 상황극처럼 대화를 연습했더니 학교 수업도 훨씬 수월해졌어요.",
+    meta: "영어 내신 · 고등학생",
+    language: "english",
+    sourceType: "official-case",
+    sourceUrl: "https://www.vinemagazine.co.kr/have-passion-not-too-late-with-powerenglish",
+    sourceLabel: "vinemagazine.co.kr",
+  },
+  {
+    id: "review-official-en-07",
+    quote: "무역학과라 영어를 피할 수 없었는데, 자기소개와 인터뷰 연습을 하다 보니 발음과 자신감이 함께 늘었어요.",
+    meta: "영어 비즈니스 · 대학생",
+    language: "english",
+    sourceType: "official-case",
+    sourceUrl: "https://www.vinemagazine.co.kr/7084/family/coaching-education/",
+    sourceLabel: "vinemagazine.co.kr",
+  },
+  {
+    id: "review-official-en-08",
+    quote: "원어민 선생님과 매일 10분씩 통화하면서 학교에서 배우는 내용을 미리 익히니 자신감이 생겼어요.",
+    meta: "영어 회화 · 초등학생",
+    language: "english",
+    sourceType: "official-case",
+    sourceUrl: "https://www.vinemagazine.co.kr/powereng-student-review",
     sourceLabel: "vinemagazine.co.kr",
   },
 
@@ -153,4 +199,24 @@ export function getPublishedReviews(): Review[] {
 
 export function getPublishedReviewsByLanguage(language: LanguageSlug): Review[] {
   return reviews.filter((review) => review.language === language && review.sourceType === "official-case");
+}
+
+// 홈 대표 후기 영역처럼 소수만 노출하는 자리에서, 배열 앞쪽에 영어 사례가
+// 몰려있어도 언어 3개가 최대한 고르게 보이도록 우선순위를 두어 고른다.
+// (실제 사례 자체는 늘리지 않고 노출 순서만 재구성 — 새 후기 생성 없음.)
+export function getFeaturedReviews(limit = 4): Review[] {
+  const officialCases = getPublishedReviews();
+  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
+
+  const featured: Review[] = [];
+  for (const language of languagePriority) {
+    const match = officialCases.find((review) => review.language === language);
+    if (match) featured.push(match);
+  }
+  for (const review of officialCases) {
+    if (featured.length >= limit) break;
+    if (!featured.includes(review)) featured.push(review);
+  }
+
+  return featured.slice(0, limit);
 }
