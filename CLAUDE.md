@@ -26,13 +26,20 @@ Claude Code가 이 프로젝트를 열 때마다 배경 설명을 다시 받지 
 - `/` — 홈
 - `/english`, `/japanese`, `/chinese` — 언어별 종합 랜딩페이지
 - `/[language]/[category]` — 12개 세부 과정 상세페이지(언어 3 × `conversation`/`certification`/`school`/`other` 4)
-- `/magazine` — 매거진(단일 정적 페이지, 하위 동적 라우트 없음)
+- `/magazine` — 매거진 목록, `/magazine/[slug]` — 매거진 상세(`data/magazine`, 총 25개,
+  `dynamicParams = false`로 화이트리스트(`getAllMagazineSlugs()`) 밖은 build-time에도 404)
 - `/reviews` — 수강후기
 - `/local/[sido]/[sigungu]/[dong]/[keyword]` — 지역 SEO 랜딩페이지
-  - **화이트리스트 방식**: `data/seo/previewRegistry.ts`의 `PUBLISHED_LOCAL_SEO_PAGES`에
-    등록된 조합만 `generateStaticParams`로 빌드하고, `dynamicParams = false` +
-    런타임 `notFound()` 이중 안전장치로 그 외 모든 조합은 404.
-  - 현재 공개: 서울특별시 / 마포구 / 공덕동 / 영어회화 **1개**
+  - **화이트리스트 방식**: `data/seo/publishBatches.ts`(지역 6,527개 × keyword 15개
+    = 97,905개, `data/regions/generated/seo-regions.json` 기반)가 `data/seo/previewRegistry.ts`의
+    `PUBLISHED_LOCAL_SEO_PAGES`를 만들고, 실제 렌더링 전 `findLocalSeoPreview()`가 이
+    화이트리스트를 검사해 그 외 모든 조합은 `notFound()`로 404.
+  - **ISR(On-Demand)**: `dynamicParams = true`, `revalidate = 86400`. `generateStaticParams`는
+    대표 지역(공덕동) × keyword 15개만 build-time에 미리 만들고, 나머지 97,890개는
+    최초 요청 시 on-demand로 생성돼 이후 캐시된다 — 97,905개를 build-time에 전부
+    SSG하지 않는다.
+  - 세종특별자치시(sigungu 없음, 33개)는 4-segment route 구조상 표현할 수 없어
+    화이트리스트에서 제외된다.
   - 콘텐츠는 하드코딩이 아니라 `lib/seo/generateLocalSeoContent.ts` Content Engine이
     지역 + Keyword Cluster를 입력받아 실시간 조립
 - `app/robots.ts`, `app/sitemap.ts` — 기술 SEO 엔드포인트(아래 [SEO] 참고)
@@ -40,7 +47,9 @@ Claude Code가 이 프로젝트를 열 때마다 배경 설명을 다시 받지 
 ## [DATA] (Source of Truth — 중복 하드코딩 금지)
 
 - `data/regions/generated/seo-regions.json` — SEO Region 6,560개(Excel→`build:seo-regions` 생성, 직접 수정 금지)
-- `data/seo/keywords.ts`(`seoKeywordClusters`) — SEO Keyword Cluster 마스터, 31개 정의 / 활성 30개
+- `data/seo/keywords.ts`(`seoKeywordClusters`) — SEO Keyword Cluster 마스터, 30개 전부 활성.
+  이 중 15개(언어당 5개)를 `data/seo/publishBatches.ts`의 `CORE_LOCAL_KEYWORDS`가 Local SEO
+  전국 공개 대상으로 선정
 - `data/curriculum/powerCurriculum.ts` — Power Curriculum 마스터 73개(영28/중27/일18)
 - `data/curriculum/examFacts.ts` — TOEIC/OPIc/IELTS/DET/JLPT/JPT/HSK/HSKK/TSC/BCT 등 시험 공식 사실
 - `data/curriculum/courseDetails.ts` — 언어별 Roadmap(회화/내신/자격증/기타) 실제 데이터
@@ -127,8 +136,11 @@ Claude Code가 이 프로젝트를 열 때마다 배경 설명을 다시 받지 
 
 **기술 SEO**
 - `app/robots.ts` — 전체 Allow, 과도한 Disallow 금지, `sitemap`/`host`에 `https://dorancoaching.com` 명시
-- `app/sitemap.ts` — 홈/언어3/상세12/magazine/reviews/local(`PUBLISHED_LOCAL_SEO_PAGES`만) 자동 포함,
-  6,560개 지역 전체 순회 금지, 절대 URL만 사용
+- `app/sitemap.ts` — `generateSitemaps()`로 4-shard 분할(0: 홈/언어3/상세12/magazine/reviews,
+  1~3: local을 영어/일본어/중국어별로 3등분). local은 `PUBLISHED_LOCAL_SEO_PAGES`만 자동
+  포함(6,560개 지역 전체 순회 금지), 절대 URL만 사용. `app/sitemap.xml/route.ts`가
+  `<sitemapindex>`를 직접 서빙해 `/sitemap.xml`은 계속 유효한 진입점(Next.js는
+  `generateSitemaps` 사용 시 이 경로를 자동으로 만들어주지 않음)
 - `lib/seo/schema.ts` — WebSite(홈)/Organization(홈)/BreadcrumbList(상세12+local)/FAQPage(FAQ 실제 렌더 페이지)/
   Course(단일 과정 페이지만: 상세12+local). SearchAction/LocalBusiness/fake AggregateRating·Review·Offer·가격
   절대 금지. google/naver-site-verification은 실제 값 없이 생성 금지

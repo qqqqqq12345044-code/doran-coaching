@@ -13,37 +13,46 @@ export type { SeoLocalPreview } from "@/lib/seo/buildLocalPreview";
 // 지역 -> legalCode 조회 인덱스
 //
 // 예전에는 지역(법정동)마다 미리 만든 Preview *.json을 정적 import해서 조회
-// 했지만, 전국 3천여 개 지역으로 확장하면서 지역마다 별도 파일을 두는 방식은
-// git/번들 관리에 비효율적이라 판단해 걷어냈다(Part 7 참고). 대신
-// data/regions/generated/legal-dongs.json(전국 법정동 원본)에서 그 자리에서
-// legalCode만 조회하고, 실제 Preview 객체(title/h1/searchPhrase 등)는
-// lib/seo/buildLocalPreview.ts의 순수 함수로 즉시 계산한다.
+// 했지만, 전국 규모로 확장하면서 지역마다 별도 파일을 두는 방식은 git/번들
+// 관리에 비효율적이라 판단해 걷어냈다(Part 7 참고). 대신
+// data/regions/generated/seo-regions.json(행정동+법정동 병합 SEO 지역
+// 마스터)에서 그 자리에서 code만 조회하고, 실제 Preview 객체(title/h1/
+// searchPhrase 등)는 lib/seo/buildLocalPreview.ts의 순수 함수로 즉시
+// 계산한다. 이 code 값은 내부 식별 용도일 뿐 title/H1/description/URL
+// 어디에도 그대로 노출되지 않는다(사용처: buildLocalPreview.ts 타입 요구
+// 사항 충족용).
+//
+// seo-regions.json은 행정동에서만 존재하는 지역(legalCodes가 빈 배열)과
+// 법정동에서만 존재하는 지역(administrativeCodes가 빈 배열)을 모두 포함하기
+// 때문에, legalCode를 우선하되 없으면 administrativeCode, 그마저 없으면
+// (이론상 발생하지 않지만 방어적으로) region id 문자열을 그대로 쓴다.
 //
 // fs.readFileSync를 쓰는 이유: 최신 Node의 ESM JSON import는 import
 // attribute를 요구해 순수 node 실행(스크립트)에서 깨지기 쉽다.
 // scripts/preview-seo-combinations.mts도 이미 같은 방식으로 이 파일을 읽는다.
-interface LegalDongRecord {
+interface SeoRegionRecord {
+  id: string;
   sido: string;
   sigungu: string | null;
-  legalEupmyeondong: string | null;
-  legalDong: string;
-  legalCode: string;
-  createdAt: string | null;
+  regionName: string;
+  regionType: "읍" | "면" | "동" | null;
+  fullName: string;
+  sources: string[];
+  legalCodes: string[];
+  administrativeCodes: string[];
 }
 
-const legalDongsPath = path.join(process.cwd(), "data", "regions", "generated", "legal-dongs.json");
-const legalDongs: LegalDongRecord[] = JSON.parse(fs.readFileSync(legalDongsPath, "utf-8"));
+const seoRegionsPath = path.join(process.cwd(), "data", "regions", "generated", "seo-regions.json");
+const seoRegions: SeoRegionRecord[] = JSON.parse(fs.readFileSync(seoRegionsPath, "utf-8"));
 
-// 모듈 로드 시 1회만 인덱싱한다 — 정적 페이지 2만여 개를 생성하는 동안 매번
-// 18,868개 레코드를 순회하지 않도록.
+// 모듈 로드 시 1회만 인덱싱한다 — 정적 페이지를 생성하는 동안 매번 6,560개
+// 레코드를 순회하지 않도록.
 const legalCodeByRegion = new Map<string, string>();
-for (const r of legalDongs) {
+for (const r of seoRegions) {
   if (!r.sigungu) continue;
-  const key = `${r.sido}|${r.sigungu}|${r.legalDong}`;
-  // 완전히 동일한 (sido, sigungu, legalDong) 조합이 legalCode만 다르게 중복
-  // 등록된 경우가 일부 있다 — 라우팅/표시에는 legalCode가 쓰이지 않으므로
-  // (URL은 지역명 문자열만 사용) 먼저 들어온 값 하나만 유지해도 안전하다.
-  if (!legalCodeByRegion.has(key)) legalCodeByRegion.set(key, r.legalCode);
+  const key = `${r.sido}|${r.sigungu}|${r.regionName}`;
+  const code = r.legalCodes[0] ?? r.administrativeCodes[0] ?? r.id;
+  legalCodeByRegion.set(key, code);
 }
 
 // ---------------------------------------------------------------------------

@@ -102,7 +102,7 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     focusThemes: ["온라인", "이동 불필요", "화상", "시간 활용"],
     curriculumKeywords: ["화상", "온라인", "전화"],
     audiencePoints: [
-      "학원까지 이동하는 시간을 아끼고 싶은 분",
+      "오프라인으로 이동하는 시간을 아끼고 싶은 분",
       "원하는 장소와 시간에 맞춰 수업하고 싶은 분",
       "화상수업이 처음이라 진행 방식이 궁금한 분",
     ],
@@ -112,8 +112,8 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
         answer: "인터넷이 연결된 곳이라면 어디서든 화상수업으로 참여할 수 있습니다.",
       },
       {
-        question: "학원에 직접 방문해야 하나요?",
-        answer: "아니요. 도란은 오프라인 지점 없이 화상으로 운영되어 방문하지 않아도 됩니다.",
+        question: "직접 오가지 않아도 수업을 들을 수 있나요?",
+        answer: "네, 도란은 화상으로만 운영되어 오가는 시간 없이 온라인으로 수업을 들을 수 있습니다.",
       },
       {
         question: "{지역명}에서도 {mainKeyword}가 가능한가요?",

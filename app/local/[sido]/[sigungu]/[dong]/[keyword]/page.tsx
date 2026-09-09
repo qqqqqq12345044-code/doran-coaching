@@ -29,13 +29,15 @@ import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLo
 import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
 
 // 공개 대상은 data/seo/previewRegistry.ts의 PUBLISHED_LOCAL_SEO_PAGES
-// 화이트리스트(전국 21,798개, 2026-09 nationwide 확장) 전부다. 다만 그 전부를
-// build 시점에 SSG하면(.next/server 4.7GB, build 5분) Vercel 배포에 비효율적
-// 이라 판단해, ISR(On-Demand Incremental Static Regeneration)로 전환했다.
+// 화이트리스트(2026-09 2차 확장: seo-regions.json 기반 지역 6,527개 ×
+// keyword 15개 = 97,905개) 전부다. 다만 그 전부를 build 시점에 SSG하면
+// Vercel 배포에 비효율적이라 판단해, ISR(On-Demand Incremental Static
+// Regeneration)로 전환했다(1차 확장 때부터 유지된 구조 — 이번 2차 확장도
+// 같은 구조를 그대로 재사용하며 route/캐시 전략을 바꾸지 않았다).
 //
 //   - generateStaticParams는 build-time 스모크 테스트 겸 항상 즉시 응답해야
-//     하는 대표 페이지(최초 공개 지역 공덕동, keyword당 1개씩 6개)만 미리
-//     만든다. 나머지 21,792개는 build에 포함되지 않는다.
+//     하는 대표 페이지(최초 공개 지역 공덕동, keyword당 1개씩 15개)만 미리
+//     만든다. 나머지 97,890개는 build에 포함되지 않는다.
 //   - dynamicParams = true(App Router 기본값, 명시적으로 남겨 의도를 분명히
 //     한다)라서 generateStaticParams에 없는 조합도 요청이 오면 Next.js가
 //     그 자리에서 렌더링을 시도한다.
@@ -47,11 +49,11 @@ import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
 //   - 최초 요청 시 생성된 페이지는 revalidate(아래) 동안 Vercel CDN에 캐시돼
 //     이후 요청은 재생성 없이 바로 응답한다.
 //
-// sitemap.ts는 이 파일과 무관하게 PUBLISHED_LOCAL_SEO_PAGES 21,798개를 그대로
-// 전부 사용한다 — "sitemap에 실리는 공개 URL 목록"과 "build 시 미리 만들어둘
-// 페이지 목록"은 서로 다른 개념이며 이번 변경으로 분리되었다(sitemap은 원래도
-// PUBLISHED_LOCAL_SEO_PAGES를 직접 참조해 이 파일의 generateStaticParams와는
-// 무관했다).
+// app/sitemap.ts는 이 파일과 무관하게 PUBLISHED_LOCAL_SEO_PAGES 97,905개를
+// 그대로 전부 사용한다(다만 97,905개는 sitemap 프로토콜의 파일당 5만 URL
+// 권장 한도를 넘어 sitemap index + 언어별 3-shard로 분할했다 — sitemap.ts
+// 참고) — "sitemap에 실리는 공개 URL 목록"과 "build 시 미리 만들어둘 페이지
+// 목록"은 서로 다른 개념이며 1차 확장 때 분리된 구조를 그대로 유지한다.
 //
 // 페이지 실제 콘텐츠(Hero 문구/Direct Answer/추천 대상/Benefits/Curriculum/FAQ/CTA/
 // Metadata)는 lib/seo/generateLocalSeoContent.ts 의 Content Engine 결과를 그대로
@@ -71,9 +73,9 @@ interface LocalSeoPageParams {
 }
 
 // build-time에 미리 만들어둘 대표 subset. 최초 공개 지역(공덕동)의 keyword당
-// 1페이지씩 6개만 — "실제로 렌더링되는지" build가 매번 검증하는 최소 스모크
-// 테스트 용도다. 이 목록에 없는 나머지 21,792개는 아래 dynamicParams=true에
-// 의해 첫 요청 시 on-demand로 생성된다(=21,798개 전부 여전히 공개 대상).
+// 1페이지씩 15개만 — "실제로 렌더링되는지" build가 매번 검증하는 최소 스모크
+// 테스트 용도다. 이 목록에 없는 나머지 97,890개는 아래 dynamicParams=true에
+// 의해 첫 요청 시 on-demand로 생성된다(=97,905개 전부 여전히 공개 대상).
 export function generateStaticParams(): LocalSeoPageParams[] {
   return PUBLISHED_LOCAL_SEO_PAGES.filter((p) => p.sido === "서울특별시" && p.sigungu === "마포구" && p.dong === "공덕동").map(
     (p) => ({ sido: p.sido, sigungu: p.sigungu, dong: p.dong, keyword: p.keyword })
