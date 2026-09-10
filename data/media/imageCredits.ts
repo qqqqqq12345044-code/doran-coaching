@@ -37,13 +37,17 @@ export const imageCredits: ImageCredit[] = [
     id: "english-online-learning",
     localPath: "/images/language/english-online-learning.jpg",
     source: "unsplash",
-    sourceUrl:
-      "https://unsplash.com/photos/two-women-studying-together-at-a-table-with-laptop-2FDdgn0-W_o",
-    photographer: "Chidera Faustina Okeke",
-    photographerUrl: "https://unsplash.com/@thefourthwxll",
+    sourceUrl: "https://unsplash.com/photos/U3Ptj3jafX8",
+    photographer: "Waldemar Brandt",
+    photographerUrl: "https://unsplash.com/@waldemarbrandt67w",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 페이지 Curriculum 영역 Supporting 비주얼 — 노트북을 활용한 학습",
+    // 이전 사진(노트북을 함께 보는 두 사람)은 영어 학습이라는 맥락이 이미지에서
+    // 바로 읽히지 않고 generic한 카페/코워킹 느낌이 강해 교체(2026-09-10) —
+    // 영어 단어 뜻이 펼쳐진 사전과 영국 지도가 함께 보이는 사진으로, "영어"라는
+    // 점과 학습 교재라는 점이 텍스트로 바로 확인된다. 1:1 서비스와 맞지 않는
+    // 다인 그룹 이미지도 아니다.
+    usage: "영어 페이지 Curriculum 영역 Supporting 비주얼 — 영어 사전과 영국 지도가 펼쳐진 모습",
   },
   {
     id: "japanese-hero",
@@ -61,14 +65,16 @@ export const imageCredits: ImageCredit[] = [
     id: "japanese-business",
     localPath: "/images/language/japanese-business.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/woman-using-black-laptop-computer-near-turned-on-flat-screen-computer-monitor-5ZnS3wK6sUg",
-    photographer: "Mimi Thian",
-    photographerUrl: "https://unsplash.com/@mimithian",
+    sourceUrl: "https://unsplash.com/photos/jfZfdQtcH6k",
+    photographer: "Danis Lou",
+    photographerUrl: "https://unsplash.com/@danislou",
     attributionRequired: false,
     license: "Unsplash License",
-    // 1차 교체(그룹+독일어 텍스트 제거)로도 서구권 외모가 뚜렷한 인물이
-    // 남아있어, 동아시아 인물이 혼자 업무에 집중하는 사진으로 재교체(2026-09-04).
-    usage: "일본어 페이지 Curriculum 영역 Supporting 비주얼 — 사무실에서 혼자 집중해서 업무를 처리하는 모습",
+    // 이전 사진(사무실에서 코드 화면을 보는 인물)은 일본어와 전혀 무관한
+    // 개발자 업무 장면으로 읽혀 교체(2026-09-10) — 도쿄의 실제 식당 앞,
+    // 노렌과 메뉴판에 일본어 글씨가 그대로 보이는 사진으로 "실생활에서 통하는
+    // 일본어"라는 배너 문구와 바로 연결된다.
+    usage: "일본어 페이지 Curriculum 영역 Supporting 비주얼 — 도쿄 식당 앞 노렌과 메뉴판에 쓰인 일본어",
   },
   {
     id: "chinese-hero",

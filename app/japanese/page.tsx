@@ -142,7 +142,7 @@ export default function JapanesePage() {
 
       <CurriculumVisualBanner
         imageSrc="/images/language/japanese-business.jpg"
-        imageAlt="사무실에서 혼자 집중해서 업무를 처리하는 모습"
+        imageAlt="일본 도쿄의 한 식당 앞, 노렌과 메뉴판에 쓰인 일본어 글씨"
         eyebrow="JAPANESE IN REAL LIFE"
         copy="취미로 시작해도, 실제 생활에서 통하는 일본어로 이어집니다."
       />

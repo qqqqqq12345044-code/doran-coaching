@@ -142,7 +142,7 @@ export default function EnglishPage() {
 
       <CurriculumVisualBanner
         imageSrc="/images/language/english-online-learning.jpg"
-        imageAlt="노트북으로 함께 공부하는 모습"
+        imageAlt="영어 단어 뜻이 펼쳐진 사전과 영국 지도"
         eyebrow="GLOBAL CONVERSATION"
         copy="배운 표현을 실제 대화에서 꺼내 쓰는 순간까지."
       />
