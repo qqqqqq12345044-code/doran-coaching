@@ -85,11 +85,40 @@ function SectionHeader({
   );
 }
 
+// "과정, 카테고리로 살펴보세요" 개요 카드(CategoryOverviewGrid)는 Hero 바로
+// 다음처럼 페이지 상단에서 먼저 보여줘야 "회화/자격증/내신/기타 과정 구조"가
+// 한눈에 들어온다. 그래서 CurriculumExplorer 안에 묶어두지 않고 별도로
+// export해 각 언어 페이지의 Hero 바로 아래(구 CourseSection 자리)에서
+// 렌더링한다. id="course"는 Hero의 "OO 과정 보기" 세컨더리 CTA가 그대로
+// 사용하는 기존 anchor다.
+export function CurriculumOverviewSection({ language, languageLabel, accent, id }: CurriculumExplorerProps & { id?: string }) {
+  return (
+    <section id={id} className="pb-14 pt-7 md:pb-16 md:pt-9 bg-surface scroll-mt-20">
+      <div className="section-shell">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow">CURRICULUM EXPLORER</p>
+          <h2 className="mt-2 text-balance text-[26px] font-bold leading-snug text-ink md:text-[32px]">
+            {languageLabel} 과정, 카테고리로 살펴보세요
+          </h2>
+          <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-soft md:text-[15px]">
+            회화 · 자격증 · 내신 · 기타 4개 카테고리에서 필요한 과정을 먼저 확인하고, 더 자세한 내용은 각 페이지에서 이어서 볼 수 있습니다.
+          </p>
+        </Reveal>
+
+        <div className="mt-8">
+          <CategoryOverviewGrid language={language} iconTintClass={accent.iconTint} accentTextClass={accent.text} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // 언어 상세 페이지의 "회화/자격증/내신/기타" 4개 영역을 카드 나열이 아니라
 // 단계별 학습 로드맵(Curriculum Explorer)으로 보여준다. 각 영역은 그 자체로
 // 하나의 작은 Landing Section(eyebrow → 제목 → 설명 → 로드맵 → CTA)이며,
 // Header Mega Menu/StickySubNav가 이동하는 #conversation 등 기존 앵커 id를
-// 그대로 유지한다.
+// 그대로 유지한다. 카테고리 개요(CurriculumOverviewSection)는 페이지 상단에
+// 별도로 배치되므로 여기서는 렌더링하지 않는다.
 export default function CurriculumExplorer({ language, languageLabel, accent }: CurriculumExplorerProps) {
   const conversation = getConversationRoadmap(language);
   const school = getSchoolRoadmap(language);
@@ -98,24 +127,6 @@ export default function CurriculumExplorer({ language, languageLabel, accent }: 
 
   return (
     <>
-      <section className="pb-14 pt-7 md:pb-16 md:pt-9 bg-surface">
-        <div className="section-shell">
-          <Reveal className="max-w-2xl">
-            <p className="eyebrow">CURRICULUM EXPLORER</p>
-            <h2 className="mt-2 text-balance text-[26px] font-bold leading-snug text-ink md:text-[32px]">
-              {languageLabel} 과정, 카테고리로 살펴보세요
-            </h2>
-            <p className="mt-3 text-pretty text-[14px] leading-relaxed text-ink-soft md:text-[15px]">
-              회화 · 자격증 · 내신 · 기타 4개 카테고리에서 필요한 과정을 먼저 확인하고, 더 자세한 내용은 각 페이지에서 이어서 볼 수 있습니다.
-            </p>
-          </Reveal>
-
-          <div className="mt-8">
-            <CategoryOverviewGrid language={language} iconTintClass={accent.iconTint} accentTextClass={accent.text} />
-          </div>
-        </div>
-      </section>
-
       <section id="conversation" className="pb-20 pt-7 md:pb-28 md:pt-9 bg-surface">
         <div className="section-shell">
           <SectionHeader

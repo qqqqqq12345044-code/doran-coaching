@@ -7,9 +7,8 @@ import LanguageHeroVisual from "@/components/LanguageHeroVisual";
 import StickySubNav from "@/components/StickySubNav";
 import ProblemSection from "@/components/ProblemSection";
 import FeatureSection from "@/components/FeatureSection";
-import CourseSection from "@/components/CourseSection";
 import CurriculumVisualBanner from "@/components/CurriculumVisualBanner";
-import CurriculumExplorer from "@/components/CurriculumExplorer";
+import CurriculumExplorer, { CurriculumOverviewSection } from "@/components/CurriculumExplorer";
 import ProcessSection from "@/components/ProcessSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import CoachSection from "@/components/CoachSection";
@@ -17,7 +16,6 @@ import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
 import { getLanguageBySlug } from "@/data/languages";
-import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
 import { faqByLanguage } from "@/data/faq";
@@ -119,6 +117,18 @@ export default function ChinesePage() {
         }
       />
 
+      <CurriculumOverviewSection
+        id="course"
+        language="chinese"
+        languageLabel="중국어"
+        accent={{
+          solid: "bg-chinese text-white",
+          text: "text-chinese",
+          tint: "bg-chinese-tint text-chinese-dark",
+          iconTint: "bg-chinese-tint text-chinese",
+        }}
+      />
+
       <ProblemSection
         title={["중국어,", "처음부터 제대로 배우고 싶다면"]}
         problems={PROBLEMS}
@@ -131,14 +141,6 @@ export default function ChinesePage() {
       />
 
       <StickySubNav items={SUB_NAV_ITEMS} activeClass="bg-chinese-tint text-chinese-dark" />
-
-      <CourseSection
-        id="course"
-        eyebrow="중국어 과정"
-        title={["병음부터 HSK까지,", "중국어 과정을 한눈에 확인하세요."]}
-        courses={coursesByLanguage.chinese}
-        accentClass="bg-chinese-tint text-chinese-dark"
-      />
 
       <CurriculumVisualBanner
         imageSrc="/images/language/chinese-study.jpg"

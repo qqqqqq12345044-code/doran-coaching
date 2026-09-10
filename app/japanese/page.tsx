@@ -7,9 +7,8 @@ import LanguageHeroVisual from "@/components/LanguageHeroVisual";
 import StickySubNav from "@/components/StickySubNav";
 import ProblemSection from "@/components/ProblemSection";
 import FeatureSection from "@/components/FeatureSection";
-import CourseSection from "@/components/CourseSection";
 import CurriculumVisualBanner from "@/components/CurriculumVisualBanner";
-import CurriculumExplorer from "@/components/CurriculumExplorer";
+import CurriculumExplorer, { CurriculumOverviewSection } from "@/components/CurriculumExplorer";
 import ProcessSection from "@/components/ProcessSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import CoachSection from "@/components/CoachSection";
@@ -17,7 +16,6 @@ import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
 import { getLanguageBySlug } from "@/data/languages";
-import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
 import { faqByLanguage } from "@/data/faq";
@@ -119,6 +117,18 @@ export default function JapanesePage() {
         }
       />
 
+      <CurriculumOverviewSection
+        id="course"
+        language="japanese"
+        languageLabel="일본어"
+        accent={{
+          solid: "bg-japanese text-white",
+          text: "text-japanese",
+          tint: "bg-japanese-tint text-japanese-dark",
+          iconTint: "bg-japanese-tint text-japanese",
+        }}
+      />
+
       <ProblemSection
         title={["일본어,", "어디서부터 시작해야 할지 막막하다면"]}
         problems={PROBLEMS}
@@ -131,14 +141,6 @@ export default function JapanesePage() {
       />
 
       <StickySubNav items={SUB_NAV_ITEMS} activeClass="bg-japanese-tint text-japanese-dark" />
-
-      <CourseSection
-        id="course"
-        eyebrow="일본어 과정"
-        title={["왕초보부터 JLPT까지,", "일본어 과정을 한눈에 확인하세요."]}
-        courses={coursesByLanguage.japanese}
-        accentClass="bg-japanese-tint text-japanese-dark"
-      />
 
       <CurriculumVisualBanner
         imageSrc="/images/language/japanese-business.jpg"

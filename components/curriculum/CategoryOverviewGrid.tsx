@@ -29,7 +29,7 @@ export default function CategoryOverviewGrid({ language, iconTintClass, accentTe
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {categories.map((category, index) => {
         const Icon = CATEGORY_ICONS[category.id];
-        const preview = category.items.slice(0, 3).map((item) => item.displayLabel);
+        const preview = [...new Set(category.items.map((item) => item.displayLabel))].slice(0, 3);
 
         return (
           <Reveal key={category.id} delay={index * 60}>
