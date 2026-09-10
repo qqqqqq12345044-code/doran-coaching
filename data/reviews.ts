@@ -263,6 +263,30 @@ export function getPublishedReviewsByLanguage(language: LanguageSlug): Review[] 
   return reviews.filter((review) => review.language === language && review.sourceType === "official-case");
 }
 
+// /reviews "전체" 탭처럼 official-case 전부를 보여주는 자리에서, 영어(8건)가
+// 일본어·중국어(각 1건)보다 훨씬 많아 그대로 나열하면 두 언어가 묻혀 보인다.
+// 언어별로 라운드로빈으로 섞어 각 언어의 사례가 목록 앞쪽에 고르게 나오도록
+// 순서만 바꾼다(실제 사례 수는 그대로, 새 후기 생성 없음).
+export function getPublishedReviewsLanguageBalanced(): Review[] {
+  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
+  const queues = languagePriority.map((language) => getPublishedReviewsByLanguage(language));
+
+  const balanced: Review[] = [];
+  let remaining = queues.reduce((sum, queue) => sum + queue.length, 0);
+  let cursor = 0;
+  while (remaining > 0) {
+    const queue = queues[cursor % queues.length];
+    const next = queue.shift();
+    if (next) {
+      balanced.push(next);
+      remaining -= 1;
+    }
+    cursor += 1;
+  }
+
+  return balanced;
+}
+
 // 홈 대표 후기 영역처럼 소수만 노출하는 자리에서, 배열 앞쪽에 영어 사례가
 // 몰려있어도 언어 3개가 최대한 고르게 보이도록 우선순위를 두어 고른다.
 // (실제 사례 자체는 늘리지 않고 노출 순서만 재구성 — 새 후기 생성 없음.)

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, BookOpen, CalendarDays, Globe2 } from "lucide-react";
 import Reveal from "@/components/Reveal";
@@ -75,25 +76,53 @@ export default function MagazinePage() {
 
   return (
     <>
-      <section className="section-pad bg-surface">
-        <div className="section-shell max-w-2xl">
-          <Reveal>
-            <p className="eyebrow">DORAN MAGAZINE</p>
-          </Reveal>
-          <Reveal delay={80}>
-            <h1 className="mt-3 text-[34px] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[44px]">
-              <span className="block">외국어 공부가 막힐 때,</span>
-              <span className="block">필요한 답부터 찾아보세요</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="mt-5 text-[16px] leading-relaxed text-ink-soft">
-              영어·일본어·중국어 학습법부터 TOEIC·OPIc·JLPT·HSK 같은 시험 준비 순서까지, 실제로 많이 궁금해하는
-              주제를 정리했습니다.
-            </p>
+      <div className="border-b border-ink/8 bg-surface-soft">
+        <div className="section-shell grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-14 lg:py-20">
+          <div>
+            <Reveal>
+              <p className="eyebrow">DORAN MAGAZINE</p>
+            </Reveal>
+            <Reveal delay={80}>
+              <h1 className="mt-3 text-[34px] font-extrabold leading-[1.2] tracking-tight text-ink sm:text-[44px]">
+                <span className="block">외국어 공부가 막힐 때,</span>
+                <span className="block">필요한 답부터 찾아보세요</span>
+              </h1>
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="mt-5 max-w-md text-[16px] leading-relaxed text-ink-soft">
+                영어·일본어·중국어 학습법부터 TOEIC·OPIc·JLPT·HSK 같은 시험 준비 순서까지, 실제로 많이 궁금해하는
+                주제를 정리했습니다.
+              </p>
+            </Reveal>
+            <Reveal delay={220}>
+              <div className="mt-6 flex flex-wrap gap-2">
+                {LANGUAGE_SECTIONS.map((lang) => (
+                  <a
+                    key={lang}
+                    href={`#${lang}`}
+                    className={`rounded-full px-4 py-1.5 text-[13.5px] font-semibold transition-colors hover:opacity-80 ${MAGAZINE_ACCENT[lang]}`}
+                  >
+                    {MAGAZINE_SECTION_TITLE[lang]}
+                  </a>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+
+          <Reveal delay={120} className="relative h-[200px] w-full overflow-hidden rounded-xl2 sm:h-[260px] lg:h-[320px]">
+            <Image
+              src="/images/magazine/hero.jpg"
+              alt="낱말이 적힌 마그넷 타일 더미"
+              fill
+              priority
+              sizes="(min-width: 1024px) 38vw, 100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-brand-dark/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent" />
           </Reveal>
         </div>
-      </section>
+      </div>
 
       {featuredBig && (
         <section className="section-pad border-t border-ink/5 bg-surface-soft">
@@ -196,21 +225,6 @@ export default function MagazinePage() {
           </div>
         </section>
       )}
-
-      <div className="border-t border-ink/5 bg-surface py-6">
-        <div className="section-shell flex flex-wrap items-center gap-2">
-          <span className="text-[12.5px] font-semibold text-ink-faint">바로 가기</span>
-          {LANGUAGE_SECTIONS.map((lang) => (
-            <a
-              key={lang}
-              href={`#${lang}`}
-              className="rounded-full bg-surface-soft px-4 py-1.5 text-[13.5px] font-semibold text-ink-soft transition-colors hover:bg-surface-softer"
-            >
-              {MAGAZINE_SECTION_TITLE[lang]}
-            </a>
-          ))}
-        </div>
-      </div>
 
       {LANGUAGE_SECTIONS.map((lang) => {
         const articles = getMagazineArticlesByLanguage(lang);

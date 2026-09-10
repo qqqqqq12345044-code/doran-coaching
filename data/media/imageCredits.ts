@@ -225,15 +225,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-conversation-mid",
     localPath: "/images/detail/japanese/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/macbook-on-womans-lap-i5cd_SlY8XY",
-    photographer: "Mimi Thian",
-    photographerUrl: "https://unsplash.com/@mimithian",
+    sourceUrl: "https://unsplash.com/photos/Undd5MXipP0",
+    photographer: "Antonio Prado",
+    photographerUrl: "https://unsplash.com/@antonioprado",
     attributionRequired: false,
     license: "Unsplash License",
-    // 노점/카페 외관(인물 없음) 사진으로 잠깐 바뀌었으나, "회화" 페이지는
-    // 관광 이미지보다 실제 학습/소통 분위기를 우선한다는 원칙에 따라 동아시아
-    // 인물이 노트북을 보는 원래 사진으로 되돌림(2026-09-04).
-    usage: "일본어 회화 상세페이지 중간 Visual Break — 노트북으로 집중해서 학습하는 모습",
+    // 이전 사진(노트북을 보는 인물, 일본과 무관한 실내)은 "회화" 페이지 목적이
+    // 드러나지 않아 교체(2026-09-10) — 도쿄 이자카야 카운터에서 사람들이 실제로
+    // 대화를 나누는 장면으로, 일본 현지 대화 맥락을 자연스럽게 전달한다.
+    usage: "일본어 회화 상세페이지 중간 Visual Break — 도쿄 이자카야에서 사람들이 대화를 나누는 모습",
   },
   {
     id: "detail-japanese-certification-hero",
@@ -252,14 +252,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-certification-mid",
     localPath: "/images/detail/japanese/certification/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/q10VITrVYUM",
-    photographer: "Jess Bailey",
-    photographerUrl: "https://unsplash.com/@jessbaileydesigns",
+    sourceUrl: "https://unsplash.com/photos/UyVbyimlAgE",
+    photographer: "Hiroshi Tsubono",
+    photographerUrl: "https://unsplash.com/@hiro7jp",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진은 크롭이 어색해 더 안정적으로 보이는 미니멀 학습 책상
-    // 사진으로 교체(2026-09-04).
-    usage: "일본어 자격증 상세페이지 중간 Visual Break — 펜과 노트, 안경이 놓인 깔끔한 학습 책상",
+    // 이전 사진(펜·노트·안경 flatlay)은 일본어/시험 맥락이 전혀 드러나지 않아
+    // 교체(2026-09-10) — 실제 일본어 문장이 인쇄된 책 페이지를 펼친 사진으로,
+    // JLPT·JPT 등 읽기 학습 맥락을 자연스럽게 전달한다.
+    usage: "일본어 자격증 상세페이지 중간 Visual Break — 일본어 문장이 쓰인 책 페이지를 펼친 모습",
   },
   {
     id: "detail-japanese-school-hero",
@@ -368,12 +369,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-certification-mid",
     localPath: "/images/detail/chinese/certification/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/a-white-paper-with-chinese-writing-on-it-A34D7VNI9FQ",
-    photographer: "Bernd Dittrich",
-    photographerUrl: "https://unsplash.com/@hdbernd",
+    sourceUrl: "https://unsplash.com/photos/ct58n7B6WbI",
+    photographer: "Cherry Lin",
+    photographerUrl: "https://unsplash.com/@cherrybbybomb",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "중국어 자격증 상세페이지 중간 Visual Break — 중국어 글씨가 쓰인 종이",
+    // 이전 사진(붓글씨 시 족자)은 완성된 예술 작품처럼 보여 "시험 준비"라는
+    // 맥락이 드러나지 않아 교체(2026-09-10) — 원고지에 한자를 반복해서 연습해
+    // 쓴 종이로, 실제 학습/연습 중인 모습을 더 직접적으로 보여준다.
+    usage: "중국어 자격증 상세페이지 중간 Visual Break — 원고지에 한자를 반복해서 연습한 종이",
   },
   {
     id: "detail-chinese-school-hero",
@@ -392,14 +396,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-chinese-school-mid",
     localPath: "/images/detail/chinese/school/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/UgA3Xvi3SkA",
-    photographer: "Trent Erwin",
-    photographerUrl: "https://unsplash.com/@tjerwin",
+    sourceUrl: "https://unsplash.com/photos/-qvF0aMnhwU",
+    photographer: "Maccy",
+    photographerUrl: "https://unsplash.com/@jizhidexiaohailang",
     attributionRequired: false,
     license: "Unsplash License",
-    // 이전 사진(Clay Banks, n9AaeihA9HI)이 영어 자격증 페이지(english/certification/mid.jpg)와
-    // 완전히 동일한 파일로 중복 사용되고 있어 교체(2026-09-04).
-    usage: "중국어 내신 상세페이지 중간 Visual Break — 안경과 펜이 놓인 노트, 노트북이 있는 책상",
+    // 이전 사진(안경·펜·노트북 flatlay)은 중국어/학생 맥락이 드러나지 않아
+    // 교체(2026-09-10) — 줄 노트에 한자를 손으로 또박또박 눌러 쓴 실제 필기
+    // 사진으로, 중국어 내신을 공부하는 학생의 노트 느낌을 직접적으로 전달한다.
+    usage: "중국어 내신 상세페이지 중간 Visual Break — 줄 노트에 한자를 손으로 눌러 쓴 필기",
   },
   {
     id: "detail-chinese-other-hero",
@@ -428,6 +433,34 @@ export const imageCredits: ImageCredit[] = [
     // 홍콩 컨테이너 항구 야경. 이전 사진(노트북 키보드 타이핑)은 무역·실무
     // 맥락이 약해, 무역/물류를 직관적으로 연상시키는 사진으로 교체(2026-09-04).
     usage: "중국어 기타 상세페이지 중간 Visual Break — 홍콩 컨테이너 항구의 야간 물류 현장",
+  },
+
+  // 매거진/후기 허브 페이지 Hero ------------------------------------------
+  {
+    id: "magazine-hero",
+    localPath: "/images/magazine/hero.jpg",
+    source: "unsplash",
+    sourceUrl: "https://unsplash.com/photos/oHoBIbDj7lo",
+    photographer: "Glen Carrie",
+    photographerUrl: "https://unsplash.com/@glencarrie",
+    attributionRequired: false,
+    license: "Unsplash License",
+    // 특정 언어를 대표하지 않으면서 "단어가 모여 언어가 된다"는 매거진 콘텐츠
+    // 허브의 성격을 추상적으로 보여주는 이미지로 선정(2026-09-10).
+    usage: "매거진 허브 페이지 Hero 비주얼 — 낱말이 적힌 마그넷 타일 더미",
+  },
+  {
+    id: "reviews-hero",
+    localPath: "/images/reviews/hero.jpg",
+    source: "unsplash",
+    sourceUrl: "https://unsplash.com/photos/tcyW6Im5Uug",
+    photographer: "Marcos Paulo Prado",
+    photographerUrl: "https://unsplash.com/@marcospradobr",
+    attributionRequired: false,
+    license: "Unsplash License",
+    // 특정 수강생을 지칭하지 않는 손글씨 기록 이미지 — 실제 인물처럼 보이지
+    // 않게 손과 노트 위주로 크롭된 사진을 선정(2026-09-10).
+    usage: "수강후기 페이지 Hero 비주얼 — 노트에 손글씨로 기록하는 모습",
   },
 ];
 
