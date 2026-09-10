@@ -17,13 +17,16 @@ import CoachSection from "@/components/CoachSection";
 import ReviewSection from "@/components/ReviewSection";
 import ComparisonSection from "@/components/ComparisonSection";
 import FAQ from "@/components/FAQ";
+import RelatedLinks from "@/components/detail/RelatedLinks";
 import ConsultationSection from "@/components/ConsultationSection";
-import { getLanguageBySlug } from "@/data/languages";
+import { getLanguageBySlug, languages } from "@/data/languages";
 import type { LanguageSlug } from "@/data/languages";
 import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
-import { getEnabledClusters } from "@/data/seo/keywords";
+import { getEnabledClusters, getClustersByLanguage } from "@/data/seo/keywords";
+import { CORE_LOCAL_KEYWORDS } from "@/data/seo/publishBatches";
+import { getMagazineArticlesByLanguage } from "@/data/magazine";
 import { PUBLISHED_LOCAL_SEO_PAGES, findLocalSeoPreview } from "@/data/seo/previewRegistry";
 import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLocalSeoContent";
 import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
@@ -173,12 +176,52 @@ export default async function LocalSeoLandingPage({
 
   // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
   // 같은 배열을 두 곳(Breadcrumb 컴포넌트 / schema builder)에서 그대로 재사용한다.
+  // URL 구조(/local/[sido]/[sigungu]/[dong]/[keyword])와 동일한 4단계로 맞춰
+  // 시도/시군구/읍면동을 모두 별도 crumb으로 보여준다(이전에는 "동"이 빠지고
+  // 마지막 crumb에 지역명이 통째로 중복 표시됐다). 시도/시군구/동은 실제로
+  // 존재하는 페이지가 아니라 href 없이 텍스트로만 표시한다(존재하지 않는 URL을
+  // schema에 넣지 않는 기존 원칙 유지).
   const breadcrumbItems = [
     { label: "홈", href: "/" },
-    { label: language.nameKo, href: language.href },
     { label: region.sido },
     { label: region.sigungu ?? "" },
-    { label: result.searchPhrase },
+    { label: preview.region.legalDong },
+    { label: cluster.mainKeyword },
+  ];
+
+  // "가지치기" — 검색으로 바로 들어온 사용자가 막다른 페이지에서 끝나지 않게
+  // 관련성 높은 소수의 내부 링크만 모은다(총 7개, 5~10개 권장 범위 내). 97,905개
+  // 전부에 링크를 수십~수백 개씩 붙이지 않고, 카테고리당 1~2개로 제한한다.
+  // "상담" 링크는 이미 Hero/본문/최종 CTA에 충분히 있어 여기 추가하지 않는다.
+  const siblingKeywords = getClustersByLanguage(cluster.language)
+    .map((c) => c.mainKeyword)
+    .filter((keyword) => keyword !== cluster.mainKeyword && CORE_LOCAL_KEYWORDS.includes(keyword))
+    .slice(0, 2);
+
+  const relatedMagazineArticle = (() => {
+    const articles = getMagazineArticlesByLanguage(cluster.language);
+    const wantsExam = cluster.intent === "exam";
+    return articles.find((a) => a.categoryLabel.includes(wantsExam ? "자격증" : "학습법")) ?? articles[0] ?? null;
+  })();
+
+  const otherLanguages = languages.filter((l) => l.slug !== cluster.language);
+
+  const exploreLinks = [
+    ...siblingKeywords.map((keyword) => ({
+      label: `${region.regionName} ${keyword}`,
+      href: `/local/${preview.region.sido}/${preview.region.sigungu}/${preview.region.legalDong}/${keyword}`,
+      description: `${region.regionName}에서 찾는 다른 키워드`,
+    })),
+    { label: content.relatedCourse.label, href: content.relatedCourse.href, description: `${language.nameKo} 과정 살펴보기` },
+    ...(relatedMagazineArticle
+      ? [{ label: relatedMagazineArticle.h1, href: `/magazine/${relatedMagazineArticle.slug}`, description: relatedMagazineArticle.cardSummary }]
+      : []),
+    ...otherLanguages.map((lang) => ({
+      label: `${lang.nameKo} 배우기`,
+      href: lang.href,
+      description: lang.description.split("\n")[0],
+    })),
+    { label: "SELF-CHECK로 방향 확인하기", href: "/#self-check", description: "30초면 나에게 맞는 학습 방향을 확인할 수 있어요" },
   ];
 
   return (
@@ -293,6 +336,12 @@ export default async function LocalSeoLandingPage({
       />
 
       <FAQ items={content.faq} />
+
+      <div className="bg-surface-soft py-14 sm:py-16">
+        <div className="section-shell">
+          <RelatedLinks title="이 지역에서 더 둘러보기" links={exploreLinks} accentTextClass={accent.text} />
+        </div>
+      </div>
 
       <ConsultationSection
         title={content.finalCta.heading.split("\n")}

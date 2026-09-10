@@ -91,7 +91,7 @@ export default function HomePage() {
         moreHref="/reviews"
       />
 
-      <LanguageSelectSection />
+      <LanguageSelectSection eyebrow="언어별 과정" title="관심 있는 언어의 전체 과정을 살펴보세요" />
 
       <ProblemSection
         title={["외국어 공부,", "이런 고민 있으셨나요?"]}

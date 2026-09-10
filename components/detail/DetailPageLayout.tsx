@@ -170,7 +170,14 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
     { label: "수업 방식", variant: "text", items: [CLASS_TEXT_BRAND] },
   ];
 
-  const breakIndex = content.sections.length >= 2 ? Math.floor(content.sections.length / 2) : -1;
+  // audienceSection의 bullets는 이미 위 KeySummaryPanel("이런 분에게 도움이
+  // 됩니다")에 그대로 노출됐으므로, 본문 Section 목록에서는 제외해 같은 목록이
+  // 페이지 안에서 두 번 나오지 않게 한다(데이터 자체는 그대로 두고 이 화면의
+  // 렌더링에서만 중복을 제거 — data/detailPages 본문은 수정하지 않음).
+  const bodySections = audienceSection
+    ? content.sections.filter((section) => section !== audienceSection)
+    : content.sections;
+  const breakIndex = bodySections.length >= 2 ? Math.floor(bodySections.length / 2) : -1;
 
   // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
   // 같은 배열을 두 곳(DetailHero prop / schema builder)에서 그대로 재사용한다.
@@ -249,7 +256,7 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
         </div>
       </div>
 
-      {content.sections.map((section, index) => (
+      {bodySections.map((section, index) => (
         <Fragment key={section.heading}>
           <DetailSection {...section} index={index} accentTextClass={accent.text} />
           {index === breakIndex && (
