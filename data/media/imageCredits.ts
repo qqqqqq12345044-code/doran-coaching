@@ -116,12 +116,15 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-english-conversation-mid",
     localPath: "/images/detail/english/conversation/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/young-woman-smiling-while-working-on-a-laptop-at-desk-UHfJI_lZoPo",
-    photographer: "Vitaly Gariev",
-    photographerUrl: "https://unsplash.com/@silverkblack",
+    sourceUrl: "https://unsplash.com/photos/two-women-sitting-beside-table-and-talking-LQ1t-8Ms5PY",
+    photographer: "Christina @ wocintechchat.com",
+    photographerUrl: "https://unsplash.com/@wocintechchat",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "영어 회화 상세페이지 중간 Visual Break — 책상에서 노트북 화상통화로 대화하는 모습",
+    // 이전 사진(노트북 화상통화 + 배경 포스트잇 벽)은 회화보다 사무실 브레인스토밍
+    // 느낌이 강해 교체(2026-09-09) — 창가 테이블에서 두 사람이 실제로 마주 보고
+    // 대화하는 사진으로, 노트북 없이 1:1 소통 장면을 보여준다.
+    usage: "영어 회화 상세페이지 중간 Visual Break — 창가 테이블에서 두 사람이 마주 앉아 대화하는 모습",
   },
   {
     id: "detail-english-certification-hero",
@@ -275,12 +278,16 @@ export const imageCredits: ImageCredit[] = [
     id: "detail-japanese-school-mid",
     localPath: "/images/detail/japanese/school/mid.jpg",
     source: "unsplash",
-    sourceUrl: "https://unsplash.com/photos/hBdaqrr5Z3k",
-    photographer: "Kelly Sikkema",
-    photographerUrl: "https://unsplash.com/@kellysikkema",
+    sourceUrl: "https://unsplash.com/photos/a-person-studying-at-a-desk-with-books-QR-XQbUVC1s",
+    photographer: "Yanhao Fang",
+    photographerUrl: "https://unsplash.com/@alamanga",
     attributionRequired: false,
     license: "Unsplash License",
-    usage: "일본어 내신 상세페이지 중간 Visual Break — 펼쳐진 노트와 펜들이 놓인 책상",
+    // 이전 사진(노트·펜 flatlay)은 "학교 내신/일본어 공부" 맥락이 없어 교체
+    // (2026-09-09) — 일본 기후현 타카야마 도서관 창문 너머로 학생 한 명이
+    // 혼자 필기하며 공부하는 모습. 일본 전통 목조 창틀이 자연스럽게 현지
+    // 맥락을 전달하며, 노트북 없이 1인 학습 장면이다.
+    usage: "일본어 내신 상세페이지 중간 Visual Break — 일본 도서관에서 혼자 필기하며 공부하는 학생",
   },
   {
     id: "detail-japanese-other-hero",

@@ -20,6 +20,18 @@ export interface Review {
   /** official-case일 때만: 공개적으로 접근 가능한 원문 출처. */
   sourceUrl?: string;
   sourceLabel?: string;
+  /**
+   * official-case 전용 Before → Learning → Change 요약. sourceUrl 원문 기사를
+   * 실제로 확인한 뒤, 원문에 있는 사실만 짧게 재구성했다(문장 그대로 대량
+   * 복사 금지 원칙에 따라 패러프레이즈). 원문에 없는 나이/점수/기간은 추가하지
+   * 않았다. /reviews 페이지의 사례 카드에서만 사용하고, 기존 quote/meta는
+   * ReviewCard(홈 등 다른 화면)에서 그대로 계속 쓴다.
+   */
+  story?: {
+    before: string;
+    learning: string;
+    change: string;
+  };
 }
 
 export const reviews: Review[] = [
@@ -35,6 +47,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/powerenglish-review",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "외국인 앞에 서면 부끄럽고 두려운 마음이 커서, 배우고 싶다는 생각만 하고 계속 미루고 있었어요.",
+      learning: "전화영어로 상황별 Role-play를 반복하고, 모르는 단어는 그때그때 메모해두었다가 따로 복습했어요.",
+      change: "대답을 떠올리는 시간이 짧아지고, 예전보다 자유롭게 회화를 구사할 수 있게 됐어요.",
+    },
   },
   {
     id: "review-official-en-02",
@@ -44,6 +61,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/preparing-practical-english-with-powereng",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "말하기에 대한 자신감이 부족했고, 문장을 만들어내는 것도 서툴렀어요.",
+      learning: "요일별로 회화·듣기·독해 주제를 나눠 꾸준히 공부하고, 수업 중에는 맞장구를 치거나 먼저 말을 꺼내며 최대한 많이 말하려고 했어요.",
+      change: "어렵지 않게 영어로 소통하는 단계가 됐고, 현지인과의 대화도 무리 없이 이어갈 수 있었어요.",
+    },
   },
   {
     id: "review-official-en-03",
@@ -53,6 +75,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/find-fun-of-english-with-powerenglish",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "초등학교 입학 후 영어에 대한 거부감과 두려움이 컸어요.",
+      learning: "레벨 테스트로 방향을 잡은 뒤 스토리북으로 표현을 익히고, 매 시간 소리 파일을 따라 읽는 과제를 했어요.",
+      change: "거부감이 사라지고, 틀려도 망설이지 않고 대답하며 배운 문장을 일상에서 스스로 써보려고 해요.",
+    },
   },
   {
     id: "review-official-cn-01",
@@ -62,6 +89,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/powerchina-review",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "중국 근무 경험이 있었지만 한국에 돌아온 뒤 감각이 점점 옅어지고, 독해력과 어휘력이 부족하다고 느꼈어요.",
+      learning: "아침 시간에 전화 수업으로 HSK 교재를 학습하고, 중국 영화·드라마·뉴스로 스스로 중국어에 노출되는 시간을 늘렸어요.",
+      change: "목표했던 HSK 6급 교재를 무리 없이 읽을 수 있는 수준까지 독해력과 어휘력이 올라갔어요.",
+    },
   },
   {
     id: "review-official-jp-01",
@@ -71,6 +103,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/start-studying-japanese-with-powerjapan",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "일본 출장자를 응대할 일이 잦았지만, 직장인이다 보니 피곤함과 회식 등을 핑계로 수업을 자주 미루게 됐어요.",
+      learning: "화상·전화로 일정을 유연하게 조율하며 초급 교재를 차근차근 끝까지 진행했어요.",
+      change: "간단한 회화와 독해가 가능해졌고, 실제 식사 자리에서 일본어로 자연스럽게 대화하며 자신감을 얻었어요.",
+    },
   },
   {
     id: "review-official-en-04",
@@ -80,6 +117,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/attractive-power-english",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "진로에 대한 고민이 컸고, 특별히 잘하는 것도 없다고 느끼던 시기였어요.",
+      learning: "부담 없는 짧은 전화영어 수업을 지루함 없이 꾸준히 이어갔어요.",
+      change: "생각을 영어로 표현하는 게 자연스러워졌고, 외국인에게 먼저 말을 걸 수 있을 만큼 자신감이 생겼어요.",
+    },
   },
   {
     id: "review-official-en-05",
@@ -89,6 +131,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/anytime-anywhere-with-powerenglish",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "영어에 자신이 없어 학원도 이런저런 핑계로 자주 빠졌고, 간단한 인사말도 듣고 답하지 못했어요.",
+      learning: "주 5일 20분씩 화상 수업으로 발음과 입 모양을 교정받고, 수업 후에는 거울을 보며 배운 문장을 여러 번 반복해서 말했어요.",
+      change: "듣고 말하는 게 예전보다 익숙해지고 어색함이 줄면서 회화 능력에 자신감이 붙었어요.",
+    },
   },
   {
     id: "review-official-en-06",
@@ -98,6 +145,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/have-passion-not-too-late-with-powerenglish",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "학원에서 진도는 나갔지만 남는 게 없었고, 기초가 잡혀 있지 않아 무엇부터 해야 할지 막막했어요.",
+      learning: "1:1로 기초부터 다시 잡으면서, 유튜브·영화·미국 드라마 같은 실제 소재로 자연스러운 표현을 익혔어요.",
+      change: "영어로 말하는 게 조금씩 자연스러워졌고, 학교 수업의 말하기·쓰기·듣기도 한결 수월해졌어요.",
+    },
   },
   {
     id: "review-official-en-07",
@@ -107,6 +159,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/7084/family/coaching-education/",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "고등학생 때부터 영어가 어렵게 느껴졌고, 대학 진학 후에도 다른 과목보다 영어에 자신감이 없었어요.",
+      learning: "학습 속도에 맞춘 1:1 수업으로 긴 지문을 반복해서 읽고, 수업 후에는 코치님과 복습하며 녹음 파일로 발음을 연습했어요.",
+      change: "발음이 좋아지고 회화 실력도 늘었으며, 힘들었던 긴 지문도 이제는 막힘없이 읽어낼 수 있게 됐어요.",
+    },
   },
   {
     id: "review-official-en-08",
@@ -116,6 +173,11 @@ export const reviews: Review[] = [
     sourceType: "official-case",
     sourceUrl: "https://www.vinemagazine.co.kr/powereng-student-review",
     sourceLabel: "vinemagazine.co.kr",
+    story: {
+      before: "재미있게 실력을 늘리며 외국인과 직접 소통하는 회화를 배우고 싶었고, 학부모님도 문법 위주 학교 교육을 보완하고 싶어 했어요.",
+      learning: "몰랐던 단어는 뜻을 적어두고 잘못된 발음은 반복 연습했으며, 숙제와 수업 녹음 파일로 꾸준히 복습했어요.",
+      change: "전화영어에서 배운 표현이 학교 수업에도 나와, 이미 배운 내용을 친구들보다 쉽게 이해할 수 있었어요.",
+    },
   },
 
   // ===========================================================================

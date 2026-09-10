@@ -64,7 +64,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
   english: {
     conversation: {
       hero: { src: "/images/detail/english/conversation/hero.jpg", alt: "노트북으로 화상통화하며 웃으며 대화하는 여성" },
-      mid: { src: "/images/detail/english/conversation/mid.jpg", alt: "책상에서 노트북 화상통화로 대화하는 여성" },
+      mid: { src: "/images/detail/english/conversation/mid.jpg", alt: "창가 테이블에서 두 사람이 마주 앉아 대화하는 모습" },
     },
     certification: {
       hero: { src: "/images/detail/english/certification/hero.jpg", alt: "듀얼 모니터 앞에서 헤드폰을 쓰고 집중해서 영어 시험을 준비하는 모습" },
@@ -90,7 +90,7 @@ const DETAIL_IMAGES: Record<CurriculumLanguage, Record<DetailCategory, DetailIma
     },
     school: {
       hero: { src: "/images/detail/japanese/school/hero.jpg", alt: "빈 교실에서 혼자 책을 보는 학생" },
-      mid: { src: "/images/detail/japanese/school/mid.jpg", alt: "펼쳐진 노트와 펜들이 놓인 책상" },
+      mid: { src: "/images/detail/japanese/school/mid.jpg", alt: "일본 도서관에서 혼자 필기하며 공부하는 학생" },
     },
     other: {
       hero: { src: "/images/detail/japanese/other/hero.jpg", alt: "사무실에서 혼자 집중해서 노트북으로 업무를 처리하는 모습" },
