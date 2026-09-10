@@ -2,6 +2,7 @@ import type { LanguageSlug } from "../../data/languages";
 import type { SeoIntent, SeoKeywordCluster } from "../../data/seo/keywords";
 import { getIntentBlueprint, type IntentBlueprint } from "../../data/seo/contentBlueprints.ts";
 import { getExamProfileForCluster, type ExamContentProfile } from "../../data/seo/examProfiles.ts";
+import { getClusterContentOverride, type ClusterContentOverride } from "../../data/seo/clusterContentOverrides.ts";
 import {
   getCurriculumByLanguage,
   type PowerCurriculumItem,
@@ -210,14 +211,21 @@ export function generateLocalSeoContent(
   // 없는 exam Cluster(향후 확장)나 다른 Intent는 기존 공용 Blueprint로
   // 자연스럽게 fallback한다 — intent="exam" 구조 자체는 그대로 유지된다.
   const examProfile = cluster.intent === "exam" ? getExamProfileForCluster(cluster.id) : null;
+  // examProfile(시험별)이 있으면 그것을 우선하고, 없으면 Cluster 단위 Override
+  // (conversation/tutoring/online의 언어별 차이)를 확인한다. 둘 다 없으면 기존
+  // Intent Blueprint로 자연히 fallback한다 — 나머지 21개 Cluster는 영향 없음.
+  const clusterOverride: ClusterContentOverride | null = examProfile
+    ? null
+    : getClusterContentOverride(cluster.id);
   const langName = LANGUAGE_NAME[cluster.language];
   const searchPhrase = `${region.regionName} ${cluster.mainKeyword}`;
 
   const vars = { 지역명: region.regionName, 언어: langName, mainKeyword: cluster.mainKeyword };
 
-  const instructorDescriptor = examProfile?.instructorDescriptor ?? blueprint.instructorDescriptor;
-  const goalPhrase = examProfile?.goalVocabulary ?? blueprint.goalPhrase;
-  const focusThemes = examProfile?.focusThemes ?? blueprint.focusThemes;
+  const instructorDescriptor =
+    examProfile?.instructorDescriptor ?? clusterOverride?.instructorDescriptor ?? blueprint.instructorDescriptor;
+  const goalPhrase = examProfile?.goalVocabulary ?? clusterOverride?.goalPhrase ?? blueprint.goalPhrase;
+  const focusThemes = examProfile?.focusThemes ?? clusterOverride?.focusThemes ?? blueprint.focusThemes;
 
   // --- AEO Direct Answer (2문장) ---
   const directAnswer = examProfile
@@ -228,9 +236,10 @@ export function generateLocalSeoContent(
       `과정과 강사를 상담할 수 있습니다.`;
 
   // --- Hero ---
+  const h1Subline = examProfile?.h1Subline ?? clusterOverride?.h1Subline ?? blueprint.h1Subline;
   const hero = {
     eyebrow: `DORAN ${langName} · ${region.regionName}`,
-    h1: `${searchPhrase},\n${blueprint.h1Subline}`,
+    h1: `${searchPhrase},\n${h1Subline}`,
     description:
       `${regionNoTravelPhrase(region.regionName)} ${langName} 1:1 화상수업입니다. ` +
       `${conjoinWithObjectParticle(focusThemes.slice(0, 2))} 중심으로, 현재 수준에 맞춰 진행됩니다.`,
@@ -248,7 +257,9 @@ export function generateLocalSeoContent(
   // --- Recommended For ---
   const recommendedFor = examProfile
     ? examProfile.audiencePoints
-    : blueprint.audiencePoints.map((point) => fill(point, vars));
+    : clusterOverride
+      ? clusterOverride.audiencePoints
+      : blueprint.audiencePoints.map((point) => fill(point, vars));
 
   // --- Benefits ---
   // exam Profile이 있으면 시험별로 직접 작성한 Benefit을 그대로 쓴다(Generic
@@ -262,10 +273,12 @@ export function generateLocalSeoContent(
   ];
   const benefits = examProfile
     ? examProfile.benefits
-    : focusThemes.slice(0, 4).map((theme, index) => ({
-        title: theme,
-        description: benefitSentenceTemplates[index % benefitSentenceTemplates.length](theme),
-      }));
+    : clusterOverride
+      ? clusterOverride.benefits
+      : focusThemes.slice(0, 4).map((theme, index) => ({
+          title: theme,
+          description: benefitSentenceTemplates[index % benefitSentenceTemplates.length](theme),
+        }));
 
   // --- Curriculum ---
   const relatedCurriculum = getRelatedCurriculum(cluster);
@@ -289,8 +302,12 @@ export function generateLocalSeoContent(
     { title: "학습 관리", description: "수업 진행 상황에 맞춰 학습을 관리합니다." },
   ];
 
-  // --- FAQ (Intent/시험 Profile별 질문을 그대로 사용, 지역/언어/키워드만 치환) ---
-  const qaTemplates = examProfile ? examProfile.qaTemplates : blueprint.qaTemplates;
+  // --- FAQ (Intent/시험 Profile/Cluster Override별 질문을 그대로 사용, 지역/언어/키워드만 치환) ---
+  const qaTemplates = examProfile
+    ? examProfile.qaTemplates
+    : clusterOverride
+      ? clusterOverride.qaTemplates
+      : blueprint.qaTemplates;
   const faq = qaTemplates.slice(0, 6).map(({ question, answer }) => ({
     question: fill(question, vars),
     answer: fill(answer, vars),
@@ -303,7 +320,8 @@ export function generateLocalSeoContent(
   };
 
   // --- Metadata ---
-  const metadataTitle = fill(blueprint.titleTemplate, vars);
+  const titleTemplate = examProfile?.titleTemplate ?? clusterOverride?.titleTemplate ?? blueprint.titleTemplate;
+  const metadataTitle = fill(titleTemplate, vars);
   const metadataDescription =
     `${searchPhrase}를 찾고 있다면 ${serviceFacts.brandNameKo}의 1:1 화상수업으로 시작해보세요. ` +
     `${instructorDescriptor}와 함께 ${goalPhrase}에 맞춰 과정을 상담할 수 있습니다.`;

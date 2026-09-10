@@ -40,6 +40,14 @@ export interface ExamContentProfile {
   audiencePoints: string[];
   benefits: ExamBenefit[];
   qaTemplates: ExamQaTemplate[];
+  /** H1 두 번째 줄. 기존에는 이 필드가 없어 모든 시험이 공용 exam Blueprint의
+   *  h1Subline("목표에 맞춘 1:1 시험대비 수업")을 그대로 썼다 — 시험명이 다른데
+   *  H1이 사실상 동일 문구였던 지점이라 시험별로 채운다. */
+  h1Subline: string;
+  /** Metadata title 템플릿. 기존에는 이 필드가 없어 TOEIC/OPIc/JLPT/HSK/HSKK
+   *  전부가 공용 exam Blueprint의 titleTemplate을 그대로 썼다 — title도
+   *  시험별로 채운다. */
+  titleTemplate: string;
   /** 실제로 formal 연결되어야 하는 Curriculum Cluster id(문서화/검증용).
    *  실제 매칭은 기존 linkedClusterIds 기반 getRelatedCurriculum()이 그대로 담당한다. */
   curriculumClusterIds: string[];
@@ -86,6 +94,8 @@ export const examProfiles: ExamContentProfile[] = [
       },
     ],
     curriculumClusterIds: ["english-toeic"],
+    h1Subline: "목표 점수를 위한 1:1 화상 시험대비",
+    titleTemplate: "{지역명} {mainKeyword} | 목표 점수별 1:1 화상수업 도란",
   },
   {
     id: "opic",
@@ -127,6 +137,8 @@ export const examProfiles: ExamContentProfile[] = [
       },
     ],
     curriculumClusterIds: ["english-opic"],
+    h1Subline: "실전 답변으로 준비하는 1:1 말하기 시험대비",
+    titleTemplate: "{지역명} {mainKeyword} | 1:1 말하기 시험대비 도란",
   },
   {
     id: "jlpt",
@@ -168,6 +180,8 @@ export const examProfiles: ExamContentProfile[] = [
       },
     ],
     curriculumClusterIds: ["japanese-jlpt"],
+    h1Subline: "목표 급수를 위한 1:1 화상 시험대비",
+    titleTemplate: "{지역명} {mainKeyword} | 급수별 1:1 화상수업 도란",
   },
   {
     id: "hsk",
@@ -209,6 +223,8 @@ export const examProfiles: ExamContentProfile[] = [
       },
     ],
     curriculumClusterIds: ["chinese-hsk"],
+    h1Subline: "목표 급수를 위한 1:1 화상 시험대비",
+    titleTemplate: "{지역명} {mainKeyword} | 급수별 1:1 화상수업 도란",
   },
   {
     id: "hskk",
@@ -250,6 +266,8 @@ export const examProfiles: ExamContentProfile[] = [
       },
     ],
     curriculumClusterIds: ["chinese-hskk"],
+    h1Subline: "발음·성조까지 교정받는 1:1 말하기 시험대비",
+    titleTemplate: "{지역명} {mainKeyword} | 말하기 시험 1:1 화상수업 도란",
   },
 ];
 
