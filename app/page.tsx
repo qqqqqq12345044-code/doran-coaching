@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Target, ListChecks, Users, TrendingUp } from "lucide-react";
+import { Target, ListChecks, Users, TrendingUp, ArrowRight } from "lucide-react";
 import JsonLd from "@/components/seo/JsonLd";
 import { buildWebSiteSchema, buildOrganizationSchema, buildFaqPageSchema } from "@/lib/seo/schema";
+import Reveal from "@/components/Reveal";
 import HomeHero from "@/components/HomeHero";
 import HeroQuickNav from "@/components/HeroQuickNav";
 import LanguageSelectSection from "@/components/LanguageSelectSection";
@@ -58,12 +59,7 @@ const FEATURES = [
   },
 ];
 
-const HOW_IT_WORKS_STEPS = [
-  { title: "무료 상담 신청" },
-  { title: "학습 목표 확인" },
-  { title: "코치 추천 및 매칭" },
-  { title: "1:1 수업 시작" },
-];
+const HOW_IT_WORKS_STEPS = ["상담 신청", "맞춤 설계", "수업 시작"];
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -124,13 +120,29 @@ export default function HomePage() {
         coaches={coaches}
       />
 
-      <ProcessSection
-        id="how-it-works"
-        eyebrow="이용 안내"
-        title={["수업은 이렇게 시작해요."]}
-        intro={"상담 신청부터 실제 수업 시작까지, 진행되는 절차입니다."}
-        steps={HOW_IT_WORKS_STEPS}
-      />
+      {/* "도란의 방식" 섹션이 이미 "왜 1:1로 시작하는지"를 설명하므로, 여기서는
+          같은 내용을 다시 카드로 반복하지 않고 상담 직전 흐름만 한 줄로
+          짧게 짚어준다(#how-it-works는 HomeHero 슬라이드 2개와 HeroQuickNav가
+          이미 링크하는 anchor라 id는 그대로 유지). */}
+      <section id="how-it-works" className="scroll-mt-20 bg-surface py-12 md:py-16">
+        <div className="section-shell">
+          <Reveal className="flex flex-col items-center gap-4 text-center sm:flex-row sm:justify-center sm:gap-3">
+            <p className="eyebrow shrink-0">이용 안내</p>
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2">
+              {HOW_IT_WORKS_STEPS.map((step, index) => (
+                <span key={step} className="flex items-center gap-2">
+                  <span className="rounded-full border border-ink/10 bg-surface-soft px-4 py-2 text-[14px] font-semibold text-ink">
+                    {step}
+                  </span>
+                  {index < HOW_IT_WORKS_STEPS.length - 1 && (
+                    <ArrowRight size={14} className="text-ink/25" aria-hidden />
+                  )}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
       <FAQ items={faqItems} />
 

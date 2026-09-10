@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import AnchorLink from "@/components/AnchorLink";
+import Reveal from "@/components/Reveal";
 import { ArrowLeft, ArrowRight, Check, ChevronRight, MessageCircle, RotateCcw, Sparkles } from "lucide-react";
 import { languages, type LanguageSlug } from "@/data/languages";
 import {
@@ -97,7 +98,7 @@ export default function SelfCheck() {
 
       <div className="section-shell relative">
         <div className="mx-auto max-w-3xl rounded-xl3 border border-ink/8 bg-white p-7 shadow-card md:p-12">
-          <div className="text-center">
+          <Reveal className="text-center">
             <div className="inline-flex items-center gap-1.5 rounded-full bg-brand-tint px-3.5 py-1.5">
               <Sparkles size={13} className="text-brand" aria-hidden />
               <p className="text-xs font-bold tracking-wide text-brand">SELF CHECK</p>
@@ -108,10 +109,10 @@ export default function SelfCheck() {
             <p className="mx-auto mt-3 max-w-sm whitespace-pre-line text-[15px] leading-relaxed text-ink-soft">
               {"30초면 나에게 맞는 수업 방향을\n바로 확인할 수 있어요."}
             </p>
-          </div>
+          </Reveal>
 
           {step !== 4 && (
-            <div className="mx-auto mt-9 flex max-w-md items-center justify-between">
+            <Reveal delay={100} className="mx-auto mt-9 flex max-w-md items-center justify-between">
               {STEP_LABELS.map((label, index) => {
                 const n = index + 1;
                 const isDone = n < step;
@@ -148,7 +149,7 @@ export default function SelfCheck() {
                   </div>
                 );
               })}
-            </div>
+            </Reveal>
           )}
 
           <div key={step} className="mt-9 animate-fade-up">
