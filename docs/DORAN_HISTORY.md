@@ -194,13 +194,53 @@
   Review/AggregateRating 없음.
 
 ### 상태
-- 로컬 커밋 `c86d844` 완료. **push는 이 세션 환경에서 Git Credential Manager 대화형 로그인을
-  띄울 수 없어 실패** — 사용자가 복귀 후 직접 `git push origin main` 실행 필요(HISTORY/MASTER
-  갱신 포함해 이미 커밋에 포함됨). push 전까지 production은 이전 상태(`ed446e0`) 그대로이며
-  이번 변경은 아직 배포되지 않음.
+- 사용자가 복귀 후 직접 `git push origin main` 실행해 `c86d844`+`e1e27f7` push 완료.
+  Vercel이 자동 빌드해 production `READY`, `dorancoaching.com` alias 정상 확인(Vercel MCP로
+  직접 확인). production에서 카카오 주소검색 실동작·체크리스트·후기·390px까지 재확인 완료.
 
 ### Commit
-- `c86d844` Add Kakao address search to consultation form and pre-consult checklist to local SEO leaf pages (push 대기)
+- `c86d844` Add Kakao address search to consultation form and pre-consult checklist to local SEO leaf pages
+- `e1e27f7` Update operating docs for the Kakao address search / local SEO checklist work
+
+---
+
+## 2026-09-11 (야간, 2차) — 운영 마감 점검: 개인정보 동의 문구 + npm audit + 색인/Apps Script 상태
+
+### 작업
+- Google Apps Script 재배포 실제 가능 범위 확인(로그인 권한 필요로 직접 수행 불가, 준비 상태만 점검).
+- 상담폼 개인정보 동의 문구에 실제 수집 항목/목적 명시.
+- Google/Naver Search Console 로그인 접근 없이 사이트 자체 색인 준비 상태(robots/sitemap/canonical) 점검.
+- `npm audit` 3건(moderate 1, high 2)을 실제로 분석하고 안전하게 해결 가능한 것만 수정.
+
+### 주요 변경
+- `components/ConsultationSection.tsx` — 개인정보 동의 체크박스 위에 실제 수집 항목(이름/연락처/
+  주소·상세주소/관심 언어/문의 내용)과 목적(상담 회신·수업 매칭)을 한 줄로 명시. 보유기간/
+  처리주체(사업자명)/정책 링크는 여전히 미확정이라 추가하지 않음(TODO 주석 유지, 범위 좁혀 갱신).
+- `package.json` — `overrides.next.postcss`를 `^8.5.26`으로 고정해 Next.js 15.5.25가 내부에
+  번들하던 취약한 postcss@8.4.31(경로 순회/소스맵 임의 파일 노출, GHSA-r28c-9q8g-f849 등)을
+  8.5.28로 안전하게 교체. Next 자체 메이저 버전은 그대로 15.x 유지(breaking 없음) — `npm audit fix
+  --force`(Next 16 메이저 업그레이드 요구)는 사용하지 않았다. `package-lock.json`도 함께 갱신.
+  `xlsx`(high, Prototype Pollution/ReDoS)는 npm에 공개된 fix 버전이 없어 미해결로 남김 — devDependency로
+  로컬 지역 데이터 빌드 스크립트에서만 쓰이고 런타임 번들에 포함되지 않아 실사용 위험은 낮다고 판단.
+
+### 확인만 하고 코드를 바꾸지 않은 항목
+- **Google Apps Script 재배포**: `scripts/google-apps-script/consultation.gs`는 코드상 준비 완료
+  상태(이전 세션에서 addressDetail/zonecode 로직 추가 완료)이나, 실제 배포는 script.google.com
+  로그인·웹 UI 조작이 필요해 Claude Code가 대신 수행할 수 없다 — 완료 보고에 사용자가 직접 할
+  5단계를 안내.
+- **Google/Naver 색인 실제 수치**: Search Console/네이버 서치어드바이저 관리자 콘솔 로그인 접근이
+  없어 실제 제출/발견/색인 URL 수치는 확인 불가 — 대신 production의 robots.txt/sitemap.xml(sitemapindex,
+  4-shard 전부 정상)/canonical/noindex 여부(코드베이스에 noindex 사용 없음 확인)/검증 파일(`public/*.html`
+  2개 유지 확인)만 점검.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build` clean.
+- `npm run validate:seo`, `npm run validate:curriculum`, `npm run validate:detail-content` 전부 이상 없음.
+- `npm audit`: 기존 3건(moderate 1 + high 2) → 1건(xlsx, high)만 남음. `npm ls postcss`로 next 내부
+  postcss가 8.5.28로 정상 deduped됐음을 직접 확인.
+
+### 상태
+- 로컬 커밋 완료 후 push, Vercel production READY 확인(상세는 아래 Commit 참고).
 
 ---
 

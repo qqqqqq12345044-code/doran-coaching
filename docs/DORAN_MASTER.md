@@ -1,7 +1,7 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-11 (최근 commit
-`c86d844`, 로컬 커밋 완료·push는 인증 문제로 대기 중 — 상세는 HISTORY 참고). 이 문서와
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-11 (최근 push된 commit
+`e1e27f7`까지 production 반영 확인됨, 이번 세션 작업은 HISTORY 최신 항목 참고). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
 
@@ -151,7 +151,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - 요청은 `Content-Type: text/plain;charset=utf-8`로 전송(Apps Script Web App이 CORS preflight를 처리하지 않아 JSON Content-Type을 쓰면 막히기 때문 — `no-cors`도 쓰지 않음, 응답을 읽어 성공/실패를 구분해야 하므로).
 - Honeypot 필드(`company`)로 봇 방어 — 값이 채워지면 실제 전송 없이 성공 화면만 표시.
 - 필드: 이름/연락처/주소(기본주소+상세주소 분리, 2026-09 갱신)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
-- 개인정보 동의 문구는 정책(수집목적/보유기간/처리주체) 확정 전까지 확장 금지 — 코드 내 `TODO` 주석으로 명시.
+- 개인정보 동의 문구(2026-09 갱신): 실제 수집 항목(이름/연락처/주소·상세주소/관심 언어/문의 내용)과 수집 목적(상담 회신·수업 매칭)을 동의 체크박스 위에 명시했다. **보유기간/처리주체(사업자명)/개인정보처리방침 링크는 여전히 미확정** — 확정 전까지 이 3가지는 문구에 추가하지 않는다(코드 내 `TODO` 주석 유지).
 - 환경변수 `NEXT_PUBLIC_CONSULTATION_ENDPOINT`는 `.env.local`(git 미포함)에만 존재, `.env.example`에 키 이름만 기록.
 - `defaultInterest` prop으로 언어별/지역 랜딩페이지에서 해당 언어 체크박스를 기본 선택 상태로 표시 가능.
 
@@ -239,23 +239,23 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 
 코드 주석 기준으로 확인된 미해결/의도적 보류 항목:
 
-- 상담폼 개인정보 동의 문구: 수집목적/보유기간/처리주체(사업자명)/개인정보처리방침 링크 **미확정** — 확정 전까지 문구 확장 금지 (`ConsultationSection.tsx` TODO).
+- 상담폼 개인정보 동의 문구: 수집 항목/목적은 2026-09 명시 완료. **보유기간/처리주체(사업자명)/개인정보처리방침 링크는 여전히 미확정** — 확정 전까지 이 3가지 확장 금지 (`ConsultationSection.tsx` TODO).
+- npm audit(2026-09 점검): `next`(moderate, 내부 번들 postcss 경유)는 `package.json`의 `overrides`로 next 내부 postcss만 8.5.28로 고정해 해결(Next 자체는 15.x 유지, breaking 없음). `xlsx`(high, Prototype Pollution/ReDoS)는 npm에 공개된 fix 버전이 없어(`fixAvailable: false`) 미해결 — 단 devDependency로 로컬 지역 데이터 빌드 스크립트에서 운영자 소유의 신뢰된 파일만 파싱하는 용도라 실제 노출 경로 없음(런타임 번들 미포함). 우선순위 낮음.
 - Reviews `prototype` 9건은 데이터에 남아있으나 실제 화면 미노출 — 2026-09 재확인(Playwright로 `/reviews` 렌더 결과에서 prototype 9건의 quote 문자열이 전혀 등장하지 않음을 직접 검증) 결과 노출 위험 없음. 실제 후기로 교체되거나 삭제될 여지는 여전히 있음(선택 사항, 급하지 않음).
 - `/local` 지역 허브는 2026-09-11 막 추가된 구조라 실사용 트래픽/SEO 효과가 아직 검증되지 않음.
 - sitemap shard 2(일본어)는 keyword 5개 기준 6,527×5=32,635개로 3개 shard가 균등하다고 가정하고 있으나, 향후 `CORE_LOCAL_KEYWORDS`를 언어당 5개가 아니게 바꾸면 이 균등 분할 전제가 깨짐(코드 변경 시 주의).
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(직전 커밋 `c86d844 "Add Kakao address search to consultation form and
-pre-consult checklist to local SEO leaf pages"`) 기준, 현재 코드 상태에서 자연스럽게
-이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
+이 문서 작성 시점(최근 push된 커밋 `e1e27f7`, production 반영 확인됨) 기준, 현재 코드
+상태에서 자연스럽게 이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
 
-1. **(즉시)** `c86d844` push — 현재 세션 환경에서는 Git Credential Manager 대화형 로그인을
-   띄울 수 없어 push가 막혀 있다. 사용자가 직접 `git push origin main` 실행 필요.
-2. push 후 Google Apps Script 편집기에 `scripts/google-apps-script/consultation.gs`
+1. **(사용자 직접 필요)** Google Apps Script 편집기에서 `scripts/google-apps-script/consultation.gs`
    최신 내용을 복사해 재배포 — 해야 상세주소/우편번호가 Sheet에 실제로 저장되기 시작한다
-   (재배포 전에도 기존 필드 저장은 정상 동작).
-3. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
-4. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음.
-5. 상담폼 개인정보 정책 확정 → 동의 문구/링크 갱신.
+   (재배포 전에도 기존 필드 저장은 정상 동작). Claude Code는 script.google.com 로그인
+   권한이 없어 대신 수행 불가 — 2026-09-11 완료 보고의 "Apps Script 재배포 단계" 참고.
+2. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
+3. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음.
+4. 상담폼 개인정보 정책 최종 확정(보유기간/처리주체/정책 링크) → 확정되면 동의 문구에 반영. 수집 항목/목적 명시는 2026-09 완료.
+5. `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix 없음) — 실사용 위험은 낮으나, 지역 데이터 빌드 스크립트를 다른 파서로 교체할지 여부는 선택 사항으로 남아있음.
 6. `docs/` 3종 문서 운영 정착 (본 작업의 목적).
