@@ -291,11 +291,36 @@
   동시에 상호작용하는 것이 여러 차례 관찰됨 — 사이트 버그가 아니라 공유 브라우저 세션
   자체의 특성으로 판단, `url`을 매번 atomic하게 재확인하는 방식으로 우회.
 
+### 추가 감사(상담폼 UX/모바일/기술품질) 및 2차 수정
+같은 퍼널 감사의 연장으로 상담폼 UX·390px 모바일·기술 품질을 별도로 재점검.
+
+- **P1(실수정)**: 상담폼 honeypot(`company`) 필드가 `left:-9999px` 오프스크린 기법으로만
+  숨겨져 있어 스크린리더 가상 커서 탐색 시 여전히 발견·입력 가능했다. 채워지면
+  `consultation.gs`가 `{success:true}`만 반환하고 실제로는 저장하지 않아, 해당 사용자의
+  상담 신청이 성공 화면을 본 채로 조용히 유실되는 구조였다. 래퍼 div에 `aria-hidden="true"`
+  추가로 스크린리더에서 완전히 제외(오프스크린 배치 자체가 이미 봇에게 탐지 가능한
+  신호라 aria-hidden 추가가 봇 우회 방어력을 실질적으로 낮추지 않는다고 판단).
+- **P2(실수정)**: 상세주소 input에 명시적 접근성 이름이 없어(placeholder만 존재)
+  `aria-label="상세주소"` 추가(시각적 변화 없음).
+- 재확인해 문제 없었던 부분: 카카오 주소검색 전체 플로우(팝업→검색→선택→자동 채움→
+  포커스 이동), 필수 필드 native validation, 개인정보 동의 문구-실제 수집 항목 일치,
+  390px 13개 페이지 유형 전부 overflow/콘솔에러 0건(긴 지역명·긴 keyword 조합 포함),
+  중복 id 없음, hydration 경고 없음. 실제 테스트 제출은 0건(네트워크 요청 없이 모두
+  브라우저 native validation과 카카오 검색 콜백만으로 검증).
+- 매거진 글 "who-fits-online-language-tutoring"의 관련 과정 CTA가 일본어로만
+  연결된다는 초기 감사 발견은, `data/magazine/common.ts` 데이터와 production 렌더링을
+  직접 재확인한 결과 **오탐으로 확인**(영어/일본어/중국어 3개 모두 정상 연결) — 수정하지 않음.
+
+### 검증(2차)
+- `npx tsc --noEmit`, `npm run build` clean.
+
 ### 상태
-- 커밋 후 push, Vercel production 확인 예정(완료 보고 참고).
+- 커밋 후 push, Vercel production 확인 완료(완료 보고 참고).
 
 ### Commit
 - `c75dd6f` Fix dead CourseSection links found in search-to-consultation funnel audit
+- `17636fb` Fix commit hash reference in HISTORY after previous commit landed
+- (2차 커밋 해시는 완료 보고 참고)
 
 ---
 

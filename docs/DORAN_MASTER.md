@@ -151,6 +151,9 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 - 요청은 `Content-Type: text/plain;charset=utf-8`로 전송(Apps Script Web App이 CORS preflight를 처리하지 않아 JSON Content-Type을 쓰면 막히기 때문 — `no-cors`도 쓰지 않음, 응답을 읽어 성공/실패를 구분해야 하므로).
 - Honeypot 필드(`company`)로 봇 방어 — 값이 채워지면 실제 전송 없이 성공 화면만 표시.
+  오프스크린(`left:-9999px`) + `aria-hidden="true"`로 시각적·스크린리더 양쪽에서 숨김
+  (2026-09 갱신: aria-hidden이 없어 스크린리더 사용자가 실수로 채우면 상담 신청이
+  조용히 유실되는 문제를 발견해 수정).
 - 필드: 이름/연락처/주소(기본주소+상세주소 분리, 2026-09 갱신)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
 - 개인정보 동의 문구(2026-09 갱신): 실제 수집 항목(이름/연락처/주소·상세주소/관심 언어/문의 내용)과 수집 목적(상담 회신·수업 매칭)을 동의 체크박스 위에 명시했다. **보유기간/처리주체(사업자명)/개인정보처리방침 링크는 여전히 미확정** — 확정 전까지 이 3가지는 문구에 추가하지 않는다(코드 내 `TODO` 주석 유지).
 - 환경변수 `NEXT_PUBLIC_CONSULTATION_ENDPOINT`는 `.env.local`(git 미포함)에만 존재, `.env.example`에 키 이름만 기록.

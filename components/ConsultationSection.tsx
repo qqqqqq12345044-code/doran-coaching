@@ -190,10 +190,16 @@ export default function ConsultationSection({
             className="relative rounded-xl3 bg-white p-7 shadow-soft md:p-9"
           >
             <div className="grid gap-5 sm:grid-cols-2">
-              {/* Honeypot: 시각적으로 숨기되 display:none/aria-hidden만으로 숨기지
-                  않는다(일부 봇은 이를 감지해 우회). 화면 밖으로 이동시키고 tab
-                  순서/스크린리더에서도 제외한다. */}
-              <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
+              {/* Honeypot: 시각적으로 숨기되 display:none만으로 숨기지 않는다(일부
+                  봇은 이를 감지해 우회) — 화면 밖(left:-9999px)으로 이동시키는
+                  방식은 유지한다. 다만 이 오프스크린 기법은 스크린리더에는 여전히
+                  노출돼, 가상 커서로 탐색하는 사용자가 실수로 "회사명"을 채우면
+                  Apps Script가 성공 응답만 주고 실제로는 저장하지 않아 상담 신청이
+                  조용히 유실되는 문제가 있었다(2026-09 발견). aria-hidden을 추가해
+                  스크린리더에서 완전히 제외한다 — 이미 오프스크린 배치 자체가
+                  탐지 가능한 신호라 aria-hidden 추가로 봇 탐지 위험이 실질적으로
+                  늘지 않는다. */}
+              <div className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden" aria-hidden="true">
                 <label htmlFor="company">회사명</label>
                 <input
                   id="company"
@@ -267,6 +273,7 @@ export default function ConsultationSection({
                   name="addressDetail"
                   type="text"
                   autoComplete="address-line2"
+                  aria-label="상세주소"
                   placeholder="상세주소 (동/호수, 건물명 등)"
                   className="mt-2 w-full rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
                 />
