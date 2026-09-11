@@ -86,7 +86,7 @@ export default async function DongHubPage({ params }: { params: Promise<DongPage
       <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="bg-surface px-6 py-14 md:py-16">
+      <section className="bg-surface py-14 md:py-16">
         <div className="section-shell">
           <div className="max-w-2xl">
             <p className="eyebrow">{sido} · {sigungu} · {dong}</p>
@@ -108,7 +108,7 @@ export default async function DongHubPage({ params }: { params: Promise<DongPage
         </div>
       </section>
 
-      <section className="bg-surface-soft px-6 py-12 text-center md:py-14">
+      <section className="bg-surface-soft py-12 text-center md:py-14">
         <div className="section-shell">
           <Link
             href={`/local/${sido}/${sigungu}`}

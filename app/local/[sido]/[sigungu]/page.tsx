@@ -63,14 +63,14 @@ export default async function SigunguHubPage({ params }: { params: Promise<Sigun
       <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="bg-surface px-6 py-14 md:py-16">
+      <section className="bg-surface py-14 md:py-16">
         <div className="section-shell">
           <div className="max-w-2xl">
             <p className="eyebrow">
               {sido} · {sigungu}
             </p>
-            <h1 className="text-balance mt-3 text-[26px] font-extrabold leading-tight text-ink md:text-[34px]">
-              {sigungu} 읍/면/동별 외국어 코칭
+            <h1 className="text-balance mt-3 break-keep text-[26px] font-extrabold leading-tight text-ink md:text-[34px]">
+              {sigungu} <span className="whitespace-nowrap">읍/면/동별</span> 외국어 코칭
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
               읍/면/동을 선택하면 영어·일본어·중국어 중 원하는 언어와 목적을 골라 코칭 페이지로
@@ -89,7 +89,7 @@ export default async function SigunguHubPage({ params }: { params: Promise<Sigun
         </div>
       </section>
 
-      <section className="bg-surface-soft px-6 py-12 text-center md:py-14">
+      <section className="bg-surface-soft py-12 text-center md:py-14">
         <div className="section-shell">
           <Link
             href={`/local/${sido}`}

@@ -6,7 +6,7 @@ import JsonLd from "@/components/seo/JsonLd";
 import { buildBreadcrumbListSchema } from "@/lib/seo/schema";
 import LocalRegionSearch from "@/components/local/LocalRegionSearch";
 import { languages } from "@/data/languages";
-import { getSidoGroupedByRegion } from "@/lib/seo/localHub";
+import { getSidoGroupedByRegion, getSigunguCount } from "@/lib/seo/localHub";
 
 // 지역 허브 최상위 페이지. 기존 Local SEO 4-segment route
 // (/local/[sido]/[sigungu]/[dong]/[keyword])와 세그먼트 깊이가 달라 그대로
@@ -38,7 +38,7 @@ export default function LocalHubPage() {
       <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="bg-surface px-6 pb-14 pt-14 md:pb-16 md:pt-20">
+      <section className="bg-surface pb-14 pt-14 md:pb-16 md:pt-20">
         <div className="section-shell">
           <div className="max-w-2xl">
             <p className="eyebrow">전국 지역별 코칭</p>
@@ -70,7 +70,7 @@ export default function LocalHubPage() {
         </div>
       </section>
 
-      <section className="bg-surface-soft px-6 py-14 md:py-16">
+      <section className="bg-surface-soft py-14 md:py-16">
         <div className="section-shell">
           <div className="flex items-end justify-between gap-4">
             <div>
@@ -86,14 +86,19 @@ export default function LocalHubPage() {
             {regionGroups.map((group) => (
               <div key={group.label}>
                 <p className="text-[13px] font-semibold text-ink-faint">{group.label}</p>
-                <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4">
+                <div className="mt-3 flex flex-wrap gap-3">
                   {group.sidoList.map((sido) => (
                     <Link
                       key={sido}
                       href={`/local/${sido}`}
-                      className="group flex items-center justify-between gap-2 rounded-xl2 border border-ink/10 bg-white px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card"
+                      className="group flex min-w-[9.5rem] items-center justify-between gap-3 rounded-xl2 border border-ink/10 bg-white px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-brand/30 hover:shadow-card"
                     >
-                      <span className="min-w-0 truncate text-[14px] font-semibold text-ink">{sido}</span>
+                      <span>
+                        <span className="block text-[14px] font-semibold leading-snug text-ink">{sido}</span>
+                        <span className="mt-0.5 block text-[12px] text-ink-faint">
+                          시/군/구 {getSigunguCount(sido)}곳
+                        </span>
+                      </span>
                       <ArrowRight
                         size={15}
                         className="shrink-0 text-ink-faint transition-transform duration-200 group-hover:translate-x-1 group-hover:text-brand"
@@ -108,7 +113,7 @@ export default function LocalHubPage() {
         </div>
       </section>
 
-      <section className="bg-surface px-6 py-14 text-center md:py-16">
+      <section className="bg-surface py-14 text-center md:py-16">
         <div className="section-shell">
           <p className="text-[15px] text-ink-soft">
             원하는 언어 전체 과정이 궁금하다면 언어별 페이지에서도 살펴볼 수 있어요.

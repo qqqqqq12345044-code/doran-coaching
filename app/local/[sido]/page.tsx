@@ -62,12 +62,12 @@ export default async function SidoHubPage({ params }: { params: Promise<SidoPage
       <JsonLd data={buildBreadcrumbListSchema(breadcrumbItems)} />
       <Breadcrumb items={breadcrumbItems} />
 
-      <section className="bg-surface px-6 py-14 md:py-16">
+      <section className="bg-surface py-14 md:py-16">
         <div className="section-shell">
           <div className="max-w-2xl">
             <p className="eyebrow">{sido}</p>
-            <h1 className="text-balance mt-3 text-[26px] font-extrabold leading-tight text-ink md:text-[34px]">
-              {sido} 시/군/구별 외국어 코칭
+            <h1 className="text-balance mt-3 break-keep text-[26px] font-extrabold leading-tight text-ink md:text-[34px]">
+              {sido} <span className="whitespace-nowrap">시/군/구별</span> 외국어 코칭
             </h1>
             <p className="mt-4 text-[15px] leading-relaxed text-ink-soft">
               시/군/구를 선택하면 읍/면/동까지 이어서 살펴볼 수 있어요. 이동 없이 1:1 온라인
@@ -87,7 +87,7 @@ export default async function SidoHubPage({ params }: { params: Promise<SidoPage
         </div>
       </section>
 
-      <section className="bg-surface-soft px-6 py-12 text-center md:py-14">
+      <section className="bg-surface-soft py-12 text-center md:py-14">
         <div className="section-shell">
           <p className="text-[14px] text-ink-soft">원하는 언어 전체 과정도 함께 살펴보세요.</p>
           <div className="mt-4 flex flex-wrap justify-center gap-3">

@@ -62,7 +62,7 @@ export default function LocalRegionSearch() {
           value={query}
           onFocus={ensureLoaded}
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="동네를 검색해 보세요 (예: 역삼동, 해운대구)"
+          placeholder="동네를 검색해 보세요 (예: 역삼동)"
           className="w-full min-w-0 bg-transparent text-[15px] text-ink placeholder:text-ink-faint focus:outline-none"
           aria-label="지역 검색"
         />
