@@ -26,7 +26,7 @@ export default function RelatedLinks({ title, links, accentTextClass }: RelatedL
           <Link
             key={link.href}
             href={link.href}
-            className="group flex items-center justify-between gap-3 rounded-xl2 border border-ink/10 bg-white px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-card"
+            className="group flex min-w-0 items-center justify-between gap-3 rounded-xl2 border border-ink/10 bg-white px-5 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-card"
           >
             <span className="flex min-w-0 items-center gap-3">
               <span className="text-[11px] font-bold text-ink-faint">{String(index + 1).padStart(2, "0")}</span>

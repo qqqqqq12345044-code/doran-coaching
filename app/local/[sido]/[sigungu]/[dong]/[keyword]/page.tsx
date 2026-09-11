@@ -177,15 +177,18 @@ export default async function LocalSeoLandingPage({
   // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
   // 같은 배열을 두 곳(Breadcrumb 컴포넌트 / schema builder)에서 그대로 재사용한다.
   // URL 구조(/local/[sido]/[sigungu]/[dong]/[keyword])와 동일한 4단계로 맞춰
-  // 시도/시군구/읍면동을 모두 별도 crumb으로 보여준다(이전에는 "동"이 빠지고
-  // 마지막 crumb에 지역명이 통째로 중복 표시됐다). 시도/시군구/동은 실제로
-  // 존재하는 페이지가 아니라 href 없이 텍스트로만 표시한다(존재하지 않는 URL을
-  // schema에 넣지 않는 기존 원칙 유지).
+  // 시도/시군구/읍면동을 모두 별도 crumb으로 보여준다. 지역 허브(/local/[sido],
+  // /local/[sido]/[sigungu], /local/[sido]/[sigungu]/[dong])가 실제로 존재하는
+  // 페이지이므로 각 crumb에 해당 허브 URL을 연결한다 — 화이트리스트 기반이라
+  // (이 리프 페이지 자체가 화이트리스트를 통과했으므로) 상위 지역도 항상 존재.
   const breadcrumbItems = [
     { label: "홈", href: "/" },
-    { label: region.sido },
-    { label: region.sigungu ?? "" },
-    { label: preview.region.legalDong },
+    { label: region.sido, href: `/local/${region.sido}` },
+    { label: region.sigungu ?? "", href: region.sigungu ? `/local/${region.sido}/${region.sigungu}` : undefined },
+    {
+      label: preview.region.legalDong,
+      href: region.sigungu ? `/local/${region.sido}/${region.sigungu}/${preview.region.legalDong}` : undefined,
+    },
     { label: cluster.mainKeyword },
   ];
 
