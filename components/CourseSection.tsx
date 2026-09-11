@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Course } from "@/data/courses";
 import Reveal from "@/components/Reveal";
@@ -35,9 +36,11 @@ export default function CourseSection({
         </Reveal>
 
         <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {courses.map((course, index) => (
-            <Reveal key={course.title} delay={Math.min(index * 60, 480)}>
-              <div className="group flex h-full items-center justify-between gap-3 rounded-xl2 border border-ink/8 bg-white px-4 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/14 hover:shadow-card sm:px-5">
+          {courses.map((course, index) => {
+            const cardClassName =
+              "group flex h-full items-center justify-between gap-3 rounded-xl2 border border-ink/8 bg-white px-4 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/14 hover:shadow-card sm:px-5";
+            const cardContent = (
+              <>
                 <div className="flex min-w-0 items-center gap-3">
                   <span
                     className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-bold ${accentClass}`}
@@ -53,9 +56,20 @@ export default function CourseSection({
                   className="shrink-0 text-ink/20 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-ink/45"
                   aria-hidden
                 />
-              </div>
-            </Reveal>
-          ))}
+              </>
+            );
+            return (
+              <Reveal key={course.title} delay={Math.min(index * 60, 480)}>
+                {course.href ? (
+                  <Link href={course.href} className={cardClassName}>
+                    {cardContent}
+                  </Link>
+                ) : (
+                  <div className={cardClassName}>{cardContent}</div>
+                )}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
     </section>

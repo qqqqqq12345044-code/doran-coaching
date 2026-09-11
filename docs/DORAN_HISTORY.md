@@ -247,6 +247,58 @@
 
 ---
 
+## 2026-09-11 (야간, 3차) — 검색유입→상담전환 퍼널 전면 감사, CourseSection 죽은 링크 수정
+
+### 작업
+"Google/Naver 검색 유입 → 랜딩페이지 신뢰 형성 → 과정 탐색 → 상담 신청" 퍼널 기준으로
+기술 SEO/Local SEO 콘텐츠 품질/퍼널 UX/모바일/카피/기술 품질을 전방위 재감사.
+
+### 발견 및 수정
+- **P1(실수정)**: `components/CourseSection.tsx`가 `data/courses.ts`의 `Course.title`만
+  렌더링하고 있어, 화살표 아이콘·hover 애니메이션으로 "클릭 가능"해 보이는 카드가 실제로는
+  아무 링크도 없었다. 이 컴포넌트는 Local SEO 리프 페이지(`/local/.../[keyword]`, 97,905개
+  전체) "목표에 맞는 {언어} 과정을 선택하세요" 섹션(8~11개 카드)에 쓰여 "검색 유입 →
+  과정 탐색" 퍼널 단계를 사실상 막고 있었다. `Course`에 선택 필드 `href`를 추가하고
+  `coursesByLanguage`의 각 항목을 `data/navigation/languageNavigation.ts`의
+  `CATEGORY_BY_ITEM_ID`와 동일한 기준(회화/시험/내신/기타)으로 실제 상세페이지에 연결.
+  "비즈니스 영어"→`/english/other`는 `data/detailPages/english.ts`(자격증 FAQ, "비즈니스
+  목적의 기타 수업 문의")의 기존 문구를 근거로 판단. 홈의 `purposeCourses`(언어 무관 목적
+  개요)는 특정 언어로 단정할 수 없어 href 없이 유지(의도적).
+
+### 재확인해 문제 없었던 부분(수정하지 않음)
+- 기술 SEO: robots/sitemap 4-shard/canonical/noindex 미사용 — 전부 정상.
+- Local SEO 품질: 15개 keyword 전부(수도권/광역시 인접군/지방군/긴 특수문자 지역명
+  "종로1.2.3.4가동" 포함) 샘플에서 title/H1/description 고유성, offline 오인 표현 0건,
+  `preConsultCheck` 실제 keyword별 차별화 확인. `validate:local-seo`(97,905건) 재실행 이상 없음.
+- Header의 전역 "무료 상담 신청" CTA는 `#consultation`이 없는 페이지(12개 상세페이지,
+  local 허브, 매거진 글)에서 `handleConsultationClick()`이 `/#consultation`으로 폴백하는
+  기존 설계(`components/Header.tsx:63-73`)를 코드로 재확인 — 죽은 anchor 아님.
+- 모바일 390px: 홈/언어별/상세 3개(en·jp·zh)/매거진 목록+글/후기/local 허브(긴 지역명
+  포함)/local 리프 3개(en·jp·zh)/상담폼까지 13개 페이지 전부 가로 스크롤 없음.
+  세션 전체 콘솔 에러·경고 0건. 상담폼 label-for 전부 유효, 중복 id 없음.
+- 카피: "체계적"/"전문적인"/"다양한" 등 반복 수식어를 코드베이스에서 검색해 실제 용례를
+  확인 — 전부 구체적 맥락이 있는 사용이라 AI스러운 공허한 문구로 판단되지 않음.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build` clean.
+- `npm run validate:local-seo`(97,905건 전부 이상 없음), `npm run validate:seo` 이상 없음.
+- Playwright로 로컬(`localhost:3001`)에서 CourseSection 8개 카드가 전부 올바른
+  `/english/{conversation,school,certification,other}` href를 가진 실제 링크로
+  렌더링되는지 직접 확인, 콘솔 에러 0건.
+
+### 세션 특이사항
+- 이번 세션의 Playwright 브라우저가 다른 활동(다른 탭/페이지로 예고 없이 이동)과
+  동시에 상호작용하는 것이 여러 차례 관찰됨 — 사이트 버그가 아니라 공유 브라우저 세션
+  자체의 특성으로 판단, `url`을 매번 atomic하게 재확인하는 방식으로 우회.
+
+### 상태
+- 커밋 후 push, Vercel production 확인 예정(완료 보고 참고).
+
+### Commit
+- (아래 커밋 참고 — 문서 갱신 커밋에서 해시 보정)
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
