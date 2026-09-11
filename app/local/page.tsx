@@ -48,8 +48,8 @@ export default function LocalHubPage() {
               1:1 온라인 외국어 코칭
             </h1>
             <p className="mt-5 text-[16px] leading-relaxed text-ink-soft">
-              영어·일본어·중국어를 시/도부터 읍/면/동까지 지역별로 살펴보세요. 화상 수업이라 이동은
-              없지만, 내가 사는 동네를 기준으로 코칭 페이지를 바로 찾을 수 있어요.
+              영어·일본어·중국어를 시/도부터 읍/면/동까지 지역별로 살펴보세요. 내 지역에 맞는 코칭
+              페이지를 바로 찾아볼 수 있어요.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
