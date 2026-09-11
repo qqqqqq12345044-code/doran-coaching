@@ -62,9 +62,8 @@ export default function CategoryOverviewGrid({ language, iconTintClass, accentTe
                 </ul>
               )}
 
-              <span className={`mt-auto inline-flex items-center gap-1.5 pt-5 text-[14px] font-semibold ${accentTextClass}`}>
-                자세히 보기
-                <ArrowRight size={14} className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
+              <span className={`mt-auto inline-flex pt-5 ${accentTextClass}`}>
+                <ArrowRight size={16} className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden />
               </span>
             </Link>
           </Reveal>

@@ -39,6 +39,26 @@ const MAGAZINE_SECTION_TITLE: Record<LanguageSlug, string> = {
   chinese: "중국어",
 };
 
+// 카테고리 헤더의 좌측 accent bar 색상. 언어별 12개 상세페이지가 이미 쓰는
+// accent 토큰(bg-{lang}/text-{lang})을 그대로 재사용한다 — 새 색상 없음.
+const LANGUAGE_BORDER_ACCENT: Record<LanguageSlug, string> = {
+  english: "border-english",
+  japanese: "border-japanese",
+  chinese: "border-chinese",
+};
+
+// 카테고리 한 줄 설명. 새로운 시험 사실을 만들지 않고(TOEIC/OPIc/JLPT/HSK/HSKK는
+// data/curriculum/examFacts.ts가 SoT), 카테고리가 다루는 주제 범위만 짧게
+// 안내한다. 실제 categoryLabel(6종)과 정확히 일치해야 한다.
+const CATEGORY_DESCRIPTION: Record<string, string> = {
+  "영어 학습법": "회화 감각을 키우는 공부법과 꾸준히 이어가는 루틴",
+  "영어 자격증": "TOEIC · OPIc, 목표 점수까지 준비하는 방법",
+  "일본어 학습법": "히라가나부터 회화까지, 시작하는 방법과 루틴",
+  "일본어 자격증": "JLPT 급수별 준비 방법과 학습 순서",
+  "중국어 학습법": "병음 · 성조부터 회화까지 이어가는 학습법",
+  "중국어 자격증": "HSK · HSKK 준비 방법과 학습 순서",
+};
+
 // 카테고리 탐색은 실제 데이터 구조(언어별 파일)를 그대로 따른다 — 별도 필터
 // state 없이 anchor 이동만으로 처리(정적 렌더링 유지, Client Component 불필요).
 const LANGUAGE_SECTIONS: LanguageSlug[] = ["english", "japanese", "chinese"];
@@ -51,6 +71,10 @@ const FEATURED_LANGUAGE_SLUGS: Record<LanguageSlug, string> = {
   japanese: "japanese-speaking-study-order",
   chinese: "chinese-speaking-study-order",
 };
+
+// 카테고리별 대표글을 고를 때 위 EDITOR'S PICK과 같은 글을 다시 뽑지 않기
+// 위한 제외 목록.
+const topFeaturedSlugs = new Set<string>([FEATURED_SLUG, ...Object.values(FEATURED_LANGUAGE_SLUGS)]);
 
 function groupByCategory(articles: MagazineArticle[]): [string, MagazineArticle[]][] {
   const map = new Map<string, MagazineArticle[]>();
@@ -207,17 +231,16 @@ export default function MagazinePage() {
                       >
                         {article.categoryLabel}
                       </span>
-                      <p className="mt-3 text-[15px] font-bold leading-snug text-ink">{article.h1}</p>
+                      <p className="mt-3 text-[15px] font-bold leading-snug text-ink group-hover:underline group-hover:decoration-ink/30 group-hover:underline-offset-4">
+                        {article.h1}
+                      </p>
                       <p className="mt-2 text-[13px] leading-relaxed text-ink-faint">{article.cardSummary}</p>
                     </div>
-                    <span className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-ink-soft">
-                      자세히 보기
-                      <ArrowRight
-                        size={14}
-                        className="transition-transform duration-200 group-hover:translate-x-0.5"
-                        aria-hidden
-                      />
-                    </span>
+                    <ArrowRight
+                      size={15}
+                      className="mt-4 text-ink-faint transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-ink"
+                      aria-hidden
+                    />
                   </Link>
                 </Reveal>
               ))}
@@ -241,37 +264,80 @@ export default function MagazinePage() {
                 <span className="text-[13px] font-medium text-ink-faint">{articles.length}개의 글</span>
               </Reveal>
 
-              <div className="mt-8 space-y-10">
-                {groups.map(([categoryLabel, groupArticles]) => (
-                  <div key={categoryLabel}>
-                    <p className="text-[13px] font-bold uppercase tracking-wide text-ink-faint">{categoryLabel}</p>
-                    <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                      {groupArticles.map((article, index) => (
-                        <Reveal key={article.slug} delay={index * 60}>
-                          <Link
-                            href={`/magazine/${article.slug}`}
-                            className="group flex h-full flex-col justify-between rounded-xl2 border border-ink/8 bg-white p-5 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-card"
-                          >
-                            <div>
-                              <p className="text-[16px] font-bold leading-snug text-ink">{article.h1}</p>
-                              <p className="mt-2 text-[13px] leading-relaxed text-ink-faint">
-                                {article.cardSummary}
-                              </p>
-                            </div>
-                            <span className="mt-4 inline-flex items-center gap-1 text-[12.5px] font-semibold text-ink-soft">
-                              자세히 보기
-                              <ArrowRight
-                                size={14}
-                                className="transition-transform duration-200 group-hover:translate-x-0.5"
-                                aria-hidden
-                              />
+              <div className="mt-10 space-y-12">
+                {groups.map(([categoryLabel, groupArticles]) => {
+                  // 카테고리마다 대표글 1개를 크게 보여주고, 나머지는 동일한
+                  // 흰 카드를 반복하는 대신 가벼운 목록으로 압축한다 — 40개
+                  // 전부를 같은 카드로 나열하지 않기 위한 핵심 장치. 이미 위
+                  // "EDITOR'S PICK"에 뽑힌 글(언어당 학습법 카테고리 첫 글과
+                  // 대부분 겹침)은 대표글로 다시 뽑지 않아, 같은 글이 한
+                  // 화면에 두 번 "대표"로 노출되지 않게 한다.
+                  const featured = groupArticles.find((a) => !topFeaturedSlugs.has(a.slug)) ?? groupArticles[0];
+                  const rest = groupArticles.filter((a) => a.slug !== featured.slug);
+                  return (
+                    <div key={categoryLabel}>
+                      <div
+                        className={`flex items-baseline justify-between gap-3 border-l-4 pl-4 ${LANGUAGE_BORDER_ACCENT[lang]}`}
+                      >
+                        <div>
+                          <h3 className="text-[17px] font-bold text-ink">{categoryLabel}</h3>
+                          {CATEGORY_DESCRIPTION[categoryLabel] && (
+                            <p className="mt-0.5 text-[13px] text-ink-faint">{CATEGORY_DESCRIPTION[categoryLabel]}</p>
+                          )}
+                        </div>
+                        <span className="shrink-0 text-[12.5px] font-medium text-ink-faint">
+                          {groupArticles.length}개
+                        </span>
+                      </div>
+
+                      <Reveal className="mt-5 grid gap-6 lg:grid-cols-[1fr_1.15fr] lg:items-start">
+                        <Link
+                          href={`/magazine/${featured.slug}`}
+                          className="group flex flex-col justify-between rounded-xl2 border border-ink/8 bg-white p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/20 hover:shadow-card sm:p-7"
+                        >
+                          <div>
+                            <span
+                              className={`inline-flex rounded-full px-2.5 py-1 text-[11px] font-bold ${MAGAZINE_ACCENT[lang]}`}
+                            >
+                              대표글
                             </span>
-                          </Link>
-                        </Reveal>
-                      ))}
+                            <p className="mt-3 text-[17px] font-bold leading-snug text-ink sm:text-[19px]">
+                              {featured.h1}
+                            </p>
+                            <p className="mt-2.5 text-[14px] leading-relaxed text-ink-soft">{featured.cardSummary}</p>
+                          </div>
+                          <ArrowRight
+                            size={16}
+                            className="mt-5 text-ink-faint transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-ink"
+                            aria-hidden
+                          />
+                        </Link>
+
+                        <div className="flex min-w-0 flex-col">
+                          {rest.map((article, index) => (
+                            <Link
+                              key={article.slug}
+                              href={`/magazine/${article.slug}`}
+                              className="group -mx-2 flex min-w-0 gap-3 rounded-lg border-b border-ink/6 px-2 py-3 transition-colors last:border-b-0 hover:bg-surface-soft"
+                            >
+                              <span className="shrink-0 pt-0.5 text-[12px] font-semibold tabular-nums text-ink-faint">
+                                {String(index + 2).padStart(2, "0")}
+                              </span>
+                              <span className="min-w-0">
+                                <span className="block text-[14.5px] font-semibold leading-snug text-ink group-hover:underline group-hover:decoration-ink/30 group-hover:underline-offset-4">
+                                  {article.h1}
+                                </span>
+                                <span className="mt-0.5 block truncate text-[12.5px] text-ink-faint">
+                                  {article.cardSummary}
+                                </span>
+                              </span>
+                            </Link>
+                          ))}
+                        </div>
+                      </Reveal>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </section>
