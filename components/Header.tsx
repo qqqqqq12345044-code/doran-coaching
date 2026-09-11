@@ -14,6 +14,7 @@ const LANGUAGES: LanguageSlug[] = ["english", "japanese", "chinese"];
 const STATIC_LINKS = [
   { label: "매거진", href: "/magazine" },
   { label: "수강후기", href: "/reviews" },
+  { label: "지역별", href: "/local" },
 ];
 
 export default function Header() {

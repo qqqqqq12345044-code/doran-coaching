@@ -53,7 +53,9 @@ const LANGUAGE_NAME: Record<LanguageSlug, string> = {
 // 특성 서술은 추가하지 않는다.
 const AMBIGUOUS_SIGUNGU = new Set(["중구", "동구", "서구", "남구", "북구", "강서구"]);
 
-const SHORT_SIDO_NAME: Record<string, string> = {
+// 지역 허브 검색 컴포넌트(components/local/LocalRegionSearch.tsx)도 검색 결과에
+// 시/도를 짧게 표시할 때 이 매핑을 그대로 재사용한다 — 별도로 다시 정의하지 않는다.
+export const SHORT_SIDO_NAME: Record<string, string> = {
   서울특별시: "서울",
   부산광역시: "부산",
   대구광역시: "대구",

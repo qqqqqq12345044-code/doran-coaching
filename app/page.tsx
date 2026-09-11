@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import HomeHero from "@/components/HomeHero";
 import HeroQuickNav from "@/components/HeroQuickNav";
 import LanguageSelectSection from "@/components/LanguageSelectSection";
+import LocalHubTeaser from "@/components/LocalHubTeaser";
 import SelfCheck from "@/components/SelfCheck";
 import TrustBar from "@/components/TrustBar";
 import ProblemSection from "@/components/ProblemSection";
@@ -88,6 +89,8 @@ export default function HomePage() {
       />
 
       <LanguageSelectSection eyebrow="언어별 과정" title="관심 있는 언어의 전체 과정을 살펴보세요" />
+
+      <LocalHubTeaser />
 
       <ProblemSection
         title={["외국어 공부,", "이런 고민 있으셨나요?"]}

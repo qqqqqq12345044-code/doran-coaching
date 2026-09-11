@@ -3,6 +3,7 @@ import { DETAIL_CATEGORIES } from "@/data/detailPages";
 import { PUBLISHED_LOCAL_SEO_PAGES } from "@/data/seo/previewRegistry";
 import { getEnabledClusters } from "@/data/seo/keywords";
 import { getAllMagazineSlugs } from "@/data/magazine";
+import { getAllSido } from "@/lib/seo/localHub";
 import { absoluteUrl } from "@/lib/seo/schema";
 
 // 실제 공개 페이지만 포함한다. data/regions/generated/seo-regions.json의
@@ -73,6 +74,17 @@ export default function sitemap({ id }: { id: number }): MetadataRoute.Sitemap {
       ),
       { url: absoluteUrl("/magazine"), lastModified, changeFrequency: "monthly", priority: 0.5 },
       { url: absoluteUrl("/reviews"), lastModified, changeFrequency: "monthly", priority: 0.5 },
+      // 지역 허브 진입 구조. 시/군/구(255개)·읍/면/동(6,527개) browse 페이지는
+      // 여기 넣지 않는다 — /local과 시/도 페이지의 실제 <a> 링크로 계속
+      // 타고 들어갈 수 있어 crawlability에 문제가 없고(app/local/**/page.tsx
+      // 참고), shard 0을 "정적 상위 페이지" 목록으로 가볍게 유지하기 위함이다.
+      { url: absoluteUrl("/local"), lastModified, changeFrequency: "monthly", priority: 0.6 },
+      ...getAllSido().map((sido) => ({
+        url: absoluteUrl(`/local/${sido}`),
+        lastModified,
+        changeFrequency: "monthly" as const,
+        priority: 0.5,
+      })),
     ];
 
     const magazineEntries: MetadataRoute.Sitemap = getAllMagazineSlugs().map((slug) => ({
