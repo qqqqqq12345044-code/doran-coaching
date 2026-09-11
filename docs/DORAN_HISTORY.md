@@ -240,7 +240,10 @@
   postcss가 8.5.28로 정상 deduped됐음을 직접 확인.
 
 ### 상태
-- 로컬 커밋 완료 후 push, Vercel production READY 확인(상세는 아래 Commit 참고).
+- 커밋 후 push, Vercel production READY 확인.
+
+### Commit
+- `d49c3a8` Finalize consultation privacy copy and operational checks
 
 ---
 
