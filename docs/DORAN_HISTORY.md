@@ -295,7 +295,7 @@
 - 커밋 후 push, Vercel production 확인 예정(완료 보고 참고).
 
 ### Commit
-- (아래 커밋 참고 — 문서 갱신 커밋에서 해시 보정)
+- `c75dd6f` Fix dead CourseSection links found in search-to-consultation funnel audit
 
 ---
 
