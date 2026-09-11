@@ -30,6 +30,10 @@ export interface IntentBlueprint {
   instructorDescriptor: string;
   /** Direct Answer/본문에서 "현재 수준과 ___에 맞춰"에 쓰는 목표 어휘. */
   goalPhrase: string;
+  /** "상담 전에 체크하면 좋은 3가지" — 사용자가 상담 신청 전에 스스로 정리해보면
+   *  좋을 내용. 지역/서비스에 대한 사실을 서술하지 않고, 사용자 자신의 상황(현재
+   *  수준/목표/가능 시간 등)을 돌아보게 하는 질문형 문구만 사용한다. 정확히 3개. */
+  preConsultCheck: string[];
 }
 
 export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
@@ -64,6 +68,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "말하는 시간을 늘리는 1:1 화상수업",
     instructorDescriptor: "원어민 등 전문 강사",
     goalPhrase: "회화 목표",
+    preConsultCheck: [
+      "말이 막히는 순간이 주로 언제인지 떠올려보세요",
+      "자주 쓰고 싶은 표현이나 상황을 정리해보세요",
+      "주 몇 회, 어떤 시간대에 수업이 가능한지 생각해보세요",
+    ],
   },
   tutoring: {
     intent: "tutoring",
@@ -96,6 +105,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "1:1 맞춤 화상과외",
     instructorDescriptor: "과목별 전문 강사",
     goalPhrase: "학습 목표",
+    preConsultCheck: [
+      "현재 진도가 어디까지 나가 있는지 확인해보세요",
+      "어떤 부분(문법/독해/회화)이 가장 부족한지 정리해보세요",
+      "정기적으로 수업 가능한 요일과 시간을 생각해보세요",
+    ],
   },
   online: {
     intent: "online",
@@ -128,6 +142,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "화상으로 만나는 1:1 수업",
     instructorDescriptor: "전문 강사",
     goalPhrase: "학습 목표",
+    preConsultCheck: [
+      "화상 수업에 사용할 기기와 인터넷 환경을 확인해보세요",
+      "수업을 들을 조용한 공간과 가능한 시간대를 생각해보세요",
+      "화상수업이 처음이라면 궁금한 점을 미리 메모해두세요",
+    ],
   },
   native: {
     intent: "native",
@@ -160,6 +179,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "대화 중심 1:1 화상수업",
     instructorDescriptor: "원어민 강사",
     goalPhrase: "회화 목표",
+    preConsultCheck: [
+      "원어민과 실제 대화해본 경험이 있는지 떠올려보세요",
+      "발음이나 억양 중 다듬고 싶은 부분을 정리해보세요",
+      "자연스러운 표현이 필요한 상황(여행/업무 등)을 생각해보세요",
+    ],
   },
   beginner: {
     intent: "beginner",
@@ -192,6 +216,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "왕초보를 위한 1:1 맞춤수업",
     instructorDescriptor: "눈높이에 맞춘 전문 강사",
     goalPhrase: "학습 목표",
+    preConsultCheck: [
+      "완전히 처음인지, 약간의 기초가 있는지 확인해보세요",
+      "학습을 시작하고 싶은 이유를 간단히 정리해보세요",
+      "부담 없이 시작할 수 있는 주당 학습 횟수를 생각해보세요",
+    ],
   },
   adult: {
     intent: "adult",
@@ -224,6 +253,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "성인 눈높이에 맞춘 1:1 수업",
     instructorDescriptor: "성인 학습에 익숙한 전문 강사",
     goalPhrase: "학습 목표",
+    preConsultCheck: [
+      "예전에 배운 적이 있다면 남아있는 수준을 떠올려보세요",
+      "일상/자기계발 등 학습 목적을 정리해보세요",
+      "본인 일정에 맞는 수업 시간대를 생각해보세요",
+    ],
   },
   worker: {
     intent: "worker",
@@ -256,6 +290,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "퇴근 후 듣는 1:1 화상수업",
     instructorDescriptor: "시간 조율이 가능한 전문 강사",
     goalPhrase: "학습 목표",
+    preConsultCheck: [
+      "퇴근 후 가능한 시간대를 확인해보세요",
+      "업무나 이직에 필요한 상황을 정리해보세요",
+      "일정 변경이 잦다면 조율 가능 여부를 생각해보세요",
+    ],
   },
   business: {
     intent: "business",
@@ -288,6 +327,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "실무 중심 1:1 비즈니스 수업",
     instructorDescriptor: "실무 경험이 있는 전문 강사",
     goalPhrase: "업무 목표",
+    preConsultCheck: [
+      "업무에서 자주 쓰는 상황(메일/회의/PT)을 정리해보세요",
+      "현재 실무 표현 수준을 확인해보세요",
+      "필요한 문서나 자료가 있다면 미리 정리해보세요",
+    ],
   },
   exam: {
     intent: "exam",
@@ -324,6 +368,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "목표에 맞춘 1:1 시험대비 수업",
     instructorDescriptor: "시험 전문 강사",
     goalPhrase: "시험 목표",
+    preConsultCheck: [
+      "목표 시험과 목표 점수(급수)를 정리해보세요",
+      "시험 예정일과 남은 준비 기간을 확인해보세요",
+      "취약한 영역이 있다면 미리 떠올려보세요",
+    ],
   },
   workingholiday: {
     intent: "workingholiday",
@@ -356,6 +405,11 @@ export const intentBlueprints: Record<SeoIntent, IntentBlueprint> = {
     h1Subline: "워킹홀리데이 준비 1:1 수업",
     instructorDescriptor: "현지 생활 표현에 능숙한 전문 강사",
     goalPhrase: "준비 목표",
+    preConsultCheck: [
+      "출국 예정 시기와 남은 준비 기간을 확인해보세요",
+      "현지에서 가장 먼저 필요할 생활 표현을 떠올려보세요",
+      "현재 회화 수준(왕초보~중급)을 정리해보세요",
+    ],
   },
 };
 

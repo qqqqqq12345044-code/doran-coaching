@@ -40,6 +40,9 @@ export interface LocalSeoContent {
   };
   recommendedFor: string[];
   benefits: { title: string; description: string }[];
+  /** 상담 전에 스스로 체크해보면 좋은 3가지. 지역 특성을 창작하지 않고, 사용자
+   *  자신의 상황(수준/목표/가능 시간 등)을 돌아보게 하는 질문형 문구만 담는다. */
+  preConsultCheck: string[];
   curriculum: {
     heading: string;
     description?: string;
@@ -280,6 +283,9 @@ export function generateLocalSeoContent(
           description: benefitSentenceTemplates[index % benefitSentenceTemplates.length](theme),
         }));
 
+  // --- 상담 전 체크리스트 (exam Profile > Cluster Override > 공용 Blueprint) ---
+  const preConsultCheck = examProfile?.preConsultCheck ?? clusterOverride?.preConsultCheck ?? blueprint.preConsultCheck;
+
   // --- Curriculum ---
   const relatedCurriculum = getRelatedCurriculum(cluster);
   const curriculumTopics = [...new Set(relatedCurriculum.map((item) => pickDisplayTopic(item, cluster)))];
@@ -337,6 +343,7 @@ export function generateLocalSeoContent(
       serviceSummary,
       recommendedFor,
       benefits,
+      preConsultCheck,
       curriculum,
       process,
       faq,

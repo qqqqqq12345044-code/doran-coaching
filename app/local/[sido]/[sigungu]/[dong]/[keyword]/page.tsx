@@ -260,6 +260,7 @@ export default async function LocalSeoLandingPage({
         answer={content.directAnswer}
         summaryHeading={content.serviceSummary.heading}
         summaryBody={content.serviceSummary.body}
+        checklist={content.preConsultCheck}
       />
 
       <RecommendedForSection

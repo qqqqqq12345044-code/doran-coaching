@@ -48,6 +48,10 @@ export interface ExamContentProfile {
    *  전부가 공용 exam Blueprint의 titleTemplate을 그대로 썼다 — title도
    *  시험별로 채운다. */
   titleTemplate: string;
+  /** "상담 전에 체크하면 좋은 3가지" — contentBlueprints.ts의 IntentBlueprint와
+   *  같은 성격(사용자 자신의 상황을 돌아보는 질문형 문구, 정확히 3개)이며, 시험별로
+   *  실제로 다른 준비 사항(목표 점수/급수, 시험일, 취약 영역 등)을 반영한다. */
+  preConsultCheck: string[];
   /** 실제로 formal 연결되어야 하는 Curriculum Cluster id(문서화/검증용).
    *  실제 매칭은 기존 linkedClusterIds 기반 getRelatedCurriculum()이 그대로 담당한다. */
   curriculumClusterIds: string[];
@@ -96,6 +100,11 @@ export const examProfiles: ExamContentProfile[] = [
     curriculumClusterIds: ["english-toeic"],
     h1Subline: "목표 점수를 위한 1:1 화상 시험대비",
     titleTemplate: "{지역명} {mainKeyword} | 목표 점수별 1:1 화상수업 도란",
+    preConsultCheck: [
+      "최근 모의고사나 점수 기록이 있다면 확인해보세요",
+      "목표 점수와 시험 예정일을 정리해보세요",
+      "취약한 영역(LC/RC)이 있다면 미리 떠올려보세요",
+    ],
   },
   {
     id: "opic",
@@ -139,6 +148,11 @@ export const examProfiles: ExamContentProfile[] = [
     curriculumClusterIds: ["english-opic"],
     h1Subline: "실전 답변으로 준비하는 1:1 말하기 시험대비",
     titleTemplate: "{지역명} {mainKeyword} | 1:1 말하기 시험대비 도란",
+    preConsultCheck: [
+      "최근 오픽 시험을 본 적이 있다면 등급을 확인해보세요",
+      "목표 등급과 시험 예정일을 정리해보세요",
+      "자기소개 등 자주 나오는 주제에 답해본 경험이 있는지 떠올려보세요",
+    ],
   },
   {
     id: "jlpt",
@@ -182,6 +196,11 @@ export const examProfiles: ExamContentProfile[] = [
     curriculumClusterIds: ["japanese-jlpt"],
     h1Subline: "목표 급수를 위한 1:1 화상 시험대비",
     titleTemplate: "{지역명} {mainKeyword} | 급수별 1:1 화상수업 도란",
+    preConsultCheck: [
+      "목표 급수와 시험 회차(7월/12월)를 확인해보세요",
+      "현재 히라가나·가타카나·한자 학습 정도를 정리해보세요",
+      "독해·청해 중 더 약한 영역이 있다면 떠올려보세요",
+    ],
   },
   {
     id: "hsk",
@@ -225,6 +244,11 @@ export const examProfiles: ExamContentProfile[] = [
     curriculumClusterIds: ["chinese-hsk"],
     h1Subline: "목표 급수를 위한 1:1 화상 시험대비",
     titleTemplate: "{지역명} {mainKeyword} | 급수별 1:1 화상수업 도란",
+    preConsultCheck: [
+      "목표 급수와 응시 예정일을 확인해보세요",
+      "현재 알고 있는 한자·어휘 수준을 정리해보세요",
+      "듣기·독해 중 더 약한 영역이 있다면 떠올려보세요",
+    ],
   },
   {
     id: "hskk",
@@ -268,6 +292,11 @@ export const examProfiles: ExamContentProfile[] = [
     curriculumClusterIds: ["chinese-hskk"],
     h1Subline: "발음·성조까지 교정받는 1:1 말하기 시험대비",
     titleTemplate: "{지역명} {mainKeyword} | 말하기 시험 1:1 화상수업 도란",
+    preConsultCheck: [
+      "목표 급수(초급/중급/고급)와 시험 예정일을 확인해보세요",
+      "성조나 발음 중 자신 없는 부분을 정리해보세요",
+      "말하기 연습을 소리 내어 해본 경험이 있는지 떠올려보세요",
+    ],
   },
 ];
 

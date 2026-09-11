@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
-import { CheckCircle2, AlertCircle } from "lucide-react";
+import { useRef, useState, type FormEvent } from "react";
+import { CheckCircle2, AlertCircle, Search } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
 
@@ -10,6 +10,55 @@ import { languages } from "@/data/languages";
 const INTEREST_OPTIONS = [...languages.map((lang) => lang.nameKo), "아직 고민 중이에요"];
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
+
+// 카카오(구 다음) 우편번호 서비스. 공식 가이드(postcode.map.kakao.com/guide) 기준
+// API 키 없이 무료로(상업적 사용 포함, 사용량 제한 없음) embed 가능한 방식만 사용한다.
+// 임의의 키를 만들거나 하드코딩하지 않는다.
+const KAKAO_POSTCODE_SRC = "//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+
+interface KakaoPostcodeData {
+  zonecode: string;
+  address: string;
+  roadAddress: string;
+  jibunAddress: string;
+}
+
+interface KakaoPostcodeInstance {
+  open: () => void;
+}
+
+declare global {
+  interface Window {
+    kakao?: {
+      Postcode: new (options: { oncomplete: (data: KakaoPostcodeData) => void }) => KakaoPostcodeInstance;
+    };
+  }
+}
+
+let kakaoPostcodeLoadPromise: Promise<void> | null = null;
+
+// 상담폼이 97,905개 Local SEO 페이지를 포함해 사이트 전반에 노출되므로, 우편번호
+// 스크립트는 모든 방문자에게 미리 로드하지 않고 "주소 검색" 버튼을 실제로 클릭한
+// 시점에만 지연 로드한다(이미 로드됐다면 재사용).
+function loadKakaoPostcode(): Promise<void> {
+  if (typeof window === "undefined") return Promise.reject(new Error("no window"));
+  if (window.kakao?.Postcode) return Promise.resolve();
+  if (kakaoPostcodeLoadPromise) return kakaoPostcodeLoadPromise;
+
+  kakaoPostcodeLoadPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = KAKAO_POSTCODE_SRC;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      kakaoPostcodeLoadPromise = null;
+      reject(new Error("카카오 우편번호 스크립트를 불러오지 못했습니다."));
+    };
+    document.head.appendChild(script);
+  });
+
+  return kakaoPostcodeLoadPromise;
+}
 
 interface ConsultationSectionProps {
   title?: string[];
@@ -24,6 +73,30 @@ export default function ConsultationSection({
   defaultInterest,
 }: ConsultationSectionProps) {
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [addressSearchError, setAddressSearchError] = useState(false);
+  const baseAddressRef = useRef<HTMLInputElement>(null);
+  const zonecodeRef = useRef<HTMLInputElement>(null);
+  const addressDetailRef = useRef<HTMLInputElement>(null);
+
+  async function handleAddressSearch() {
+    setAddressSearchError(false);
+    try {
+      await loadKakaoPostcode();
+      new window.kakao!.Postcode({
+        oncomplete: (data) => {
+          if (baseAddressRef.current) {
+            baseAddressRef.current.value = data.roadAddress || data.address || data.jibunAddress;
+          }
+          if (zonecodeRef.current) {
+            zonecodeRef.current.value = data.zonecode ?? "";
+          }
+          addressDetailRef.current?.focus();
+        },
+      }).open();
+    } catch {
+      setAddressSearchError(true);
+    }
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -54,6 +127,8 @@ export default function ConsultationSection({
       name: String(formData.get("name") ?? ""),
       phone: String(formData.get("phone") ?? ""),
       address: String(formData.get("address") ?? ""),
+      addressDetail: String(formData.get("addressDetail") ?? ""),
+      zonecode: String(formData.get("zonecode") ?? ""),
       interest: formData.getAll("interest").map(String),
       message: String(formData.get("message") ?? ""),
       privacyConsent: formData.get("privacyConsent") === "on",
@@ -164,16 +239,43 @@ export default function ConsultationSection({
                 <label htmlFor="address" className="text-[14px] font-medium text-ink">
                   주소
                 </label>
-                <p className="mt-1 text-[12.5px] text-ink-faint">도로명까지만 입력해주세요.</p>
+                <p className="mt-1 text-[12.5px] text-ink-faint">주소 검색으로 기본주소를 입력해주세요.</p>
+                <div className="mt-2 flex gap-2">
+                  <input
+                    ref={baseAddressRef}
+                    id="address"
+                    name="address"
+                    type="text"
+                    required
+                    readOnly
+                    autoComplete="address-level3"
+                    placeholder="주소 검색을 눌러주세요"
+                    className="w-full min-w-0 flex-1 rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddressSearch}
+                    className="flex shrink-0 items-center gap-1.5 rounded-xl border border-ink/12 bg-white px-4 py-3 text-[14px] font-medium text-ink transition-colors hover:border-brand hover:text-brand"
+                  >
+                    <Search size={15} aria-hidden />
+                    주소 검색
+                  </button>
+                </div>
                 <input
-                  id="address"
-                  name="address"
+                  ref={addressDetailRef}
+                  id="addressDetail"
+                  name="addressDetail"
                   type="text"
-                  required
-                  autoComplete="address-level3"
-                  placeholder="서울특별시 마포구 월드컵북로"
+                  autoComplete="address-line2"
+                  placeholder="상세주소 (동/호수, 건물명 등)"
                   className="mt-2 w-full rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
                 />
+                <input ref={zonecodeRef} type="hidden" name="zonecode" />
+                {addressSearchError && (
+                  <p className="mt-2 text-[12.5px] text-red-600">
+                    주소 검색을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
+                  </p>
+                )}
               </div>
 
               <fieldset className="sm:col-span-2">

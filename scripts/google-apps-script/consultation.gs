@@ -26,6 +26,9 @@ const CONFIG = {
 };
 
 // 저장할 컬럼 순서. 첫 실행 시 시트가 비어 있으면 헤더 행을 만들어준다.
+// "상세주소"/"우편번호"는 2026-09 카카오 주소검색 UX 개선으로 추가된 컬럼이다.
+// 기존 운영 시트를 깨뜨리지 않기 위해 반드시 맨 뒤에만 추가한다(중간 삽입 금지 —
+// 기존 1~9번 컬럼 순서가 바뀌면 이미 쌓인 데이터의 열 의미가 어긋난다).
 const HEADERS = [
   "접수일시",
   "이름",
@@ -36,6 +39,8 @@ const HEADERS = [
   "개인정보 동의 여부",
   "page URL",
   "user agent",
+  "상세주소",
+  "우편번호",
 ];
 
 function doPost(e) {
@@ -109,8 +114,22 @@ function getSheet() {
   }
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
+  } else {
+    ensureHeaderColumns(sheet);
   }
   return sheet;
+}
+
+// 이미 운영 중인 시트에 "상세주소"/"우편번호" 컬럼이 없을 수 있다(이번 업데이트
+// 이전에 만들어진 헤더 행). 기존 1~9번 헤더 라벨/데이터는 절대 건드리지 않고,
+// 헤더 행 길이가 HEADERS보다 짧을 때만 빈 칸에 새 라벨을 채워 넣는다.
+function ensureHeaderColumns(sheet) {
+  const existingWidth = Math.max(sheet.getLastColumn(), 1);
+  const currentHeaders = sheet.getRange(1, 1, 1, existingWidth).getValues()[0];
+  if (currentHeaders.length < HEADERS.length) {
+    const missingHeaders = HEADERS.slice(currentHeaders.length);
+    sheet.getRange(1, currentHeaders.length + 1, 1, missingHeaders.length).setValues([missingHeaders]);
+  }
 }
 
 function toRow(data) {
@@ -130,6 +149,8 @@ function toRow(data) {
     consentLabel,
     data.pageUrl || "",
     data.userAgent || "",
+    data.addressDetail || "",
+    data.zonecode || "",
   ];
 }
 
@@ -156,12 +177,13 @@ function maybeSendNotificationEmail(data) {
 
   try {
     const interest = Array.isArray(data.interest) ? data.interest.join(", ") : data.interest || "";
+    const fullAddress = [data.address, data.addressDetail].filter(Boolean).join(" ");
     const subject = "[DORAN] 새로운 상담 신청 - " + (data.name || "");
     const body = [
       "접수일시: " + new Date().toLocaleString("ko-KR"),
       "이름: " + (data.name || ""),
       "연락처: " + (data.phone || ""),
-      "주소: " + (data.address || ""),
+      "주소: " + fullAddress,
       "관심 언어: " + interest,
       "문의 내용: " + (data.message || ""),
     ].join("\n");

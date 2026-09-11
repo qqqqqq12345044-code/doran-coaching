@@ -37,6 +37,10 @@ export interface ClusterContentOverride {
   qaTemplates: ClusterQaTemplate[];
   h1Subline: string;
   titleTemplate: string;
+  /** "상담 전에 체크하면 좋은 3가지" — contentBlueprints.ts의 IntentBlueprint와
+   *  같은 성격(사용자 자신의 상황을 돌아보는 질문형 문구, 정확히 3개)이며, 언어별로
+   *  실제로 다른 체크 포인트(예: 일본어는 존댓말, 중국어는 성조)를 반영한다. */
+  preConsultCheck: string[];
 }
 
 const CONVERSATION_H1_SUBLINE: Record<LanguageSlug, string> = {
@@ -61,6 +65,42 @@ const ONLINE_TITLE_LABEL: Record<LanguageSlug, string> = {
   english: "1:1 화상영어",
   japanese: "1:1 화상일본어",
   chinese: "1:1 화상중국어",
+};
+
+const TUTORING_PRECONSULT: Record<LanguageSlug, string[]> = {
+  english: [
+    "현재 학습 진도가 어디까지인지 확인해보세요",
+    "문법/독해/말하기 중 더 취약한 영역을 정리해보세요",
+    "정기적으로 수업 가능한 요일과 시간을 생각해보세요",
+  ],
+  japanese: [
+    "현재 문자(히라가나~한자)와 문법 진도를 확인해보세요",
+    "회화와 문법 중 더 필요한 쪽을 정리해보세요",
+    "정기적으로 수업 가능한 요일과 시간을 생각해보세요",
+  ],
+  chinese: [
+    "병음과 성조를 어느 정도 알고 있는지 확인해보세요",
+    "회화와 어휘 중 더 필요한 쪽을 정리해보세요",
+    "정기적으로 수업 가능한 요일과 시간을 생각해보세요",
+  ],
+};
+
+const ONLINE_PRECONSULT: Record<LanguageSlug, string[]> = {
+  english: [
+    "화상 수업에 사용할 기기와 인터넷 환경을 확인해보세요",
+    "영어 학습에 집중할 수 있는 시간대를 생각해보세요",
+    "화상수업이 처음이라면 궁금한 점을 미리 메모해두세요",
+  ],
+  japanese: [
+    "화상 수업에 사용할 기기와 인터넷 환경을 확인해보세요",
+    "일본어 학습에 집중할 수 있는 시간대를 생각해보세요",
+    "화상수업이 처음이라면 궁금한 점을 미리 메모해두세요",
+  ],
+  chinese: [
+    "화상 수업에 사용할 기기와 인터넷 환경을 확인해보세요",
+    "중국어 학습에 집중할 수 있는 시간대를 생각해보세요",
+    "화상수업이 처음이라면 궁금한 점을 미리 메모해두세요",
+  ],
 };
 
 export const clusterContentOverrides: ClusterContentOverride[] = [
@@ -102,6 +142,11 @@ export const clusterContentOverrides: ClusterContentOverride[] = [
     ],
     h1Subline: CONVERSATION_H1_SUBLINE.english,
     titleTemplate: "{지역명} {mainKeyword} | 실전 말하기 1:1 화상수업 도란",
+    preConsultCheck: [
+      "말이 막히는 순간이 주로 언제인지 떠올려보세요",
+      "자주 쓰고 싶은 표현이나 상황을 정리해보세요",
+      "주 몇 회, 어떤 시간대에 수업이 가능한지 생각해보세요",
+    ],
   },
   {
     clusterId: "japanese-conversation",
@@ -140,6 +185,11 @@ export const clusterContentOverrides: ClusterContentOverride[] = [
     ],
     h1Subline: CONVERSATION_H1_SUBLINE.japanese,
     titleTemplate: "{지역명} {mainKeyword} | 실전 말하기 1:1 화상수업 도란",
+    preConsultCheck: [
+      "히라가나/가타카나는 읽을 수 있는지 확인해보세요",
+      "존댓말이 필요한 상황(업무/일상)이 있는지 떠올려보세요",
+      "회화 연습이 가능한 주당 시간을 생각해보세요",
+    ],
   },
   {
     clusterId: "chinese-conversation",
@@ -178,6 +228,11 @@ export const clusterContentOverrides: ClusterContentOverride[] = [
     ],
     h1Subline: CONVERSATION_H1_SUBLINE.chinese,
     titleTemplate: "{지역명} {mainKeyword} | 실전 말하기 1:1 화상수업 도란",
+    preConsultCheck: [
+      "성조 때문에 막히는 발음이 있는지 떠올려보세요",
+      "자주 쓰고 싶은 표현이나 상황을 정리해보세요",
+      "회화 연습이 가능한 주당 시간을 생각해보세요",
+    ],
   },
 
   // --- 과외(tutoring): 언어마다 다른 "기초 조합" 구성 ---------------------
@@ -221,6 +276,7 @@ export const clusterContentOverrides: ClusterContentOverride[] = [
     ],
     h1Subline: "내 진도에 맞춘 1:1 맞춤 화상과외",
     titleTemplate: "{지역명} {mainKeyword} | 개인 맞춤 1:1 화상과외 도란",
+    preConsultCheck: TUTORING_PRECONSULT[language],
   })),
 
   // --- 화상(online): 온라인이라는 형식 자체가 검색 의도라 언어 간 차이는
@@ -262,6 +318,7 @@ export const clusterContentOverrides: ClusterContentOverride[] = [
     ],
     h1Subline: ONLINE_H1_SUBLINE[language],
     titleTemplate: `{지역명} {mainKeyword} | 이동 없는 ${ONLINE_TITLE_LABEL[language]} 도란`,
+    preConsultCheck: ONLINE_PRECONSULT[language],
   })),
 ];
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-02T07:57:58.043Z",
+  "generatedAt": "2026-09-11T12:20:44.550Z",
   "note": "Exam Profile 도입 이후 7개 조합(conversation/tutoring/toeic/opic/jlpt/hsk/hskk) 비교로 갱신됨.",
   "region": {
     "sido": "서울특별시",
@@ -21,7 +21,7 @@
       "clusterId": "english-conversation",
       "mainKeyword": "영어회화",
       "regionRepeatCount": 9,
-      "keywordRepeatCount": 11,
+      "keywordRepeatCount": 9,
       "mechanicalRepeatFound": false,
       "leftoverTemplateTokens": [],
       "doubleSpaceFound": false,
@@ -227,7 +227,7 @@
     {
       "a": "english-conversation",
       "b": "english-tutoring",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 4,
       "identicalRatio": 0.174,
@@ -247,7 +247,7 @@
     {
       "a": "english-conversation",
       "b": "english-toeic",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 5,
       "identicalRatio": 0.217,
@@ -266,7 +266,7 @@
     {
       "a": "english-conversation",
       "b": "english-opic",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 5,
       "identicalRatio": 0.217,
@@ -285,7 +285,7 @@
     {
       "a": "english-conversation",
       "b": "japanese-jlpt",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 4,
       "identicalRatio": 0.174,
@@ -303,7 +303,7 @@
     {
       "a": "english-conversation",
       "b": "chinese-hsk",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 4,
       "identicalRatio": 0.174,
@@ -321,7 +321,7 @@
     {
       "a": "english-conversation",
       "b": "chinese-hskk",
-      "comparableSentenceCountA": 24,
+      "comparableSentenceCountA": 23,
       "comparableSentenceCountB": 23,
       "identicalSentenceCount": 4,
       "identicalRatio": 0.174,
