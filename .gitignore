@@ -9,3 +9,5 @@ Thumbs.db
 *.tsbuildinfo
 
 .vercel
+
+.playwright-mcp
