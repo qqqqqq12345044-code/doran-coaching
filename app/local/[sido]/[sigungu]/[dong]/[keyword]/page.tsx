@@ -49,8 +49,8 @@ import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
 //     "아무 URL이나 생성"되지 않는다 — whitelist 밖 조합은 그대로 notFound().
 //     즉 이 검사가 실질적인 보안/SEO 안전장치이고, generateStaticParams는
 //     순수히 build 최적화(무엇을 미리 만들어둘지)만 담당한다.
-//   - 최초 요청 시 생성된 페이지는 revalidate(아래) 동안 Vercel CDN에 캐시돼
-//     이후 요청은 재생성 없이 바로 응답한다.
+//   - 최초 요청 시 생성된 페이지는 revalidate=false(아래)로 다음 배포 전까지
+//     영구 캐시되며, 이후 요청은 재생성 없이 바로 응답한다.
 //
 // app/sitemap.ts는 이 파일과 무관하게 PUBLISHED_LOCAL_SEO_PAGES 97,905개를
 // 그대로 전부 사용한다(다만 97,905개는 sitemap 프로토콜의 파일당 5만 URL
@@ -93,9 +93,14 @@ export const dynamicParams = true;
 
 // Local SEO 콘텐츠는 generateLocalSeoContent.ts의 순수 함수 결과라 지역/
 // keyword 데이터가 바뀌지 않는 한(=재배포하지 않는 한) 완전히 결정적이다.
-// 매 요청마다 다시 만들 이유가 없어 하루 단위로 재검증한다. 재배포가 일어나면
-// Vercel이 캐시를 새로 시작하므로 이 값이 "낡은 콘텐츠"를 오래 방치하지 않는다.
-export const revalidate = 86400;
+// 외부 DB/API/날짜/랜덤 요소가 전혀 없어 시간 기반으로 재검증할 이유가 없다.
+// false로 고정하면 한 번 생성된 페이지가 다음 배포 전까지 영구 캐시되고,
+// 배포 시 Vercel이 캐시를 새로 시작하므로 "낡은 콘텐츠"가 방치되지도 않는다.
+// (2026-09: 97,905개 URL을 검색엔진 크롤러가 상시 순회하면서 86400초 주기가
+// 지날 때마다 재검증-쓰기가 반복 발생해 Vercel Hobby ISR Writes 월 한도를
+// 크게 초과했다 — false로 바꿔 페이지당 최초 1회 write 이후에는 재배포 전까지
+// write가 발생하지 않도록 했다.)
+export const revalidate = false;
 
 // Next.js가 URL Dynamic Segment를 decode하지 않고 그대로 넘겨주는 경우가 있어
 // (예: "공덕동" 대신 "%EA%B3%B5%EB%8D%95%EB%8F%99") 안전하게 한 번 더 decode한다.

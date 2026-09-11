@@ -37,7 +37,10 @@ export function generateStaticParams(): DongPageParams[] {
 }
 
 export const dynamicParams = true;
-export const revalidate = 86400;
+// 이 페이지도 정적 데이터(localHub)만 사용하는 결정적 콘텐츠라 시간 기반 재검증이
+// 필요 없다. false = 최초 생성 후 다음 배포 전까지 영구 캐시(리프 페이지와 동일한
+// 이유로 2026-09 ISR Writes 초과 대응 — 상세 이유는 [keyword]/page.tsx 참고).
+export const revalidate = false;
 
 function safeDecode(value: string): string {
   try {
