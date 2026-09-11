@@ -149,6 +149,61 @@
 
 ---
 
+## 2026-09-11 (야간) — 상담폼 주소 UX 개선 + Local SEO 상담 전 체크리스트 + 후기 재조사
+
+### 작업
+- 상담폼 주소 입력을 카카오(다음) 우편번호 검색 + 기본주소/상세주소 분리 구조로 개선.
+- Local SEO 리프 페이지(97,905개) Content Engine에 "상담 전 체크리스트"(3개, intent/cluster/시험별로
+  실질적으로 다른 문구) 추가.
+- 일본어/중국어 공식 수강 후기 추가 확보를 위한 심층 재조사(브라우저 직접 검증).
+- Reviews `prototype` 9건의 실제 미노출 여부 재검증.
+
+### 주요 변경
+- `components/ConsultationSection.tsx` — 카카오 우편번호 서비스(`t1.kakaocdn.net`, API 키 불필요)를
+  "주소 검색" 버튼 클릭 시에만 지연 로드. 콜백이 읽기전용 기본주소 input과 숨김 `zonecode`를
+  채우고 상세주소 input(동/호수/건물명, 선택 입력)에 포커스 이동. 제출 payload가
+  `address`/`addressDetail`/`zonecode` 3개로 분리됨(기존 `address` 단일 필드 대체).
+- `scripts/google-apps-script/consultation.gs` — HEADERS/toRow에 "상세주소"/"우편번호"를
+  **맨 뒤에만** 추가(중간 삽입 금지), `ensureHeaderColumns()`가 이미 운영 중인 시트의 헤더 행이
+  짧으면 빈 칸만 채워 넣어 기존 데이터/헤더를 보호. 이 파일은 레포 사본일 뿐이라 실제 운영
+  Apps Script Web App에는 사용자가 직접 재배포해야 반영됨(재배포 전에도 기존 필드는 정상 동작).
+- `data/seo/contentBlueprints.ts`(10개 intent) / `data/seo/clusterContentOverrides.ts`(9개
+  cluster) / `data/seo/examProfiles.ts`(5개 시험) — 전부에 `preConsultCheck`(질문형 3문장,
+  지역 특성 창작 없음) 추가. `lib/seo/generateLocalSeoContent.ts`가 examProfile > clusterOverride
+  > 공용 Blueprint 우선순위로 조립.
+- `components/DirectAnswerSection.tsx` — 새 Section을 추가하지 않고, 기존 "빠른 답변" 카드 안
+  세 번째 블록(`checklist` prop)으로 체크리스트를 렌더링해 페이지 길이를 늘리지 않음.
+- 일본어/중국어 후기: growth-success(Google Sites 공식 허브) + vinemagazine.co.kr 사이트 내
+  검색을 브라우저로 직접 재확인. 새 후보는 전부 기존 jp-01/cn-01과 동일 게시물의 다른
+  URL(alias)이었음 — 신규 사례 0건, 억지로 개수를 맞추지 않고 정직하게 보고.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build` clean.
+- `npm run validate:seo`, `npm run validate:curriculum`, `npm run validate:detail-content` 전부 이상 없음.
+- `npm run validate:local-seo` — 공개 대상 97,905/97,905 페이지 생성 확인, title/description/H1
+  중복 0, offline 지점 표현 0, 지역/키워드 누락 0.
+- `npm run preview:content`/`preview:multi-intent`/`preview:exam-profiles` — intent/cluster/시험 간
+  차별화 검사 전부 "이상 없음"(같은 언어 내 conversation vs tutoring 동일 문장 비율 17.4%,
+  기준 30% 미만 통과).
+- Playwright로 실제 브라우저에서 카카오 우편번호 검색 전체 플로우(검색 → 팝업 → 주소 선택 →
+  기본주소/우편번호 자동 채움 → 상세주소 포커스 이동) 실동작 확인, 상담폼 실제 제출은 하지 않음.
+- Local SEO 리프 8개 샘플(서울 동/광역시 인접 군/읍/면/전남광주통합특별시, 15 keyword 중 8종
+  포함) + `/reviews` + `/english,/japanese,/chinese/conversation` 을 390/768/1440에서 확인 —
+  가로 스크롤 없음, 콘솔 에러 0, 체크리스트 intent별 실제로 다른 문구 확인.
+- JSON-LD(BreadcrumbList/FAQPage/Course) 및 canonical 절대 URL 유지 확인, LocalBusiness/가짜
+  Review/AggregateRating 없음.
+
+### 상태
+- 로컬 커밋 `c86d844` 완료. **push는 이 세션 환경에서 Git Credential Manager 대화형 로그인을
+  띄울 수 없어 실패** — 사용자가 복귀 후 직접 `git push origin main` 실행 필요(HISTORY/MASTER
+  갱신 포함해 이미 커밋에 포함됨). push 전까지 production은 이전 상태(`ed446e0`) 그대로이며
+  이번 변경은 아직 배포되지 않음.
+
+### Commit
+- `c86d844` Add Kakao address search to consultation form and pre-consult checklist to local SEO leaf pages (push 대기)
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.

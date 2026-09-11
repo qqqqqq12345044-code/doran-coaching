@@ -1,8 +1,9 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
 이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-11 (최근 commit
-`61d8f4c`). 이 문서와 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후
-이 문서를 갱신하되, 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
+`c86d844`, 로컬 커밋 완료·push는 인증 문제로 대기 중 — 상세는 HISTORY 참고). 이 문서와
+실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
+갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
 
 세부 판단 기준(톤/디자인/금지사항/작업 스타일 등)은 프로젝트 루트의 `CLAUDE.md`가
 1차 기준이며, 이 문서는 그 기준 위에서 "지금 실제로 무엇이 존재하는가"를 정리한다.
@@ -82,7 +83,8 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - `getRelatedMagazineArticles()`로 글 간 상호 연결(`relatedArticleSlugs`).
 
 **Reviews**
-- `data/reviews.ts` 총 **20개** 레코드(`sourceType`으로 구분): `official-case` 11건(실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약), `prototype` 9건(더미, 실제 화면에는 미노출).
+- `data/reviews.ts` 총 **20개** 레코드(`sourceType`으로 구분): `official-case` 11건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약), `prototype` 9건(더미, 실제 화면에는 미노출).
+- 2026-09: 일본어/중국어 official-case 추가 확보를 위해 growth-success(Google Sites 공식 성공사례 허브) + vinemagazine.co.kr 사이트 내 검색을 브라우저로 직접 재확인. 새로 발견된 후보는 전부 기존 jp-01/cn-01과 동일 게시물(워드프레스 퍼머링크만 다른 alias)이었고, 두 언어 모두 공개적으로 확인 가능한 사례는 여전히 각 1건뿐 — 개수를 늘리지 않음(정직한 0건 보고).
 - Production 화면(`getPublishedReviews*` 함수들)은 **`official-case`만** 필터링해서 사용 — `prototype`은 데이터 파일에 남아있지만 어떤 화면에도 노출되지 않는다.
 - `getPublishedReviewsLanguageBalanced()`: `/reviews` 전체 탭에서 언어별 건수 불균형(영어가 다수)을 라운드로빈으로 섞어 노출 — 실제 사례 수 자체는 바꾸지 않음.
 
@@ -94,7 +96,8 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
   - `CORE_LOCAL_KEYWORDS` — 15개 keyword 목록(영어: 영어회화/영어과외/화상영어/토익과외/오픽과외, 일본어: 일본어회화/일본어과외/화상일본어/JLPT과외/워홀일본어, 중국어: 중국어회화/중국어과외/화상중국어/HSK과외/HSKK과외)
   - `computePublishedLocalSeoPages()` — 지역×키워드 cross product
 - `data/seo/previewRegistry.ts`의 `PUBLISHED_LOCAL_SEO_PAGES`가 이 계산 결과를 그대로 export하고, `findLocalSeoPreview(sido, sigungu, dong, keyword)`가 whitelist 검사 + 실제 Preview 조립을 담당.
-- **콘텐츠 엔진**: `lib/seo/generateLocalSeoContent.ts` (순수 함수, region + Keyword Cluster 입력 → Hero/DirectAnswer/추천대상/Benefits/Curriculum/Process/FAQ/CTA/Metadata 조립). 재료는 `data/seo/contentBlueprints.ts`(값만) + `data/seo/examProfiles.ts`(exam intent 세부, 없으면 공용 fallback) + `data/seo/clusterContentOverrides.ts`.
+- **콘텐츠 엔진**: `lib/seo/generateLocalSeoContent.ts` (순수 함수, region + Keyword Cluster 입력 → Hero/DirectAnswer/추천대상/Benefits/**상담 전 체크리스트(preConsultCheck)**/Curriculum/Process/FAQ/CTA/Metadata 조립). 재료는 `data/seo/contentBlueprints.ts`(값만) + `data/seo/examProfiles.ts`(exam intent 세부, 없으면 공용 fallback) + `data/seo/clusterContentOverrides.ts`.
+  - `preConsultCheck`(2026-09 추가): "상담 전에 체크하면 좋은 3가지" — 지역 특성을 창작하지 않고 사용자 자신의 상황(수준/목표/가능 시간 등)을 돌아보게 하는 질문형 문구 3개. exam Profile > Cluster Override > 공용 Blueprint 우선순위로 15개 공개 keyword 전부(실제로는 발행 15개 중 14개가 override/profile, 나머지 1개 "워홀일본어"만 공용 Blueprint fallback) 실질적으로 다른 문구를 갖는다. `components/DirectAnswerSection.tsx`가 기존 "빠른 답변" 카드 안 세 번째 블록으로 렌더링(새 Section을 추가하지 않아 페이지 길이 유지).
 - **ISR (On-Demand)**: `app/local/[sido]/[sigungu]/[dong]/[keyword]/page.tsx`
   - `generateStaticParams()`는 대표 지역(서울 마포구 공덕동) × keyword 15개만 build-time에 생성.
   - `dynamicParams = true`, `revalidate = 86400`(1일) — 나머지 97,890개는 최초 요청 시 on-demand 생성 후 캐시.
@@ -147,10 +150,14 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 - 요청은 `Content-Type: text/plain;charset=utf-8`로 전송(Apps Script Web App이 CORS preflight를 처리하지 않아 JSON Content-Type을 쓰면 막히기 때문 — `no-cors`도 쓰지 않음, 응답을 읽어 성공/실패를 구분해야 하므로).
 - Honeypot 필드(`company`)로 봇 방어 — 값이 채워지면 실제 전송 없이 성공 화면만 표시.
-- 필드: 이름/연락처/주소(도로명까지)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
+- 필드: 이름/연락처/주소(기본주소+상세주소 분리, 2026-09 갱신)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
 - 개인정보 동의 문구는 정책(수집목적/보유기간/처리주체) 확정 전까지 확장 금지 — 코드 내 `TODO` 주석으로 명시.
 - 환경변수 `NEXT_PUBLIC_CONSULTATION_ENDPOINT`는 `.env.local`(git 미포함)에만 존재, `.env.example`에 키 이름만 기록.
 - `defaultInterest` prop으로 언어별/지역 랜딩페이지에서 해당 언어 체크박스를 기본 선택 상태로 표시 가능.
+
+**주소 입력(2026-09 갱신)**: 카카오(구 다음) 우편번호 서비스(`//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js`, API 키 불필요·무료·사용량 제한 없음, 공식 가이드 `postcode.map.kakao.com/guide` 기준 확인)를 "주소 검색" 버튼 클릭 시에만 지연 로드해 팝업으로 띄운다. `new window.kakao.Postcode({ oncomplete }).open()` 콜백이 도로명주소를 읽기전용 기본주소 input에, 우편번호를 숨김 input(`zonecode`, 화면 비노출)에 채우고 상세주소 input에 포커스를 옮긴다. 상세주소(동/호수/건물명)는 별도 필수 아닌 자유 입력 필드. 제출 payload는 `address`/`addressDetail`/`zonecode` 3개로 분리.
+- Apps Script(`consultation.gs`) Sheet 컬럼: 기존 9개 컬럼 순서를 그대로 두고 "상세주소"/"우편번호" 2개를 **맨 뒤에만** 추가(중간 삽입 금지 — 기존 데이터 열 의미 보호). `getSheet()`가 `ensureHeaderColumns()`로 이미 운영 중인 시트의 헤더 행이 짧으면 빈 칸에 새 라벨만 채워 넣어 기존 헤더/데이터를 건드리지 않는다.
+- **주의**: `consultation.gs`는 레포에 있는 소스 사본일 뿐 자동 배포되지 않는다 — 실제 운영 중인 Google Apps Script Web App 편집기에 이 파일 내용을 직접 복사해 붙여넣고 재배포해야 상세주소/우편번호가 실제로 저장되기 시작한다. 재배포 전에도 기존 필드(이름/연락처/주소/관심언어 등) 저장은 그대로 정상 동작한다(구버전 스크립트가 payload의 추가 필드를 그냥 무시할 뿐).
 
 ## 12. 주요 데이터 Source of Truth
 
@@ -233,16 +240,22 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 코드 주석 기준으로 확인된 미해결/의도적 보류 항목:
 
 - 상담폼 개인정보 동의 문구: 수집목적/보유기간/처리주체(사업자명)/개인정보처리방침 링크 **미확정** — 확정 전까지 문구 확장 금지 (`ConsultationSection.tsx` TODO).
-- Reviews `prototype` 9건은 데이터에 남아있으나 실제 화면 미노출 — 실제 후기로 교체되거나 삭제될 여지 있음.
+- Reviews `prototype` 9건은 데이터에 남아있으나 실제 화면 미노출 — 2026-09 재확인(Playwright로 `/reviews` 렌더 결과에서 prototype 9건의 quote 문자열이 전혀 등장하지 않음을 직접 검증) 결과 노출 위험 없음. 실제 후기로 교체되거나 삭제될 여지는 여전히 있음(선택 사항, 급하지 않음).
 - `/local` 지역 허브는 2026-09-11 막 추가된 구조라 실사용 트래픽/SEO 효과가 아직 검증되지 않음.
 - sitemap shard 2(일본어)는 keyword 5개 기준 6,527×5=32,635개로 3개 shard가 균등하다고 가정하고 있으나, 향후 `CORE_LOCAL_KEYWORDS`를 언어당 5개가 아니게 바꾸면 이 균등 분할 전제가 깨짐(코드 변경 시 주의).
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(직전 커밋 `61d8f4c "Complete production SEO and UX quality audit"`) 기준,
-현재 코드 상태에서 자연스럽게 이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
+이 문서 작성 시점(직전 커밋 `c86d844 "Add Kakao address search to consultation form and
+pre-consult checklist to local SEO leaf pages"`) 기준, 현재 코드 상태에서 자연스럽게
+이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
 
-1. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
-2. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기).
-3. 상담폼 개인정보 정책 확정 → 동의 문구/링크 갱신.
-4. `docs/` 3종 문서 운영 정착 (본 작업의 목적).
+1. **(즉시)** `c86d844` push — 현재 세션 환경에서는 Git Credential Manager 대화형 로그인을
+   띄울 수 없어 push가 막혀 있다. 사용자가 직접 `git push origin main` 실행 필요.
+2. push 후 Google Apps Script 편집기에 `scripts/google-apps-script/consultation.gs`
+   최신 내용을 복사해 재배포 — 해야 상세주소/우편번호가 Sheet에 실제로 저장되기 시작한다
+   (재배포 전에도 기존 필드 저장은 정상 동작).
+3. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
+4. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음.
+5. 상담폼 개인정보 정책 확정 → 동의 문구/링크 갱신.
+6. `docs/` 3종 문서 운영 정착 (본 작업의 목적).
