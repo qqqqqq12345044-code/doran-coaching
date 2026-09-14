@@ -59,7 +59,7 @@ export default function ReviewStoryCard({ review }: { review: Review }) {
 
       {review.sourceLabel && (
         <p className="mt-5 text-[11px] text-ink-faint/80">
-          파워 외국어 과정 공식 수강 사례 · {review.sourceLabel} 원문 기반 요약
+          공개된 수강 사례 · {review.sourceLabel} 원문 기반 요약
         </p>
       )}
     </div>

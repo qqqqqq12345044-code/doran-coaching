@@ -4,6 +4,7 @@ import { buildBreadcrumbListSchema, buildFaqPageSchema, buildCourseSchema } from
 import DetailHero from "./DetailHero";
 import DirectAnswer from "./DirectAnswer";
 import KeySummaryPanel, { type KeySummaryColumn } from "./KeySummaryPanel";
+import TrustPreviewStrip from "./TrustPreviewStrip";
 import DetailRoadmapBlock from "./DetailRoadmapBlock";
 import DetailSection from "./DetailSection";
 import ExamWalkthroughSection from "./ExamWalkthroughSection";
@@ -223,6 +224,13 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
 
           <Reveal delay={80} className="mt-6">
             <KeySummaryPanel columns={summaryColumns} accentTintClass={accent.tint} />
+          </Reveal>
+
+          <Reveal delay={120}>
+            <TrustPreviewStrip
+              accentTextClass={accent.text}
+              reviewsHref={content.reviewIds.length > 0 ? "#detail-reviews" : "/reviews"}
+            />
           </Reveal>
         </div>
       </div>

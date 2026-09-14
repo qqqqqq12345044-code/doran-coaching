@@ -9,7 +9,7 @@ export default function DetailReviews({ ids }: { ids: string[] }) {
   if (list.length === 0) return null;
 
   return (
-    <section className="mt-10">
+    <section className="mt-10" id="detail-reviews">
       <h2 className="text-[20px] font-bold leading-snug text-ink sm:text-[22px]">실제 수강 사례</h2>
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {list.map((review) => (

@@ -99,7 +99,7 @@ export default function ReviewsPageContent() {
               시작 전 고민부터 변화까지
             </h2>
             <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
-              파워 외국어 공식 채널에서 공개된 수강 사례 원문을 근거로, 시작 전 고민 · 학습 과정 · 변화를 정리했습니다.
+              공개된 수강 사례 원문을 근거로, 시작 전 고민 · 학습 과정 · 변화를 정리했습니다.
             </p>
           </Reveal>
 

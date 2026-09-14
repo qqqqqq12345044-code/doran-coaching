@@ -320,15 +320,17 @@ export default function ConsultationSection({
               </div>
 
               {/* TODO(개인정보 정책 확정 전 문구 확장 금지):
-                  처리 주체(사업자명)/보유·이용 기간/개인정보처리방침 링크가
+                  처리 주체(사업자명)/보유·이용 기간/개인정보처리방침 링크/문의처가
                   아직 확정되지 않았다. 확정 전까지는 아래 동의 문구에 정책
-                  링크나 구체적인 보유기간을 추가하지 않는다. 수집 항목/목적은
-                  실제 폼 필드(위 payload) 기준으로 명시했다 — 필드가 추가/삭제되면
-                  이 문구도 함께 갱신한다. */}
+                  링크나 구체적인 보유기간·담당자 연락처를 추가하지 않는다. 수집
+                  항목/목적, 동의 거부 권리와 거부 시 제한(체크박스 required 속성과
+                  실제 일치)은 이미 명시했다 — 필드가 추가/삭제되면 이 문구도 함께
+                  갱신한다. */}
               <div className="sm:col-span-2">
                 <p className="text-[12.5px] leading-relaxed text-ink-faint">
                   이름·연락처·주소(상세주소 포함)·관심 언어·문의 내용을 상담 회신과 수업
-                  매칭 목적으로만 수집합니다.
+                  매칭 목적으로만 수집합니다. 동의를 거부하실 수 있으며, 거부 시 상담
+                  신청이 제한될 수 있습니다.
                 </p>
                 <label className="mt-2 flex cursor-pointer items-start gap-2.5 text-[13px] leading-relaxed text-ink-soft">
                   <input
