@@ -21,11 +21,15 @@ const STAGES = [
 ] as const;
 
 // /reviews 전용 카드. 기존 ReviewCard(홈 등 다른 화면에서 재사용 중)는 건드리지
-// 않고, Before → Learning → Change 서사가 있는 official-case만 이 카드로
-// 보여준다. review.story가 없으면(=아직 구조화 전 사례) 렌더링하지 않는다.
+// 않고, Before → Learning → Change 서사가 있는 official-case/example-case만
+// 이 카드로 보여준다. review.story가 없으면(=아직 구조화 전 사례) 렌더링하지
+// 않는다. example-case("대표 학습 사례")는 배지 색과 하단 안내 문구로만
+// official-case와 구분하고, 카드 레이아웃 자체는 동일하게 유지한다 — 실제
+// 후기와 부자연스럽게 달라 보이지 않으면서도 오인하지 않도록 하기 위함.
 export default function ReviewStoryCard({ review }: { review: Review }) {
   const story = review.story;
   if (!story) return null;
+  const isExample = review.sourceType === "example-case";
 
   return (
     <div className="flex h-full flex-col rounded-xl2 border border-ink/8 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-card sm:p-7">
@@ -33,9 +37,15 @@ export default function ReviewStoryCard({ review }: { review: Review }) {
         <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${LANGUAGE_TINT[review.language]}`}>
           {LANGUAGE_LABEL[review.language]}
         </span>
-        <span className="rounded-full bg-brand-tint px-2.5 py-1 text-[11px] font-semibold text-brand">
-          실제 수강 사례
-        </span>
+        {isExample ? (
+          <span className="rounded-full bg-ink/6 px-2.5 py-1 text-[11px] font-semibold text-ink-soft">
+            대표 학습 사례
+          </span>
+        ) : (
+          <span className="rounded-full bg-brand-tint px-2.5 py-1 text-[11px] font-semibold text-brand">
+            실제 수강 사례
+          </span>
+        )}
         <span className="text-[12.5px] font-medium text-ink-faint">{review.meta}</span>
       </div>
 
@@ -57,10 +67,16 @@ export default function ReviewStoryCard({ review }: { review: Review }) {
         ))}
       </ol>
 
-      {review.sourceLabel && (
+      {isExample ? (
         <p className="mt-5 text-[11px] text-ink-faint/80">
-          공개된 수강 사례 · {review.sourceLabel} 원문 기반 요약
+          실제 상담에서 자주 나오는 고민과 학습 과정을 바탕으로 재구성한 예시입니다.
         </p>
+      ) : (
+        review.sourceLabel && (
+          <p className="mt-5 text-[11px] text-ink-faint/80">
+            공개된 수강 사례 · {review.sourceLabel} 원문 기반 요약
+          </p>
+        )
       )}
     </div>
   );

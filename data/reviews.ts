@@ -1,6 +1,6 @@
 import type { LanguageSlug } from "./languages";
 
-// 이 파일은 두 종류의 후기를 함께 관리한다. sourceType으로 구분하며 섞여서
+// 이 파일은 세 종류의 후기를 함께 관리한다. sourceType으로 구분하며 섞여서
 // 출처를 잃어버리지 않게 한다.
 // - "official-case": 파워 외국어(파워잉글리시/파워차이나/파워재팬) 공식 홍보
 //   채널(Google Sites "https://sites.google.com/view/growth-success" 등
@@ -9,6 +9,17 @@ import type { LanguageSlug } from "./languages";
 //   그대로 복사하지 않았고, 원문에 없는 나이/점수/기간 등은 추가하지 않았다.
 //   원문 기사에 실명(또는 부분 마스킹 이름)이 있어도 이 프로젝트에서는 이름을
 //   노출하지 않고 기존 meta 형식("과목 · 신분")만 사용한다.
+// - "example-case"(2026-09 추가): 특정 개인의 실제 후기가 아니라, 상담에서
+//   자주 나오는 고민·학습 과정·변화 패턴을 바탕으로 재구성한 "대표 학습
+//   사례"다. 검증된 개인 후기처럼 보이지 않도록: 가짜 이름/회사명/학교명,
+//   구체 점수, 합격 여부, 수강 기간 등 사실처럼 보이는 세부정보를 넣지
+//   않는다. sourceUrl/sourceLabel도 없다(외부 원문이 없으므로). UI(주로
+//   ReviewStoryCard)는 sourceType으로 분기해 "대표 학습 사례" 표시와 재구성
+//   안내 문구를 함께 보여줘 official-case와 시각적으로 구분한다. 일본어/
+//   중국어처럼 공개된 official-case가 1건뿐인 언어의 /reviews 노출을
+//   보강하는 용도로만 쓰고, 상세페이지(DetailReviews)·홈(getFeaturedReviews)·
+//   Local SEO(ReviewSection)에는 노출하지 않는다(그 화면들은 여전히
+//   official-case만 사용).
 // - "prototype": 실제 수강생 후기가 아닌 더미 데이터. 추후 실제 후기로 교체될
 //   수 있다.
 export interface Review {
@@ -16,16 +27,19 @@ export interface Review {
   quote: string;
   meta: string;
   language: LanguageSlug;
-  sourceType: "official-case" | "prototype";
+  sourceType: "official-case" | "example-case" | "prototype";
   /** official-case일 때만: 공개적으로 접근 가능한 원문 출처. */
   sourceUrl?: string;
   sourceLabel?: string;
   /**
-   * official-case 전용 Before → Learning → Change 요약. sourceUrl 원문 기사를
-   * 실제로 확인한 뒤, 원문에 있는 사실만 짧게 재구성했다(문장 그대로 대량
-   * 복사 금지 원칙에 따라 패러프레이즈). 원문에 없는 나이/점수/기간은 추가하지
-   * 않았다. /reviews 페이지의 사례 카드에서만 사용하고, 기존 quote/meta는
-   * ReviewCard(홈 등 다른 화면)에서 그대로 계속 쓴다.
+   * official-case/example-case 전용 Before → Learning → Change 요약.
+   * official-case는 sourceUrl 원문 기사를 실제로 확인한 뒤 원문에 있는
+   * 사실만 짧게 재구성했다(문장 그대로 대량 복사 금지 원칙에 따라
+   * 패러프레이즈, 원문에 없는 나이/점수/기간은 추가하지 않음). example-case는
+   * 특정 원문이 없고, 상담에서 흔히 나오는 고민·과정·변화 패턴을 일반화한
+   * 것이다(구체 성과/기간 등 사실처럼 보이는 세부정보 없음). /reviews
+   * 페이지의 사례 카드에서만 사용하고, 기존 quote/meta는 ReviewCard(홈 등
+   * 다른 화면)에서 그대로 계속 쓴다.
    */
   story?: {
     before: string;
@@ -181,6 +195,85 @@ export const reviews: Review[] = [
   },
 
   // ===========================================================================
+  // 대표 학습 사례 — 특정 개인의 실제 후기가 아니라, 상담에서 자주 나오는
+  // 고민·학습 과정·변화 패턴을 바탕으로 재구성한 예시다(위 interface 주석
+  // 참고). 일본어/중국어 official-case가 각 1건뿐이라 /reviews 노출을
+  // 보강하기 위한 용도로만 사용한다.
+  // ===========================================================================
+  {
+    id: "review-example-jp-01",
+    quote: "머릿속으로는 문장이 떠오르는데 막상 말하려고 하면 첫마디가 안 나와서 답답했는데, 짧은 문장부터 소리 내어 반복하다 보니 대답하는 속도가 조금씩 빨라졌어요.",
+    meta: "일본어 회화 · 대학생",
+    language: "japanese",
+    sourceType: "example-case",
+    story: {
+      before: "히라가나와 기본 문형은 익혀뒀지만, 실제 대화 상황에서는 머릿속이 하얘지면서 아는 표현도 바로 나오지 않았어요.",
+      learning: "짧은 문장으로 자기소개나 일상 질문에 답하는 연습을 반복하고, 막힌 부분은 코치님과 다시 짚어가며 소리 내어 말하는 시간을 늘렸어요.",
+      change: "정답을 완벽히 준비하기보다 일단 말을 시작하는 게 편해졌고, 대답까지 걸리는 시간이 눈에 띄게 줄었어요.",
+    },
+  },
+  {
+    id: "review-example-jp-02",
+    quote: "독해는 시간 안에 못 풀고 청해는 한 번 놓치면 다음 문제까지 흔들렸는데, 유형별로 나눠 연습하면서 시험 시간 운영이 한결 편해졌어요.",
+    meta: "일본어 JLPT · 취업 준비생",
+    language: "japanese",
+    sourceType: "example-case",
+    story: {
+      before: "문법은 어느 정도 정리했다고 생각했는데, 실제 기출 유형을 풀어보니 독해는 시간이 부족하고 청해는 흐름을 놓치면 뒷부분까지 같이 놓치는 게 문제였어요.",
+      learning: "긴 지문은 문단별로 핵심을 먼저 잡는 순서를 연습하고, 청해는 짧은 구간을 반복해 들으며 놓친 부분을 바로 확인하는 방식으로 수업을 진행했어요.",
+      change: "지문을 읽는 순서가 잡히면서 시간 안에 문제를 끝까지 볼 수 있게 됐고, 청해도 중간에 놓쳐도 흐름을 이어서 따라갈 수 있게 됐어요.",
+    },
+  },
+  {
+    id: "review-example-jp-03",
+    quote: "가서 부딪히면 어떻게든 될 줄 알았는데, 편의점이나 마트에서 쓰는 표현조차 낯설어서 미리 상황별로 연습해둔 게 크게 도움이 됐어요.",
+    meta: "일본어 생활회화 · 워홀 준비생",
+    language: "japanese",
+    sourceType: "example-case",
+    story: {
+      before: "워킹홀리데이를 앞두고 있었지만 교과서 표현과 실제 생활에서 쓰는 말이 다르다는 얘기를 듣고 막상 뭐부터 준비해야 할지 막막했어요.",
+      learning: "편의점, 마트, 관공서, 아르바이트 면접처럼 실제로 부딪힐 상황을 정해 그 상황에서 쓰는 표현과 대응 방법을 하나씩 연습했어요.",
+      change: "상황을 미리 그려보고 말해본 덕분에, 비슷한 상황이 실제로 생겼을 때 당황하지 않고 필요한 말을 꺼낼 수 있겠다는 자신감이 생겼어요.",
+    },
+  },
+  {
+    id: "review-example-cn-01",
+    quote: "성조를 신경 쓰다 보면 다음 말이 막히곤 했는데, 짧은 문장을 반복해서 소리 내다 보니 성조와 말하기를 같이 신경 쓰는 게 조금씩 편해졌어요.",
+    meta: "중국어 회화 · 대학생",
+    language: "chinese",
+    sourceType: "example-case",
+    story: {
+      before: "단어는 아는데 성조가 틀릴까 봐 말하기 전에 머뭇거리는 습관이 있었고, 그러다 보니 대화 자체를 피하게 됐어요.",
+      learning: "짧은 문장을 성조까지 맞춰 여러 번 따라 말하고, 코치님이 바로바로 발음을 교정해주는 방식으로 반복 연습했어요.",
+      change: "성조를 따로 생각하지 않아도 입에 붙는 문장이 늘면서, 말하기 전에 머뭇거리는 시간이 줄었어요.",
+    },
+  },
+  {
+    id: "review-example-cn-02",
+    quote: "단어는 외웠는데 듣기만 하면 뜻이 잘 안 잡혔는데, 유형별로 반복해서 듣다 보니 문장 전체 흐름이 들리기 시작했어요.",
+    meta: "중국어 HSK · 취업 준비생",
+    language: "chinese",
+    sourceType: "example-case",
+    story: {
+      before: "어휘는 따로 외워뒀지만 듣기 영역에서 속도를 따라가지 못했고, 독해도 모르는 단어가 나오면 문장 전체를 놓치는 편이었어요.",
+      learning: "듣기는 같은 지문을 여러 번 반복해서 듣고 안 들린 부분만 짚어보는 방식으로, 독해는 모르는 단어를 문맥으로 유추하는 연습을 함께 했어요.",
+      change: "문장을 통째로 이해하려는 습관이 생기면서 듣기 속도에 덜 밀리게 됐고, 독해도 막히는 지점이 눈에 띄게 줄었어요.",
+    },
+  },
+  {
+    id: "review-example-cn-03",
+    quote: "회의에서 짧게라도 의견을 말해야 하는데 문장을 어떻게 시작해야 할지 몰라 머뭇거렸는데, 상황별 표현을 정리해두니 필요한 순간에 말을 꺼내기가 수월해졌어요.",
+    meta: "중국어 업무회화 · 직장인",
+    language: "chinese",
+    sourceType: "example-case",
+    story: {
+      before: "업무상 중국 거래처와 소통할 일이 생겼는데, 일상 회화는 어느 정도 됐지만 회의나 업무 상황에서 쓰는 표현은 따로 준비된 게 없었어요.",
+      learning: "실제 업무에서 자주 나오는 상황(의견 말하기, 일정 조율, 간단한 보고)을 정해 그에 맞는 표현을 구성하고 실전처럼 말해보는 연습을 반복했어요.",
+      change: "정해진 상황에서 쓸 말을 미리 준비해둔 덕분에, 비슷한 상황이 실제로 생겼을 때 문장을 조립하는 부담이 줄었어요.",
+    },
+  },
+
+  // ===========================================================================
   // 프로토타입 더미 후기 — 실제 수강생 후기가 아니다.
   // ===========================================================================
   {
@@ -263,14 +356,8 @@ export function getPublishedReviewsByLanguage(language: LanguageSlug): Review[] 
   return reviews.filter((review) => review.language === language && review.sourceType === "official-case");
 }
 
-// /reviews "전체" 탭처럼 official-case 전부를 보여주는 자리에서, 영어(8건)가
-// 일본어·중국어(각 1건)보다 훨씬 많아 그대로 나열하면 두 언어가 묻혀 보인다.
-// 언어별로 라운드로빈으로 섞어 각 언어의 사례가 목록 앞쪽에 고르게 나오도록
-// 순서만 바꾼다(실제 사례 수는 그대로, 새 후기 생성 없음).
-export function getPublishedReviewsLanguageBalanced(): Review[] {
-  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
-  const queues = languagePriority.map((language) => getPublishedReviewsByLanguage(language));
-
+// 여러 언어별 큐를 라운드로빈으로 섞는다(뒤 함수들이 공유하는 순서 로직).
+function roundRobinBalance(queues: Review[][]): Review[] {
   const balanced: Review[] = [];
   let remaining = queues.reduce((sum, queue) => sum + queue.length, 0);
   let cursor = 0;
@@ -283,8 +370,31 @@ export function getPublishedReviewsLanguageBalanced(): Review[] {
     }
     cursor += 1;
   }
-
   return balanced;
+}
+
+// /reviews "전체" 탭처럼 official-case 전부를 보여주는 자리에서, 영어(8건)가
+// 일본어·중국어(각 1건)보다 훨씬 많아 그대로 나열하면 두 언어가 묻혀 보인다.
+// 언어별로 라운드로빈으로 섞어 각 언어의 사례가 목록 앞쪽에 고르게 나오도록
+// 순서만 바꾼다(실제 사례 수는 그대로, 새 후기 생성 없음).
+export function getPublishedReviewsLanguageBalanced(): Review[] {
+  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
+  return roundRobinBalance(languagePriority.map((language) => getPublishedReviewsByLanguage(language)));
+}
+
+// /reviews 페이지 전용: official-case에 example-case("대표 학습 사례")를 더한
+// 목록. 일본어/중국어는 official-case가 1건뿐이라 이 화면에서만 예시를 더해
+// 보강한다. 다른 화면(DetailReviews/getFeaturedReviews/ReviewSection)은 계속
+// official-case만 사용 — 이 함수는 /reviews 밖에서 쓰지 않는다.
+export function getReviewsPageEntriesByLanguage(language: LanguageSlug): Review[] {
+  return reviews.filter(
+    (review) => review.language === language && (review.sourceType === "official-case" || review.sourceType === "example-case")
+  );
+}
+
+export function getReviewsPageEntriesBalanced(): Review[] {
+  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
+  return roundRobinBalance(languagePriority.map((language) => getReviewsPageEntriesByLanguage(language)));
 }
 
 // 홈 대표 후기 영역처럼 소수만 노출하는 자리에서, 배열 앞쪽에 영어 사례가

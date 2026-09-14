@@ -8,8 +8,8 @@ import RecommendedForSection from "@/components/RecommendedForSection";
 import AnchorLink from "@/components/AnchorLink";
 import {
   getPublishedReviews,
-  getPublishedReviewsByLanguage,
-  getPublishedReviewsLanguageBalanced,
+  getReviewsPageEntriesByLanguage,
+  getReviewsPageEntriesBalanced,
 } from "@/data/reviews";
 import { getLanguageBySlug, type LanguageSlug } from "@/data/languages";
 
@@ -29,10 +29,12 @@ const RELATABLE_SITUATIONS = [
   "학습 습관이 오래 유지되지 않을 때",
 ];
 
-// 기존 data/reviews.ts를 그대로 사용한다. 새 후기를 만들지 않는다.
+// data/reviews.ts의 official-case(실제 수강 사례) + example-case(대표 학습
+// 사례, 일본어/중국어 보강용)를 함께 보여준다. 두 sourceType의 시각적 구분은
+// ReviewStoryCard가 담당한다.
 export default function ReviewsPageContent() {
   const [filter, setFilter] = useState<FilterValue>("all");
-  const list = filter === "all" ? getPublishedReviewsLanguageBalanced() : getPublishedReviewsByLanguage(filter);
+  const list = filter === "all" ? getReviewsPageEntriesBalanced() : getReviewsPageEntriesByLanguage(filter);
   const totalCount = getPublishedReviews().length;
   // 언어 필터 결과가 1건뿐이면(현재 일본어/중국어) 카드 하나만 덩그러니 남지
   // 않도록, 그 언어의 실제 과정 페이지로 이어지는 보조 카드를 함께 보여준다.
@@ -99,7 +101,8 @@ export default function ReviewsPageContent() {
               시작 전 고민부터 변화까지
             </h2>
             <p className="mt-3 text-[14.5px] leading-relaxed text-ink-soft">
-              공개된 수강 사례 원문을 근거로, 시작 전 고민 · 학습 과정 · 변화를 정리했습니다.
+              공개된 수강 사례와, 상담에서 자주 나오는 고민을 바탕으로 재구성한 대표 학습 사례를 함께
+              소개합니다. 각 카드에서 어떤 사례인지 확인할 수 있어요.
             </p>
           </Reveal>
 
