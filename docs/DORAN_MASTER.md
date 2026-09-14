@@ -1,7 +1,7 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-11 (로컬 커밋 `0039656`
-완료, push 예정 — 이번 세션 작업은 HISTORY 최신 항목 참고). 이 문서와
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-12 (커밋 `4905ddb`
+push 완료, production 반영 확인됨). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
 
@@ -100,7 +100,9 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
   - `preConsultCheck`(2026-09 추가): "상담 전에 체크하면 좋은 3가지" — 지역 특성을 창작하지 않고 사용자 자신의 상황(수준/목표/가능 시간 등)을 돌아보게 하는 질문형 문구 3개. exam Profile > Cluster Override > 공용 Blueprint 우선순위로 15개 공개 keyword 전부(실제로는 발행 15개 중 14개가 override/profile, 나머지 1개 "워홀일본어"만 공용 Blueprint fallback) 실질적으로 다른 문구를 갖는다. `components/DirectAnswerSection.tsx`가 기존 "빠른 답변" 카드 안 세 번째 블록으로 렌더링(새 Section을 추가하지 않아 페이지 길이 유지).
 - **ISR (On-Demand)**: `app/local/[sido]/[sigungu]/[dong]/[keyword]/page.tsx`
   - `generateStaticParams()`는 대표 지역(서울 마포구 공덕동) × keyword 15개만 build-time에 생성.
-  - `dynamicParams = true`, `revalidate = 86400`(1일) — 나머지 97,890개는 최초 요청 시 on-demand 생성 후 캐시.
+  - `dynamicParams = true`, `revalidate = false` — 나머지 97,890개는 최초 요청 시 on-demand 생성된 뒤
+    **다음 배포 전까지 영구 캐시**된다(2026-09-12 `4905ddb`, 아래 10번 참고. 기존 `revalidate = 86400`
+    시간 기반 주기는 폐기됨).
   - 어떤 조합이든 렌더링 전에 `findLocalSeoPreview()`가 whitelist를 재검사 → whitelist 밖은 `notFound()`.
 - 지역명 disambiguation: 전국 확장 후 동명 법정동(예: "신교동")이 여러 시/군/구에 존재할 수 있어, 본문 노출 지역명은 `buildDisambiguatedRegionName()`으로 시/군/구(필요 시 시/도)까지 포함해 유일하게 만든다. URL 자체(`preview.url`)는 법정동 단독 표기 그대로 유지.
 - 내부 링크("가지치기"): 리프 페이지당 관련 링크 약 7개(같은 지역의 다른 keyword 최대 2개 + 관련 과정 + 매거진 글 + 다른 언어 + SELF-CHECK) — 화이트리스트 전체에 대량 링크를 걸지 않음.
@@ -113,7 +115,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 - `lib/seo/localHub.ts` — `data/seo/publishBatches.ts`의 `PUBLISHED_REGIONS_NATIONWIDE`를 그대로 재사용해 sido/sigungu/dong 집합을 모듈 로드 시 1회 인덱싱(지역 목록을 다시 정의하지 않음). 시/도를 수도권/강원권/충청권/호남권/영남권/제주권으로 묶는 `SIDO_REGION_GROUPS`는 순수 UI 그룹핑.
 - `app/local/page.tsx` (0-depth): 완전 정적, 시/도 그룹 목록 + `LocalRegionSearch` 검색창.
-- `app/local/[sido]/page.tsx`, `.../[sigungu]/page.tsx`, `.../[dong]/page.tsx`: 각각 `dynamicParams = true`, `revalidate = 86400`. `[sido]`(15개 전체)와 `[sigungu]`(255개 전체, "비용이 작아 전부")는 build-time에 전부 생성, `[dong]`(6,527개)은 대표 지역(공덕동)만 build-time에 만들고 나머지는 on-demand.
+- `app/local/[sido]/page.tsx`, `.../[sigungu]/page.tsx`, `.../[dong]/page.tsx`: 각각 `dynamicParams = true`, `revalidate = false`(2026-09-12, 아래 10번 참고). `[sido]`(15개 전체)와 `[sigungu]`(255개 전체, "비용이 작아 전부")는 build-time에 전부 생성, `[dong]`(6,527개)은 대표 지역(공덕동)만 build-time에 만들고 나머지는 on-demand.
 - `app/local/region-search/route.ts`: `LocalRegionSearch` 컴포넌트가 포커스 시에만 지연 로드하는 경량 JSON API. `[sido, sigungu, dong]` 튜플 배열만 반환(6,527×3 문자열), `dynamic = "force-static"` + `Cache-Control: public, max-age=86400, immutable`로 build-time 1회 생성 후 캐시. 지역 전체를 클라이언트 번들에 정적 import하지 않기 위한 설계.
 - 홈페이지에 `LocalHubTeaser` 컴포넌트로 진입점 노출.
 - Next.js 라우팅 특성: `region-search`(고정 세그먼트)가 `[sido]`(동적 세그먼트)보다 항상 먼저 매칭되므로 충돌 없음.
@@ -140,10 +142,27 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 | 위치 | 방식 |
 |---|---|
-| `/local/[sido]` ~ `/local/[sido]/[sigungu]/[dong]/[keyword]` (전 레벨) | `dynamicParams = true`, `revalidate = 86400`(1일) |
+| `/local/[sido]` ~ `/local/[sido]/[sigungu]/[dong]/[keyword]` (전 레벨) | `dynamicParams = true`, `revalidate = false` |
 | `/local/region-search` | `dynamic = "force-static"` (build-time 1회, 이후 순수 정적 캐시) |
 | `/magazine/[slug]` | `dynamicParams = false` (whitelist 완전 고정, ISR 아님) |
 | `/`, `/english` 등 언어 페이지, `/[language]/[category]` | 정적 생성(별도 revalidate 없음 — 데이터가 코드 배포 시점에만 바뀜) |
+
+**2026-09-12 변경(커밋 `4905ddb`)**: `/local` 계층 4개 route 전부 `revalidate`를
+`86400`(1일 주기 재검증)에서 `false`(다음 배포 전까지 영구 캐시)로 변경했다.
+- **배경**: `generateLocalSeoContent.ts`/`localHub.ts`는 외부 DB·API·날짜·랜덤 입력이
+  전혀 없는 순수 함수라 콘텐츠가 재배포 없이는 절대 바뀌지 않는데도, 97,905개
+  whitelist 전체를 도는 검색엔진 크롤링 + 짧은 기간 내 반복된 production 재배포가
+  겹치면서 캐시 만료(24시간 경과) 때마다 재생성(write)이 반복 발생 — Vercel Hobby
+  플랜의 월간 ISR Writes 포함량을 300%까지 초과하는 경고가 발생했다.
+- **조치**: 4개 route(`[sido]`/`[sigungu]`/`[dong]`/`[keyword]`)의 `revalidate`를
+  `false`로 변경. 각 경로는 최초 요청 시 정확히 1회만 on-demand 생성(write)되고,
+  이후에는 같은 배포 안에서 재요청해도 write가 발생하지 않는다 — 배포가 일어나면
+  Vercel이 캐시를 새로 시작하므로 코드/데이터 변경은 다음 배포 시 정상 반영된다.
+- **바뀌지 않은 것**: whitelist(`PUBLISHED_LOCAL_SEO_PAGES`, 97,905개), `generateStaticParams`,
+  `dynamicParams = true`, sitemap, canonical — 전부 기존 그대로. 공개 대상 페이지
+  수나 URL 구조에는 영향 없음.
+- **검증**: production에서 첫 방문 시 `x-nextjs-cache: MISS` → 재방문 시 `HIT` 확인,
+  Vercel deployment `READY` 확인. 상세 원인/재현 데이터는 커밋 `4905ddb` 메시지 참고.
 
 ## 11. 상담폼 구조
 
@@ -251,7 +270,7 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(최근 push된 커밋 `e1e27f7`, production 반영 확인됨) 기준, 현재 코드
+이 문서 작성 시점(최근 push된 커밋 `4905ddb`, production 반영 확인됨) 기준, 현재 코드
 상태에서 자연스럽게 이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
 
 1. **(사용자 직접 필요)** Google Apps Script 편집기에서 `scripts/google-apps-script/consultation.gs`

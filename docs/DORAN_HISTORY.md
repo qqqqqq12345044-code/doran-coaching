@@ -324,6 +324,47 @@
 
 ---
 
+## 2026-09-12 — Vercel ISR Writes 초과 대응 (revalidate=false 전환)
+
+### 작업
+Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% 초과 사용을
+경고. Local SEO 계층(`/local` 4개 route level)의 캐시 재검증 방식을 원인 분석 후 수정.
+
+### 원인
+- `generateLocalSeoContent.ts`/`localHub.ts`는 외부 DB/API/날짜/랜덤 입력이 없는
+  순수 함수라 콘텐츠가 재배포 없이는 절대 바뀌지 않는데도, 기존 `revalidate = 86400`
+  (24시간 시간 기반 재검증)이 적용돼 있었다.
+- 97,905개 whitelist URL 전체를 도는 검색엔진 크롤링(런타임 로그 기준 24시간
+  내 약 8,000개 서로 다른 경로 접근, 대부분 1~2회) + 최근 며칠 내 약 20회의
+  잦은 production 재배포가 겹치면서, 캐시가 만료될 때마다(24시간 경과) 그리고
+  매 재배포마다 캐시가 리셋될 때마다 불필요한 재생성(write)이 반복 발생.
+
+### 조치
+- `app/local/[sido]/page.tsx`, `.../[sigungu]/page.tsx`, `.../[dong]/page.tsx`,
+  `.../[dong]/[keyword]/page.tsx` 4개 route 전부 `revalidate`를 `86400` →
+  `false`로 변경. 각 경로는 최초 요청 시 1회만 on-demand 생성되고 이후에는
+  다음 배포 전까지 영구 캐시되며, 재배포 시점에만 새 캐시로 교체된다.
+- whitelist(`PUBLISHED_LOCAL_SEO_PAGES`), `generateStaticParams`, `dynamicParams`,
+  sitemap, canonical 로직은 전혀 건드리지 않음 — 97,905개 URL은 이전과 동일하게
+  전부 생성 가능한 상태 유지.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(358 static pages) clean.
+- `npm run validate:local-seo`(97,905/97,905 이상 없음), `npm run validate:seo` 이상 없음.
+- `next start`로 사전 빌드된 페이지 1개 + 최초 방문(on-demand) 페이지 여러 개(영어/
+  일본어/중국어, 수도권/지방 지역 조합)를 Playwright + 수동으로 확인: 200 OK, 올바른
+  title/canonical/H1, 콘솔 에러 없음.
+- production에서 `x-nextjs-cache` 헤더로 최초 방문 MISS → 재방문 HIT 확인, Vercel
+  deployment `READY` 확인.
+
+### 상태
+- 커밋 후 push, Vercel production 반영 확인 완료.
+
+### Commit
+- `4905ddb` Fix Vercel ISR Writes overage by switching local SEO cache to revalidate=false
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
