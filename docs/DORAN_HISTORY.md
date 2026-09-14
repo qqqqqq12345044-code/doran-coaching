@@ -421,6 +421,47 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-14 (2차) — 일본어/중국어 대표 학습 사례 6건 추가
+
+### 작업
+- 일본어/중국어 official-case가 각 1건뿐이라 `/reviews`에서 두 언어 영역이
+  빈약해 보이는 문제를 보강. 새 `sourceType: "example-case"`를 도입해
+  일본어 3개(회화/JLPT/생활·워홀)·중국어 3개(회화/HSK/업무회화) 재구성
+  학습 사례를 추가.
+
+### 주요 변경
+- `data/reviews.ts` — `Review.sourceType`에 `"example-case"` 추가, 6개 항목
+  입력(각 quote/meta/story 포함, sourceUrl 없음). `getReviewsPageEntriesByLanguage`/
+  `getReviewsPageEntriesBalanced`(신규, `/reviews` 전용) 추가 — 기존
+  `getPublishedReviews*`/`getFeaturedReviews`(official-case만 사용)는 변경 없음.
+- `components/ReviewStoryCard.tsx` — sourceType이 `example-case`면 배지를
+  "대표 학습 사례"(중립 회색)로, 하단 안내를 "실제 상담에서 자주 나오는
+  고민과 학습 과정을 바탕으로 재구성한 예시입니다."로 표시해 `official-case`
+  ("실제 수강 사례", 원문 출처 표기)와 시각적으로 구분.
+- `components/ReviewsPageContent.tsx` — `/reviews`의 필터별 목록을 새 함수로
+  교체(상단 "실제 수강 사례 {N}건" 배지는 여전히 official-case만 카운트,
+  변경 없음). 이 김에 그 배지 숫자가 실제로는 8+1+1=10인데 이전 문서에
+  "11건"으로 잘못 적혀 있던 것을 발견해 MASTER.md도 함께 수정.
+- 콘텐츠 원칙: 가짜 이름/회사명/학교명, 구체 점수/합격여부/수강기간 없음.
+  DetailReviews(상세페이지)·ReviewSection(Local SEO)·getFeaturedReviews(홈)는
+  여전히 official-case만 사용 — example-case는 `/reviews` 밖에 노출되지 않음.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(358 static pages) clean.
+- `npm run validate:detail-content`/`validate:local-seo` 이상 없음(이번 변경과
+  무관한 영역이지만 사이드이펙트 없는지 재확인).
+- Playwright로 390/768/1440px에서 `/reviews`의 일본어·중국어 필터를 각각
+  확인: 실제 후기 1개 + 대표 학습 사례 3개가 배지로 명확히 구분되면서도
+  자연스럽게 공존, 가로 overflow 없음, 콘솔 에러 없음.
+
+### 상태
+- 커밋 후 push, Vercel production 반영 확인 완료.
+
+### Commit
+- `6d39f29` Add representative Japanese/Chinese learning-example reviews to /reviews
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.

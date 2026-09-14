@@ -1,6 +1,6 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-14 (커밋 `bc8dc6d`
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-14 (커밋 `6d39f29`
 push 완료, production 반영 확인됨). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
@@ -84,7 +84,8 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - `getRelatedMagazineArticles()`로 글 간 상호 연결(`relatedArticleSlugs`).
 
 **Reviews**
-- `data/reviews.ts` 총 **20개** 레코드(`sourceType`으로 구분): `official-case` 11건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약), `prototype` 9건(더미, 실제 화면에는 미노출).
+- `data/reviews.ts` 총 **26개** 레코드(`sourceType`으로 구분): `official-case` 10건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약 — 이전 문서에 "11건"으로 잘못 기재돼 있었음, 실제 합은 8+1+1=10), `example-case` 6건(2026-09-14 신규, 일본어 3 / 중국어 3, "대표 학습 사례" — 아래 참고), `prototype` 9건(더미, 실제 화면에는 미노출).
+- `example-case`(2026-09-14 추가): 특정 개인의 실제 후기가 아니라 상담에서 흔한 고민·과정·변화 패턴을 재구성한 예시. 일본어/중국어 official-case가 각 1건뿐이라 `/reviews` 노출을 보강하는 용도로만 존재하며, **`/reviews` 페이지에서만** 노출된다(`getReviewsPageEntriesByLanguage`/`getReviewsPageEntriesBalanced`). 상세페이지(`DetailReviews`)·홈(`getFeaturedReviews`)·Local SEO(`ReviewSection`)는 여전히 `official-case`만 사용 — 이 함수들과 `getPublishedReviews*`는 이번에 변경하지 않았다. `ReviewStoryCard.tsx`가 sourceType으로 배지("실제 수강 사례" vs "대표 학습 사례")와 하단 안내 문구를 분기해 시각적으로 구분한다. 가짜 이름/회사명/학교명/점수/합격여부/구체 기간은 없음, `sourceUrl`/`sourceLabel`도 없음(외부 원문이 없으므로).
 - 2026-09(2회 재확인, 최신 2026-09-14): 일본어/중국어 official-case 추가 확보를 위해 growth-success(Google Sites 공식 성공사례 허브) + vinemagazine.co.kr 사이트 내 검색("파워재팬"/"파워차이나"/"일본어"/"중국어"/"HSK"/"JLPT")을 브라우저로 직접 재확인. 새로 발견된 후보는 전부 기존 jp-01/cn-01과 동일 게시물(워드프레스 퍼머링크만 다른 alias, 본문 내용 동일)이었고, 두 언어 모두 공개적으로 확인 가능한 사례는 여전히 각 1건뿐 — 개수를 늘리지 않음(정직한 0건 보고).
 - Production 화면(`getPublishedReviews*` 함수들)은 **`official-case`만** 필터링해서 사용 — `prototype`은 데이터 파일에 남아있지만 어떤 화면에도 노출되지 않는다.
 - 2026-09-14: 후기 카드/페이지의 사용자-facing 문구에서 "파워 외국어 과정 수강 사례"/"파워 외국어 과정 공식 수강 사례"/"파워 외국어 공식 채널에서 공개된" 표현을 제거(`ReviewCard.tsx`/`ReviewStoryCard.tsx`/`ReviewsPageContent.tsx`) — Power는 경쟁사가 아니라 같은 서비스의 기존 공식 채널이라 사용자 화면에서 별도로 강조할 필요가 없다는 판단. `sourceUrl`/`sourceLabel`은 데이터에 그대로 유지, "실제 수강 사례" 배지·`sourceLabel`(예: vinemagazine.co.kr) 표기는 유지. `data/trustStats.ts`의 `sourceNote`("파워 외국어 과정 누적 기준")는 후기 카드가 아니라 Trust Stats(보호 대상)의 출처 각주라 이번에는 건드리지 않음.
