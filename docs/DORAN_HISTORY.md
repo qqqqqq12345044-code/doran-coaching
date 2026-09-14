@@ -365,6 +365,62 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-14 — Local SEO Hero 카드 개선 + 후기 Power 문구 정리 + 상세페이지 신뢰 신호 + 상담 동의 보강
+
+### 작업
+- Local SEO 리프 페이지(97,905개 전체) Hero 우측 비주얼 카드 디자인 개선.
+- 일본어/중국어 공식 후기 재조사(브라우저 직접 검증, 3회째).
+- 영어 후기의 "파워 공식 후기 참조" 계열 사용자-facing 문구 정리.
+- 12개 상세페이지 공통 레이아웃에 신뢰 신호(trust preview) 추가.
+- 상담폼 개인정보 동의 문구에 거부 권리/거부 시 제한 안내 추가.
+
+### 주요 변경
+- `components/BirdsHeroVisual.tsx` — 배경 그라디언트가 `language`와 무관하게 항상 영어색
+  (`from-english to-english-dark`)으로 고정돼 있던 버그를 수정(일본어/중국어 페이지에서도
+  영어색이 노출되고 있었음). `language`/`features` prop을 추가해 언어별 accent 그라디언트 +
+  그 keyword의 실제 핵심 특징 2개(`content.benefits`) + 검증된 `trustStats` 1줄로 기존에
+  비어 있던 카드 하단 공간을 채움. 지역명 하드코딩 없이 97,905개 전체에 공용으로 재사용.
+- `components/ReviewCard.tsx`/`ReviewStoryCard.tsx`/`ReviewsPageContent.tsx` — 사용자
+  화면의 "파워 외국어 과정 (공식) 수강 사례"/"파워 외국어 공식 채널에서 공개된" 표현을
+  제거하고 "실제 수강 사례"/"공개된 수강 사례"로 정리. `sourceUrl`/`sourceLabel`/
+  `official-case` 분류는 데이터에 그대로 유지 — Power는 경쟁사가 아니라 같은 서비스의
+  기존 공식 채널이라는 전제 하에 사용자 화면에서만 강조를 줄임.
+- `components/detail/TrustPreviewStrip.tsx`(신규) — 12개 상세페이지 공통
+  `DetailPageLayout.tsx`의 Key Summary 바로 아래에 배치. 실제 후기 섹션은 기존 위치(본문
+  이후) 그대로 유지하고, 검증된 `trustStats` + "실제 수강 후기 보기" 링크만 미리 보여줌.
+  그 페이지에 연결된 후기가 있으면 `#detail-reviews`, 없으면 `/reviews`로 자동 분기.
+- `components/ConsultationSection.tsx` — 동의 문구에 "동의를 거부하실 수 있으며, 거부 시
+  상담 신청이 제한될 수 있습니다" 추가(체크박스가 이미 `required`라 실제 동작과 일치하는
+  사실만 문구화). 보유기간/처리주체(사업자명)/정책 링크/문의처는 여전히 미확정이라
+  추가하지 않음, `/privacy` 페이지도 만들지 않음.
+
+### 조사(코드 변경 없음)
+- 일본어/중국어 공식 후기: growth-success(Google Sites 허브) 직접 열람 + vinemagazine.co.kr
+  사이트 내 검색("파워재팬"/"파워차이나"/"일본어"/"중국어"/"HSK"/"JLPT")을 브라우저로
+  재확인. 새로 걸린 후보는 전부 기존 jp-01/cn-01과 동일 게시물의 다른 퍼머링크였고
+  본문 내용도 동일 — 두 언어 모두 공식적으로 확인 가능한 사례는 여전히 각 1건. 개수를
+  억지로 늘리지 않고 기존 상태 그대로 유지.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(358 static pages) clean.
+- `npm run validate:seo`/`validate:curriculum`/`validate:detail-content`/`validate:local-seo`
+  전부 이상 없음(Local SEO 97,905/97,905 유지, canonical/제목/H1 중복 없음).
+- Playwright로 390/768/1440px 확인: 대표 지역(개포동 영어회화) + 의도적으로 가장 긴
+  지역명+keyword 조합(전주시 완산구 서완산동1가 HSKK과외)까지 카드 줄바꿈/overflow 없음
+  확인. 상세페이지 3개 언어(영어회화/일본어회화/중국어자격증) + 후기가 없는 페이지
+  (중국어회화)에서 신뢰 신호 링크가 `/reviews`로 정상 분기하는지 확인. `/reviews`,
+  홈 상담폼도 확인. 콘솔 에러/경고/hydration 경고 없음.
+- production에서 대표 URL 소수(영어/중국어 local 각 1개, 영어 상세 1개)만 확인 —
+  97,905개 대량 요청 없음, ISR Writes 관련 구조(`revalidate=false` 등) 변경 없음.
+
+### 상태
+- 커밋 후 push, Vercel production(`READY`, `dorancoaching.com` alias) 반영 확인 완료.
+
+### Commit
+- `bc8dc6d` Improve local SEO hero card, review copy, and detail-page trust signal
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.

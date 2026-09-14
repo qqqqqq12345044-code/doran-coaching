@@ -1,6 +1,6 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-12 (커밋 `4905ddb`
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-14 (커밋 `bc8dc6d`
 push 완료, production 반영 확인됨). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
@@ -73,6 +73,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - Header Mega Menu(`LanguageMegaMenu.tsx`, Desktop) / `MobileLanguageAccordion.tsx`(Mobile)는 `data/navigation/languageNavigation.ts`의 `COURSE_CATEGORIES`로 Power Curriculum(`data/curriculum/powerCurriculum.ts`)을 재사용 — 중복 하드코딩 없음.
 - Power Curriculum 실제 개수: **영어 28 / 중국어 27 / 일본어 18 = 총 73개** (코드로 카운트 검증됨, CLAUDE.md 수치와 일치).
 - 시험 공식 사실(TOEIC/OPIc/IELTS/DET/JLPT/JPT/HSK/HSKK/TSC/BCT 등)은 `data/curriculum/examFacts.ts`.
+- 2026-09-14: 12개 상세페이지가 공유하는 `DetailPageLayout.tsx`의 Key Summary 바로 아래에 `components/detail/TrustPreviewStrip.tsx`(검증된 `trustStats` 1줄 + "실제 수강 후기 보기" 링크)를 추가했다. 실제 후기(`DetailReviews`)는 기존 위치(본문 이후) 그대로 두고 옮기지 않았다 — 과정 설명을 먼저 읽게 하면서도 신뢰 신호를 스크롤 초반에 보여주기 위함(광고형 랜딩페이지 방지). 링크는 그 페이지에 연결된 `reviewIds`가 있으면 `#detail-reviews`(`DetailReviews` section에 id 추가), 없으면(예: 현재 중국어 회화 등) `/reviews`로 자동 분기 — 페이지마다 다르게 처리할 필요 없이 12개 전체에 동일하게 안전하게 적용됨.
 
 ## 5. Magazine / Reviews 구조
 
@@ -84,8 +85,9 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 **Reviews**
 - `data/reviews.ts` 총 **20개** 레코드(`sourceType`으로 구분): `official-case` 11건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약), `prototype` 9건(더미, 실제 화면에는 미노출).
-- 2026-09: 일본어/중국어 official-case 추가 확보를 위해 growth-success(Google Sites 공식 성공사례 허브) + vinemagazine.co.kr 사이트 내 검색을 브라우저로 직접 재확인. 새로 발견된 후보는 전부 기존 jp-01/cn-01과 동일 게시물(워드프레스 퍼머링크만 다른 alias)이었고, 두 언어 모두 공개적으로 확인 가능한 사례는 여전히 각 1건뿐 — 개수를 늘리지 않음(정직한 0건 보고).
+- 2026-09(2회 재확인, 최신 2026-09-14): 일본어/중국어 official-case 추가 확보를 위해 growth-success(Google Sites 공식 성공사례 허브) + vinemagazine.co.kr 사이트 내 검색("파워재팬"/"파워차이나"/"일본어"/"중국어"/"HSK"/"JLPT")을 브라우저로 직접 재확인. 새로 발견된 후보는 전부 기존 jp-01/cn-01과 동일 게시물(워드프레스 퍼머링크만 다른 alias, 본문 내용 동일)이었고, 두 언어 모두 공개적으로 확인 가능한 사례는 여전히 각 1건뿐 — 개수를 늘리지 않음(정직한 0건 보고).
 - Production 화면(`getPublishedReviews*` 함수들)은 **`official-case`만** 필터링해서 사용 — `prototype`은 데이터 파일에 남아있지만 어떤 화면에도 노출되지 않는다.
+- 2026-09-14: 후기 카드/페이지의 사용자-facing 문구에서 "파워 외국어 과정 수강 사례"/"파워 외국어 과정 공식 수강 사례"/"파워 외국어 공식 채널에서 공개된" 표현을 제거(`ReviewCard.tsx`/`ReviewStoryCard.tsx`/`ReviewsPageContent.tsx`) — Power는 경쟁사가 아니라 같은 서비스의 기존 공식 채널이라 사용자 화면에서 별도로 강조할 필요가 없다는 판단. `sourceUrl`/`sourceLabel`은 데이터에 그대로 유지, "실제 수강 사례" 배지·`sourceLabel`(예: vinemagazine.co.kr) 표기는 유지. `data/trustStats.ts`의 `sourceNote`("파워 외국어 과정 누적 기준")는 후기 카드가 아니라 Trust Stats(보호 대상)의 출처 각주라 이번에는 건드리지 않음.
 - `getPublishedReviewsLanguageBalanced()`: `/reviews` 전체 탭에서 언어별 건수 불균형(영어가 다수)을 라운드로빈으로 섞어 노출 — 실제 사례 수 자체는 바꾸지 않음.
 
 ## 6. Local SEO 구조 (지역 SEO 리프 페이지)
@@ -107,6 +109,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - 지역명 disambiguation: 전국 확장 후 동명 법정동(예: "신교동")이 여러 시/군/구에 존재할 수 있어, 본문 노출 지역명은 `buildDisambiguatedRegionName()`으로 시/군/구(필요 시 시/도)까지 포함해 유일하게 만든다. URL 자체(`preview.url`)는 법정동 단독 표기 그대로 유지.
 - 내부 링크("가지치기"): 리프 페이지당 관련 링크 약 7개(같은 지역의 다른 keyword 최대 2개 + 관련 과정 + 매거진 글 + 다른 언어 + SELF-CHECK) — 화이트리스트 전체에 대량 링크를 걸지 않음.
 - `CourseSection`(리프 페이지의 "목표에 맞는 {언어} 과정을 선택하세요" 8~11개 카드, 홈의 "목적이 다르면..." 6개 카드에도 재사용)은 2026-09 감사 전까지 `data/courses.ts`의 `Course`에 `href`가 없어 화살표 아이콘과 hover 애니메이션만 있고 실제로는 클릭해도 아무 데도 가지 않는 카드였다(97,905개 리프 페이지 전체 영향). `Course.href`(선택 필드)를 추가해 `coursesByLanguage`의 각 항목을 `data/navigation/languageNavigation.ts`의 `CATEGORY_BY_ITEM_ID`와 같은 기준(말하기=conversation/시험=certification/내신=school/유학·워홀·비즈니스=other)으로 실제 상세페이지에 연결했다. 홈의 `purposeCourses`(언어를 가로지르는 목적 개요)는 특정 언어 페이지로 단정할 수 없어 의도적으로 href 없이 유지.
+- `components/BirdsHeroVisual.tsx`(리프 페이지 Hero 우측 비주얼, 97,905개 전체 재사용)는 2026-09-14 전까지 배경 그라디언트가 `language`와 무관하게 항상 `from-english to-english-dark`로 고정돼 있어, 일본어/중국어 페이지에서도 영어 색이 노출되는 문제가 있었다(카드 자체도 배지 아래로 빈 그라디언트 공간이 많아 "밋밋하다"는 피드백의 원인). `language`/`features`(그 keyword의 `content.benefits` 상위 2개 title) prop을 추가해 언어별 accent 그라디언트로 고치고, 빈 공간에 핵심 특징 2개 + `trustStats`(만족도/누적 수강생, 검증된 값) 1줄을 채웠다. 새 새(bird) SVG 좌표·색상은 그대로(브랜드 심볼, 언어와 무관), 지역명/keyword 하드코딩 없음(공용 구조).
 
 ## 7. `/local` 지역 허브 구조 (2026-09-11 신규)
 
@@ -174,7 +177,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
   (2026-09 갱신: aria-hidden이 없어 스크린리더 사용자가 실수로 채우면 상담 신청이
   조용히 유실되는 문제를 발견해 수정).
 - 필드: 이름/연락처/주소(기본주소+상세주소 분리, 2026-09 갱신)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
-- 개인정보 동의 문구(2026-09 갱신): 실제 수집 항목(이름/연락처/주소·상세주소/관심 언어/문의 내용)과 수집 목적(상담 회신·수업 매칭)을 동의 체크박스 위에 명시했다. **보유기간/처리주체(사업자명)/개인정보처리방침 링크는 여전히 미확정** — 확정 전까지 이 3가지는 문구에 추가하지 않는다(코드 내 `TODO` 주석 유지).
+- 개인정보 동의 문구(2026-09 갱신, 2026-09-14 추가 보강): 실제 수집 항목(이름/연락처/주소·상세주소/관심 언어/문의 내용)과 수집 목적(상담 회신·수업 매칭)을 동의 체크박스 위에 명시했고, 동의 거부 권리와 거부 시 상담 신청 제한 안내를 추가했다(체크박스가 이미 `required`라 실제 폼 동작과 일치하는 사실만 문구화 — 새 정책을 만들지 않음). **보유기간/처리주체(사업자명)/개인정보처리방침 링크/문의처는 여전히 미확정** — 확정 전까지 이 항목들은 문구에 추가하지 않는다(코드 내 `TODO` 주석 유지). 별도 `/privacy` 페이지는 아직 없음(운영 정보 미확정 상태에서 껍데기 페이지를 만들지 않기로 함).
 - 환경변수 `NEXT_PUBLIC_CONSULTATION_ENDPOINT`는 `.env.local`(git 미포함)에만 존재, `.env.example`에 키 이름만 기록.
 - `defaultInterest` prop으로 언어별/지역 랜딩페이지에서 해당 언어 체크박스를 기본 선택 상태로 표시 가능.
 
