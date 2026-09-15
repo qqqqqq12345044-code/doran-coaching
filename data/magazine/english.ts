@@ -364,7 +364,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 자격증 과정 보기", href: "/english/certification" }],
-    relatedArticleSlugs: ["toeic-study-order", "opic-grade-guide"],
+    relatedArticleSlugs: ["toeic-study-order", "opic-grade-guide", "det-vs-toeic-difference"],
     faq: [
       {
         question: "TOEIC 점수가 높으면 OPIc도 잘 나오나요?",
@@ -438,7 +438,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 자격증 과정 보기", href: "/english/certification" }],
-    relatedArticleSlugs: ["toeic-study-order", "toeic-vs-opic-which-to-prepare"],
+    relatedArticleSlugs: ["toeic-study-order", "toeic-vs-opic-which-to-prepare", "det-vs-toeic-difference"],
     faq: [
       {
         question: "IELTS Academic과 General Training 중 무엇을 봐야 하나요?",
@@ -1124,5 +1124,82 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     publishedAt: "2026-09-10",
+  },
+  {
+    slug: "det-vs-toeic-difference",
+    language: "english",
+    categoryLabel: "영어 자격증",
+    metaTitle: "듀오링고 영어시험과 토익 차이 | 도란 매거진",
+    metaDescription:
+      "Duolingo English Test와 TOEIC이 각각 무엇을 평가하고 어떻게 다른지, 목적에 따라 확인해야 할 점을 정리했습니다.",
+    eyebrow: "ENGLISH · CERTIFICATION",
+    h1: "듀오링고 영어시험과 토익 차이",
+    cardSummary: "온라인 적응형 시험 듀오링고와 읽기·듣기 중심 토익, 평가 영역부터 다른 두 시험 비교.",
+    directAnswer: {
+      question: "듀오링고 영어시험(DET)과 토익은 어떻게 다른가요?",
+      answer:
+        "TOEIC은 Listening과 Reading 두 영역만 평가해 10~990점으로 결과가 나오는 시험이고, Duolingo English Test(DET)는 Reading·Writing·Listening·Speaking 네 영역을 Computer Adaptive(컴퓨터 적응형) 방식으로 평가해 10~160점(5점 단위)으로 결과가 나오는 시험입니다. 평가 영역과 결과 체계 자체가 다르고, 활용처마다 인정 여부와 요구 점수가 다르므로 지원하려는 기관의 최신 공식 요건을 확인하는 것이 먼저입니다.",
+    },
+    intro: [
+      "최근에는 TOEIC 외에 온라인으로 응시하는 Duolingo English Test(DET)를 요구하거나 인정하는 곳도 늘면서, 두 시험 중 무엇을 준비해야 할지 헷갈리는 경우가 많습니다. 이름도 시험 방식도 전혀 다른 두 시험이라, 먼저 각각 무엇을 평가하는지부터 정리해볼 필요가 있습니다.",
+    ],
+    sections: [
+      {
+        heading: "평가 영역 자체가 다르다",
+        paragraphs: [
+          "TOEIC은 Listening 100문항과 Reading 100문항, 총 200문항으로 읽고 듣는 이해력만 평가합니다. 반면 DET는 Reading, Writing, Listening, Speaking 네 영역을 모두 평가 범위에 포함합니다.",
+          "즉 TOEIC 점수가 높다고 해서 DET 점수도 자동으로 높게 나오는 것은 아닙니다. 특히 TOEIC은 다루지 않는 말하기·쓰기 영역이 DET에는 포함되어 있어, 준비해야 할 범위 자체가 다릅니다.",
+        ],
+      },
+      {
+        heading: "시험이 진행되는 방식도 다르다",
+        paragraphs: [
+          "TOEIC은 문항 수와 구성이 고정된 시험으로, Listening과 Reading을 순서대로 풀어나갑니다. DET는 Computer Adaptive(컴퓨터 적응형) 방식으로 진행되는 시험으로, TOEIC과는 시험이 설계된 방식 자체가 다릅니다.",
+          "두 시험 모두 접수 방법이나 진행 절차 같은 세부 사항은 시행 시점에 따라 달라질 수 있으므로, 접수 전에는 항상 각 시험의 공식 안내를 확인해야 합니다.",
+        ],
+      },
+      {
+        heading: "결과가 나오는 방식이 다르다",
+        paragraphs: [
+          "TOEIC은 Listening·Reading 각 5~495점씩 합산해 총점 10~990점으로 나오는 점수제 시험입니다. DET는 10점에서 160점 사이(5점 단위)로 결과가 나오며, CEFR 기준 참고 구간(B1 60~95 · B2 100~125 · C1 130~150 · C2 155~160)도 함께 제공됩니다.",
+          "다만 CEFR 대응 구간은 공식 참고 정보일 뿐, 도란의 학습 단계(입문·초급·중급·고급)와 자동으로 같은 기준은 아닙니다. 두 체계를 혼동하지 않아야 합니다.",
+        ],
+      },
+      {
+        heading: "가장 먼저 확인해야 하는 것은 지원 요건",
+        paragraphs: [
+          "두 시험은 인정하는 기관과 요구 점수가 서로 다르고, 이 기준은 시기에 따라 바뀔 수 있습니다. 어떤 시험을 준비할지 정하기 전에, 지원하려는 대학·기업·기관이 두 시험 중 무엇을 요구하는지, 인정 여부와 최소 점수 기준이 무엇인지부터 해당 기관의 최신 공식 안내에서 직접 확인하는 것이 순서입니다.",
+          "같은 대학이라도 학과나 전형에 따라 요구하는 시험이 다를 수 있고, 인정 여부 자체가 시기에 따라 달라지기도 합니다. 도란은 특정 시험의 공식 인증 기관이 아니므로, 인정 여부에 대한 최종 확인은 반드시 지원처를 통해 직접 진행해야 합니다.",
+        ],
+      },
+      {
+        heading: "요건을 확인한 뒤 준비 방향을 정하는 법",
+        paragraphs: [
+          "요구하는 시험이 이미 정해져 있다면 그 시험을 준비하면 됩니다. 특별한 요건 없이 영어 실력을 증명하고 싶은 상황이라면, 읽기·듣기 중심으로 준비하고 싶은지, 말하기·쓰기까지 함께 준비할 여유가 있는지를 기준으로 판단해볼 수 있습니다.",
+          "TOEIC은 읽고 듣는 문제를 정확하고 빠르게 푸는 연습이 중심이고, DET를 준비한다면 말하기·쓰기까지 실제로 표현해보는 연습이 함께 필요합니다. 특히 말하기는 혼자 준비할 때 스스로 어색한 부분을 알아차리기 어려운 영역이라, 실제로 말해보고 교정받는 과정이 있으면 준비 방향을 잡기가 더 수월합니다.",
+        ],
+      },
+    ],
+    relatedCourses: [{ label: "영어 자격증 과정 보기", href: "/english/certification" }],
+    relatedArticleSlugs: ["toeic-vs-opic-which-to-prepare", "ielts-vs-toeic-difference"],
+    faq: [
+      {
+        question: "DET 점수를 토익 점수로 환산할 수 있나요?",
+        answer: "두 시험은 평가 영역과 채점 체계가 달라 공식적으로 환산할 수 있는 수치가 아닙니다. 각 시험의 요건을 기준으로 따로 확인하는 것이 정확합니다.",
+      },
+      {
+        question: "토익 점수가 높으면 DET도 잘 나오나요?",
+        answer: "그렇다고 보장할 수 없습니다. TOEIC은 읽기·듣기만 평가하지만 DET는 말하기·쓰기까지 포함하므로, TOEIC에서 다루지 않는 영역은 별도로 준비해야 합니다.",
+      },
+      {
+        question: "DET는 모든 대학·기관에서 인정되나요?",
+        answer: "기관마다 인정 여부와 요구 점수가 다르고 시기에 따라 바뀔 수 있습니다. 지원하려는 곳의 최신 공식 요건을 반드시 직접 확인해야 합니다.",
+      },
+      {
+        question: "두 시험을 동시에 준비해야 하는 경우도 있나요?",
+        answer: "지원 요건에 따라 두 시험을 모두 요구하는 경우도 있습니다. 이때는 읽기·듣기 문제풀이와 말하기·쓰기 표현 연습을 구분해서 준비 시간을 배분하는 것이 효율적입니다.",
+      },
+    ],
+    publishedAt: "2026-09-15",
   },
 ];
