@@ -190,7 +190,7 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "일본어 회화 과정 보기", href: "/japanese/conversation" }],
-    relatedArticleSlugs: ["jlpt-n3-n2-n1-difference", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: ["jlpt-n3-n2-n1-difference", "who-fits-online-language-tutoring", "office-worker-japanese-study-routine"],
     faq: [
       {
         question: "히라가나부터 배워야 회화를 시작할 수 있나요?",
@@ -904,7 +904,7 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "일본어 회화 과정 보기", href: "/japanese/conversation" }],
-    relatedArticleSlugs: ["japanese-self-study-plateau", "japanese-speaking-study-order"],
+    relatedArticleSlugs: ["japanese-self-study-plateau", "japanese-speaking-study-order", "office-worker-japanese-study-routine"],
     faq: [
       {
         question: "단어를 더 외우면 말하기도 늘어나나요?",
@@ -1079,6 +1079,81 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       {
         question: "N4를 취득하면 다음은 무엇을 준비해야 하나요?",
         answer: "N3~N2 수준의 문법과 어휘, 중급 독해·청해로 이어지는 것이 일반적인 다음 단계입니다.",
+      },
+    ],
+    publishedAt: "2026-09-15",
+  },
+  {
+    slug: "office-worker-japanese-study-routine",
+    language: "japanese",
+    categoryLabel: "일본어 학습법",
+    metaTitle: "직장인 일본어 공부 루틴 | 도란 매거진",
+    metaDescription: "퇴근 후 시간이 많지 않은 직장인이 일본어 공부를 꾸준히 이어가려면 어떤 루틴으로 하루를 채우면 좋은지 정리했습니다.",
+    eyebrow: "JAPANESE · STUDY METHOD",
+    h1: "직장인 일본어 공부 루틴",
+    cardSummary: "며칠 하다 흐지부지되는 게 아니라, 직장인이 실제로 이어갈 수 있는 일본어 공부 루틴.",
+    directAnswer: {
+      question: "직장인은 일본어 공부를 어떻게 루틴으로 만들어야 하나요?",
+      answer:
+        "하루 중 가장 여유 있는 시간대를 하나 정해 고정하고, 그 시간을 짧더라도 소리 내어 말해보는 연습으로 채우는 것이 오래 이어가는 방법입니다. 공부 시간을 얼마나 늘릴지보다, 언제 어떤 방식으로 반복할지를 먼저 정하는 것이 꾸준함으로 이어집니다.",
+    },
+    intro: [
+      "일본어 공부를 시작할 때는 의욕이 넘치지만, 며칠 지나면 야근이나 회식 때문에 하루씩 밀리다가 흐지부지되는 경우가 많습니다. 시간이 부족해서라기보다, 루틴이 없어서 생기는 문제인 경우가 대부분입니다.",
+    ],
+    sections: [
+      {
+        heading: "문자·한자 학습과 말하기 연습을 같은 시간에 넣지 않기",
+        paragraphs: [
+          "출퇴근 시간처럼 눈과 귀로 하는 학습에 적합한 시간과, 소리 내어 말해보는 연습에 적합한 시간은 따로 구분하는 것이 좋습니다. 지하철에서 한자나 단어를 훑어보는 것으로 '오늘도 공부했다'는 느낌은 들 수 있지만, 실제 회화 실력에 직접 필요한 말하기 연습량은 늘어나지 않습니다.",
+          "이동 시간은 어휘·한자 복습용으로, 퇴근 후 짧은 시간은 소리 내어 말하는 연습용으로 역할을 나눠두면 착시 없이 실제로 필요한 연습을 챙길 수 있습니다.",
+        ],
+      },
+      {
+        heading: "퇴근 직후보다 여유가 조금 있는 시간대 고르기",
+        paragraphs: [
+          "하루 중 가장 피곤한 퇴근 직후에 무리하게 공부 시간을 잡으면 며칠 안 가 포기하기 쉽습니다. 저녁 식사 이후나 잠들기 전처럼 몸과 마음에 조금이라도 여유가 있는 시간대를 찾아 그 시간에 매일 같은 방식으로 반복하는 것이 오래 유지하는 데 더 유리합니다.",
+          "시간의 길이보다 같은 시간대에 반복한다는 규칙성이 루틴을 몸에 붙게 만드는 핵심입니다.",
+        ],
+      },
+      {
+        heading: "루틴이 무너지는 날, 완전히 쉬지 않는 법",
+        paragraphs: [
+          "야근이나 회식으로 루틴이 무너지는 날은 누구에게나 생깁니다. 이때 하루를 완전히 건너뛰기보다 원래 계획의 절반 이하로 줄여서라도 짧게 이어가는 편이, 다시 루틴을 잡을 때의 심리적 부담을 줄여줍니다.",
+          "하루를 통째로 쉬면 '내일부터 다시 하면 되지'라는 생각이 반복되면서 그대로 멈추는 경우가 많습니다.",
+        ],
+      },
+      {
+        heading: "혼자보다 정해진 약속이 있을 때 지켜지는 이유",
+        paragraphs: [
+          "혼자 세운 공부 계획은 그날의 컨디션에 따라 쉽게 미뤄지지만, 정해진 시간에 누군가와 만나는 수업이 있으면 피곤해도 일단 그 시간만큼은 지키게 되는 경우가 많습니다. 특히 퇴근 후처럼 의지가 약해지기 쉬운 시간대일수록 이 차이가 크게 나타납니다.",
+          "화상 수업은 이동 시간 없이 정해진 시간에 바로 시작할 수 있어, 퇴근 후 루틴에 넣기에 부담이 적은 방식입니다.",
+        ],
+      },
+      {
+        heading: "작게 시작해서 늘려가기",
+        paragraphs: [
+          "처음부터 하루 1시간씩 무리한 계획을 세우면 며칠 지나지 않아 그 기준을 못 지키는 날이 생기고, 그 순간 루틴 전체를 포기하기 쉽습니다. 하루 10~15분처럼 부담 없는 분량으로 시작해 며칠간 꾸준히 지키는 경험을 먼저 만든 뒤, 익숙해지면 시간을 조금씩 늘려가는 방식이 오래 유지하기에 유리합니다.",
+        ],
+      },
+    ],
+    relatedCourses: [{ label: "일본어 회화 과정 보기", href: "/japanese/conversation" }],
+    relatedArticleSlugs: ["japanese-speaking-study-order", "japanese-speaking-not-improving"],
+    faq: [
+      {
+        question: "출퇴근 시간 공부만으로 일본어가 늘 수 있나요?",
+        answer: "어휘·한자 복습에는 도움이 되지만, 말하기 실력은 실제로 소리 내어 말해보는 시간이 따로 있어야 늘어납니다.",
+      },
+      {
+        question: "야근이 잦아 루틴을 지키기 어려운데 방법이 있을까요?",
+        answer: "완전히 쉬기보다 분량을 최소한으로 줄여서라도 이어가는 편이 다시 시작할 때 부담이 적습니다.",
+      },
+      {
+        question: "하루에 얼마나 공부해야 하나요?",
+        answer: "정해진 시간보다 매일 같은 시간대에 반복하는 규칙성이 더 중요합니다. 짧게 시작해서 점차 늘려가는 방식을 권합니다.",
+      },
+      {
+        question: "화상 수업이 루틴 유지에 정말 도움이 되나요?",
+        answer: "네, 정해진 시간에 이동 없이 바로 시작할 수 있고, 약속이 있다는 점이 혼자 하는 계획보다 지키기 쉬운 경우가 많습니다.",
       },
     ],
     publishedAt: "2026-09-15",
