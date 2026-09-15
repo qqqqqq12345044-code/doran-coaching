@@ -1,6 +1,6 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-14 (커밋 `6d39f29`
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-15 (커밋 `5c8721d`
 push 완료, production 반영 확인됨). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
@@ -78,10 +78,10 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 ## 5. Magazine / Reviews 구조
 
 **Magazine**
-- 실제 글 수: **40개** (english 14 + chinese 12 + japanese 13 + common 1, `publishedAt` 필드 기준 코드로 카운트).
+- 실제 글 수: **44개** (english 15 + chinese 14 + japanese 14 + common 1, `publishedAt` 필드 기준 코드로 카운트. 2026-09-15: 매거진 40개 전수 감사에서 발견된 콘텐츠 공백 중 examFacts.ts에 이미 사실이 있는 4개를 1차로 신규 작성 — `det-vs-toeic-difference`(영어), `tsc-speaking-test-guide`(중국어), `jlpt-n4-n5-beginner-difference`(일본어), `hsk-1-2-3-beginner-difference`(중국어). 기존 급수/시험 pillar 글과 `relatedArticleSlugs` 양방향 연결까지 포함).
 - `data/magazine/{english,japanese,chinese,common}.ts` → `data/magazine/index.ts`가 합쳐서 export.
 - `/magazine/[slug]`는 `dynamicParams = false` + `getAllMagazineSlugs()` 화이트리스트 — 화이트리스트 밖은 build-time에도 404.
-- `getRelatedMagazineArticles()`로 글 간 상호 연결(`relatedArticleSlugs`).
+- `getRelatedMagazineArticles()`로 글 간 상호 연결(`relatedArticleSlugs`, 2~3개 관례). 신규 시험 글은 examFacts.ts/courseDetails.ts에 이미 존재하는 사실만 사용했고, DET 관련 대학·기관 인정 여부처럼 확인이 필요한 내용은 "지원처 최신 공식 요건 확인" 안내로 대체했다(새 시험 사실 창작 없음).
 
 **Reviews**
 - `data/reviews.ts` 총 **26개** 레코드(`sourceType`으로 구분): `official-case` 10건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약 — 이전 문서에 "11건"으로 잘못 기재돼 있었음, 실제 합은 8+1+1=10), `example-case` 6건(2026-09-14 신규, 일본어 3 / 중국어 3, "대표 학습 사례" — 아래 참고), `prototype` 9건(더미, 실제 화면에는 미노출).
@@ -133,7 +133,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 ## 9. sitemap / robots / canonical / schema 구조
 
 - **`app/sitemap.ts`**: `generateSitemaps()`로 4-shard 분할.
-  - shard `0`: 홈 + 언어 3 + 상세 12 + magazine 목록/리뷰 + magazine 개별 글(40) + `/local` + `/local/[sido]`(15개).
+  - shard `0`: 홈 + 언어 3 + 상세 12 + magazine 목록/리뷰 + magazine 개별 글(44) + `/local` + `/local/[sido]`(15개).
   - shard `1~3`: local 리프를 언어(영어/일본어/중국어)별로 3등분 (keyword가 언어당 정확히 5개라 6,527 × 5 = 32,635개씩 균등 분할, 각각 5만 URL 한도 이내).
   - `id`는 런타임에 문자열로 들어와 `Number(id)`로 명시 변환 필요(실제로 이 변환이 빠지면 shard 0이 빈 sitemap이 되는 버그가 있었음 — 코드 주석에 기록됨).
 - **`app/sitemap.xml/route.ts`**: `generateSitemaps()` 사용 시 Next.js가 최상위 `/sitemap.xml`을 자동으로 만들어주지 않는 것을 실제 배포로 확인 → 이 경로에서 표준 `<sitemapindex>` XML을 직접 생성해 `/sitemap/0.xml`~`/sitemap/3.xml`을 가리킨다. 기존에 Search Console/네이버에 등록됐을 `/sitemap.xml` URL이 계속 유효하도록 하기 위함.
@@ -207,7 +207,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 | 이미지 출처 | `data/media/imageCredits.ts` | |
 | 브랜드/과정/코치/후기/FAQ/신뢰지표/언어 메타 | `data/{brand,courses,coaches,reviews,faq,trustStats,languages}.ts` | |
 | SELF-CHECK 데이터 | `data/selfCheck.ts`, `data/selfCheckCurriculum.ts` | 홈 `SelfCheck` 컴포넌트가 사용 |
-| 매거진 | `data/magazine/{index,types,english,japanese,chinese,common}.ts` | 40개 |
+| 매거진 | `data/magazine/{index,types,english,japanese,chinese,common}.ts` | 44개(영15/중14/일14/공통1) |
 | 지역 허브 인덱스 | `lib/seo/localHub.ts` | `publishBatches.ts` 재사용 |
 
 ## 13. 이미지/출처 관리 방식

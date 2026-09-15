@@ -462,6 +462,60 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-15 — 매거진 40개 전수 감사 + 신규 콘텐츠 1차 4개 제작
+
+### 작업
+- 기존 매거진 40개를 전수 감사(검색의도/제목·메타/cannibalization/내부링크/CTA/언어별 균형/
+  신규 콘텐츠 후보 62개 발굴). 확실한 P1만 안전하게 수정.
+- 감사에서 나온 P1 신규 글 후보 중, 사실이 이미 `data/curriculum/examFacts.ts`/
+  `courseDetails.ts`에 검증되어 있어 안전하게 작성 가능한 4개를 1차로 실제 제작.
+
+### 주요 변경
+- **1차 감사(커밋 `b548237`)**: `relatedArticleSlugs` 5곳 보강(각 2~3개 관례 유지) —
+  JLPT N1/N2 cannibalization 위험 완화(`jlpt-n3-n2-n1-difference` ↔ `jlpt-n1-n2-difference`
+  연결), OPIc/HSK/영어 학습법 pillar가 가장 가까운 supporting article로 내려가는 링크가
+  없던 것을 발견해 추가. 본문/메타/구조는 변경하지 않음.
+- **신규 글 4개(커밋 `5c8721d`, 40→44개)**:
+  - `det-vs-toeic-difference`(영어): DET vs TOEIC. examFacts.ts의 평가영역/점수체계/CEFR
+    참고구간만 사용, 대학·기관 인정 여부는 "지원처 최신 공식 요건 확인" 안내로 대체(도란이
+    공식 인증기관인 것처럼 보이는 표현 없음).
+  - `tsc-speaking-test-guide`(중국어): TSC를 HSK/HSKK와 혼동하지 않도록 구분. examFacts.ts의
+    7Part·26문항·Level1~10 구조만 사용. 국내 시행기관(YBM)은 WebSearch로 공식 도메인
+    (ybmtsc.co.kr) 직접 확인 후에만 기재, 시험 일정 주기처럼 자주 바뀌는 정보는 넣지 않음.
+  - `jlpt-n4-n5-beginner-difference`(일본어): 기존 pillar `jlpt-n3-n2-n1-difference`의
+    초급 supporting article. courseDetails.ts의 "N5~N4 준비 구간" 실제 로드맵 데이터 재사용.
+  - `hsk-1-2-3-beginner-difference`(중국어): 기존 `hsk-4-5-6-difference`의 초급 supporting
+    article. courseDetails.ts의 "1~2급"/"3급 준비 구간" 데이터 재사용, HSK 7~9급 시범 시행
+    caution도 examFacts.ts 원문 그대로 반영.
+  - 4개 전부 기존 pillar와 `relatedArticleSlugs` 양방향 연결(신규→기존, 기존→신규 모두 확인).
+  - Local SEO, sitemap 생성 로직, robots, schema builder, reviews 정책은 변경 없음 —
+    `getAllMagazineSlugs()` 기반 구조라 신규 4개가 자동으로 sitemap/generateStaticParams에
+    포함됨을 실제 로컬 sitemap/0.xml에서 확인.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(44개 매거진 페이지 SSG 생성 확인) clean.
+- `npm run validate:seo`/`validate:detail-content`/`validate:curriculum` 이상 없음
+  (매거진과 직접 무관하지만 사이드이펙트 없는지 재확인). Local을 건드리지 않아
+  `validate:local-seo`는 실행하지 않음.
+- Node 스크립트로 44개 slug 중복 0, `relatedArticleSlugs` 전부 실제 slug 참조 + 2~3개
+  범위 준수 확인.
+- 로컬 프로덕션 빌드(`next start`)로 신규 4개 + 내부링크를 추가한 기존 6개(양방향 링크
+  대상) 총 10개 페이지에서 관련 글 렌더링 실제 확인. 390/768/1440px 가로 overflow 없음,
+  canonical 절대 URL 정상, BreadcrumbList/FAQPage/Article schema 정상, 콘솔 에러 0.
+- 작업 중 이전 세션에서 남아있던 `next dev` 프로세스가 새 `next build`와 `.next` 디렉터리를
+  공유하며 충돌해 일시적으로 500 에러가 발생 — 코드 문제가 아니라 로컬 프로세스 잔존 문제임을
+  확인 후 해당 프로세스 종료 + `.next` 재생성으로 해결(production 배포 방식과는 무관).
+
+### 상태
+- 커밋 `b548237`(내부링크 보강) → `5c8721d`(신규 글 4개) 순으로 push, Vercel production
+  반영은 이 문서 커밋과 함께 최종 확인.
+
+### Commit
+- `b548237` Fix missing pillar-supporting internal links in magazine content cluster
+- `5c8721d` Add 4 new magazine articles filling verified content gaps from prior audit
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
