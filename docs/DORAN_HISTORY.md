@@ -516,6 +516,55 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-15 (오후) — 매거진 44→50개 확장 + 사이트 전반 품질 감사
+
+### 작업
+- 점심시간 장기 세션. 매거진 6개 신규 작성으로 40→44→50개 완성, 50개 규모에서
+  `/magazine` 허브 UX 재점검, 주요 페이지(홈/언어3/상세3/매거진/신규글3/리뷰/local/
+  local리프1/상담폼) 성능·접근성·회귀 QA. 중간 배포 없이 세션 끝에 한 번만 push.
+
+### 주요 변경
+- 신규 6개(커밋 `2689da9`): `hsk-5-6-plateau`, `office-worker-japanese-study-routine`,
+  `office-worker-chinese-study-routine`, `english-abroad-study-prep-basics`,
+  `middle-school-english-grade-management`, `chinese-business-etiquette-basics`.
+  전부 examFacts.ts/courseDetails.ts 기반, 새 시험·등급·학교 사실 창작 없음.
+  기존 pillar와 `relatedArticleSlugs` 양방향 연결(hsk-4-5-6-difference/hsk-study-order,
+  japanese/chinese-speaking-study-order, ielts-vs-toeic-difference,
+  who-fits-online-language-tutoring, business-chinese-basics 등).
+- `/magazine` 허브: 50개 규모에서도 카테고리별(6종) "대표글 1 + 컴팩트 리스트" 구조가
+  그대로 작동함을 실제 렌더링으로 확인 — 코드 수정 없음(필터/검색 UI는 이 규모에서
+  불필요하다고 판단해 추가하지 않음).
+- 코드 변경 없음: 성능(next/font display=swap 정상, use client 16개 전부 정당한 이유
+  있음, Footer의 "use client"는 상담 앵커 fallback용 명시적 이유 있음), 접근성(상담폼
+  라벨 12개 전부 정상, honeypot aria-hidden 유지, focus-visible 링 정상 적용, H1 1개
+  유지)에서 P0/P1 문제가 발견되지 않아 별도 수정 없음. 장식용 SVG 아이콘 14개의
+  `aria-hidden` 누락은 발견했으나 상위 버튼/링크에 이미 접근 가능한 이름이 있어 기능적
+  결함이 아닌 P2로 분류, 이번에는 수정하지 않음.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(50개 매거진 페이지 SSG 생성 확인) clean.
+- `npm run validate:seo`/`validate:detail-content`/`validate:curriculum` 이상 없음.
+- `npm run validate:local-seo` 1회 실행 — 97,905/97,905 유지, 이상 없음(Local 코드
+  자체는 건드리지 않았으나 순수 함수 특성상 안전하게 재확인).
+- `npm audit` — 기존에 알려진 `xlsx`(devDependency, no fix available) 1건만 유지,
+  변화 없음. `npm audit fix --force` 등 시도하지 않음.
+- Node 스크립트로 50개 slug 중복 0, `relatedArticleSlugs` 전부 실제 slug 참조 +
+  2~3개 범위 준수(학교 내신 글 1건만 의도적으로 2개 중 관련성이 약한 세 번째를
+  억지로 채우지 않기로 결정) 확인.
+- 로컬 QA 서버(포트 3001 — 3000번은 동시 작업 중이던 다른 세션의 프로젝트가 점유하고
+  있어 건드리지 않고 별도 포트 사용)에서 Playwright로 홈/언어3/상세3/매거진 허브/
+  신규글3/기존 pillar 2/리뷰/local/local리프1을 390·768·1440px로 확인 — 콘솔 에러·
+  hydration 경고 0, 가로 overflow 0, canonical/schema/내부링크 정상.
+
+### 상태
+- 커밋 `2689da9`(신규 글 6개) → 문서 커밋 순으로 push. Vercel production 반영은
+  이 문서 커밋과 함께 최종 확인.
+
+### Commit
+- `2689da9` Expand magazine to 50 articles with 6 new pieces filling verified gaps
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
