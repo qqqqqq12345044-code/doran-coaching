@@ -54,7 +54,7 @@ export const chineseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "중국어 자격증 과정 보기", href: "/chinese/certification" }],
-    relatedArticleSlugs: ["chinese-speaking-study-order", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: ["hsk-study-order", "chinese-speaking-study-order"],
     faq: [
       {
         question: "HSK 급수가 있으면 HSKK는 필요 없나요?",

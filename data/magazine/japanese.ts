@@ -61,7 +61,7 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "일본어 자격증 과정 보기", href: "/japanese/certification" }],
-    relatedArticleSlugs: ["jlpt-vs-jpt", "japanese-speaking-study-order"],
+    relatedArticleSlugs: ["jlpt-n1-n2-difference", "jlpt-vs-jpt", "japanese-speaking-study-order"],
     faq: [
       {
         question: "N3와 N2 중 어느 급수부터 준비해야 하나요?",

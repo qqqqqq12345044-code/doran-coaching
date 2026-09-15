@@ -63,7 +63,11 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 회화 과정 보기", href: "/english/conversation" }],
-    relatedArticleSlugs: ["self-study-vs-1on1-english-speaking", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: [
+      "self-study-vs-1on1-english-speaking",
+      "listening-ok-speaking-blocked",
+      "who-fits-online-language-tutoring",
+    ],
     faq: [
       {
         question: "단어를 더 많이 외우면 회화 실력이 늘까요?",
@@ -281,7 +285,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 자격증 과정 보기", href: "/english/certification" }],
-    relatedArticleSlugs: ["toeic-study-order", "why-english-speaking-not-improving"],
+    relatedArticleSlugs: ["toeic-study-order", "opic-im2-to-ih-plateau", "why-english-speaking-not-improving"],
     faq: [
       {
         question: "OPIc은 몇 개 등급으로 평가되나요?",
@@ -690,7 +694,11 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 회화 과정 보기", href: "/english/conversation" }],
-    relatedArticleSlugs: ["self-study-vs-1on1-english-speaking", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: [
+      "self-study-vs-1on1-english-speaking",
+      "adult-english-study-habit",
+      "who-fits-online-language-tutoring",
+    ],
     faq: [
       {
         question: "직장인은 하루에 얼마나 공부해야 하나요?",
