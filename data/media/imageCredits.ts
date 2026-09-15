@@ -469,7 +469,3 @@ export const imageCredits: ImageCredit[] = [
     usage: "수강후기 페이지 Hero 비주얼 — 노트에 손글씨로 기록하는 모습",
   },
 ];
-
-export function getImageCredit(id: string): ImageCredit | null {
-  return imageCredits.find((credit) => credit.id === id) ?? null;
-}

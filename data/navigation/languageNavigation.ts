@@ -158,10 +158,3 @@ export function getCourseCategoriesForLanguage(language: LanguageSlug): CourseCa
     return { ...category, items: items.map(toDisplayItem), topics };
   });
 }
-
-/** 매거진 Index용: usage에 "content"가 포함된 항목만 언어별로 반환한다. */
-export function getMagazineTopicsForLanguage(language: LanguageSlug): CategorizedCourseItem[] {
-  return powerCurriculumItems
-    .filter((item) => item.language === language && item.usage.includes("content"))
-    .map(toDisplayItem);
-}

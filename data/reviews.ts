@@ -341,10 +341,6 @@ export const reviews: Review[] = [
   },
 ];
 
-export function getReviewsByLanguage(language: LanguageSlug): Review[] {
-  return reviews.filter((review) => review.language === language);
-}
-
 // Production UI(실제 사용자 화면)는 반드시 이 함수들만 사용한다.
 // prototype 더미 후기는 데이터 파일에서 삭제하지 않고 유지하되, 실제
 // 사용자에게는 official-case(실제 수강 사례)만 노출한다.
@@ -371,15 +367,6 @@ function roundRobinBalance(queues: Review[][]): Review[] {
     cursor += 1;
   }
   return balanced;
-}
-
-// /reviews "전체" 탭처럼 official-case 전부를 보여주는 자리에서, 영어(8건)가
-// 일본어·중국어(각 1건)보다 훨씬 많아 그대로 나열하면 두 언어가 묻혀 보인다.
-// 언어별로 라운드로빈으로 섞어 각 언어의 사례가 목록 앞쪽에 고르게 나오도록
-// 순서만 바꾼다(실제 사례 수는 그대로, 새 후기 생성 없음).
-export function getPublishedReviewsLanguageBalanced(): Review[] {
-  const languagePriority: LanguageSlug[] = ["english", "japanese", "chinese"];
-  return roundRobinBalance(languagePriority.map((language) => getPublishedReviewsByLanguage(language)));
 }
 
 // /reviews 페이지 전용: official-case에 example-case("대표 학습 사례")를 더한
