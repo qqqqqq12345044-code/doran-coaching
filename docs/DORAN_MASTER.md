@@ -62,6 +62,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 | `/local/[sido]/[sigungu]/[dong]/[keyword]` | Local SEO 리프 페이지(실제 콘텐츠) |
 | `/local/region-search` | 지역 허브 검색창용 JSON API(`route.ts`, `force-static`) |
 | `app/robots.ts`, `app/sitemap.ts`, `app/sitemap.xml/route.ts` | 기술 SEO 엔드포인트 |
+| `app/not-found.tsx` | 전역 404 페이지(2026-09 추가). 이 파일이 없으면 Next.js 기본 404(Header/Footer 없는 빈 페이지)가 대신 렌더링돼, 잘못된 URL로 들어온 사용자가 홈으로 돌아갈 방법이 없었다. 새 디자인 없이 기존 `.btn-primary`/`.btn-secondary`/`.section-shell` 클래스만 재사용, 홈/매거진/지역별 3개 링크만 제공. |
 
 `/local` 허브(0~3-depth 브라우징 페이지)는 2026-09-11 커밋(`d7bfe34` 외)에서 새로
 추가된 구조로, 기존 4-segment 리프 페이지와 **완전히 별개의 진입 경로**다 — 리프 페이지는
@@ -187,7 +188,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 
 **주소 입력(2026-09 갱신)**: 카카오(구 다음) 우편번호 서비스(`//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js`, API 키 불필요·무료·사용량 제한 없음, 공식 가이드 `postcode.map.kakao.com/guide` 기준 확인)를 "주소 검색" 버튼 클릭 시에만 지연 로드해 팝업으로 띄운다. `new window.kakao.Postcode({ oncomplete }).open()` 콜백이 도로명주소를 읽기전용 기본주소 input에, 우편번호를 숨김 input(`zonecode`, 화면 비노출)에 채우고 상세주소 input에 포커스를 옮긴다. 상세주소(동/호수/건물명)는 별도 필수 아닌 자유 입력 필드. 제출 payload는 `address`/`addressDetail`/`zonecode` 3개로 분리.
 - Apps Script(`consultation.gs`) Sheet 컬럼: 기존 9개 컬럼 순서를 그대로 두고 "상세주소"/"우편번호" 2개를 **맨 뒤에만** 추가(중간 삽입 금지 — 기존 데이터 열 의미 보호). `getSheet()`가 `ensureHeaderColumns()`로 이미 운영 중인 시트의 헤더 행이 짧으면 빈 칸에 새 라벨만 채워 넣어 기존 헤더/데이터를 건드리지 않는다.
-- **주의**: `consultation.gs`는 레포에 있는 소스 사본일 뿐 자동 배포되지 않는다 — 실제 운영 중인 Google Apps Script Web App 편집기에 이 파일 내용을 직접 복사해 붙여넣고 재배포해야 상세주소/우편번호가 실제로 저장되기 시작한다. 재배포 전에도 기존 필드(이름/연락처/주소/관심언어 등) 저장은 그대로 정상 동작한다(구버전 스크립트가 payload의 추가 필드를 그냥 무시할 뿐).
+- **주의**: `consultation.gs`는 레포에 있는 소스 사본일 뿐 자동 배포되지 않는다 — 실제 운영 Google Apps Script Web App 편집기에 이 파일 내용을 복사해 붙여넣고 재배포해야 반영된다. **사용자가 실제 재배포를 완료했고, 상세주소/우편번호를 포함한 상담 신청이 실제 Google Sheet에 정상 저장되며 이메일 알림도 정상 동작함을 확인함(2026-09)** — 더 이상 "재배포 필요" 상태가 아니다.
 
 ## 12. 주요 데이터 Source of Truth
 
@@ -277,15 +278,12 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(최근 push된 커밋 `4905ddb`, production 반영 확인됨) 기준, 현재 코드
+이 문서 작성 시점(최근 push된 커밋 `ceb8ca1`, production 반영 확인됨) 기준, 현재 코드
 상태에서 자연스럽게 이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
 
-1. **(사용자 직접 필요)** Google Apps Script 편집기에서 `scripts/google-apps-script/consultation.gs`
-   최신 내용을 복사해 재배포 — 해야 상세주소/우편번호가 Sheet에 실제로 저장되기 시작한다
-   (재배포 전에도 기존 필드 저장은 정상 동작). Claude Code는 script.google.com 로그인
-   권한이 없어 대신 수행 불가 — 2026-09-11 완료 보고의 "Apps Script 재배포 단계" 참고.
-2. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
-3. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음.
-4. 상담폼 개인정보 정책 최종 확정(보유기간/처리주체/정책 링크) → 확정되면 동의 문구에 반영. 수집 항목/목적 명시는 2026-09 완료.
-5. `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix 없음) — 실사용 위험은 낮으나, 지역 데이터 빌드 스크립트를 다른 파서로 교체할지 여부는 선택 사항으로 남아있음.
-6. `docs/` 3종 문서 운영 정착 (본 작업의 목적).
+1. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
+2. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음. "추후 실제 후기로 교체될 수 있다"는 원래 의도가 남아 있어, 삭제 여부는 코드가 아니라 콘텐츠 확보 계획에 달려 있음.
+3. 상담폼 개인정보 정책 최종 확정(보유기간/처리주체/정책 링크) → 확정되면 동의 문구에 반영. 수집 항목/목적 명시와 실제 Apps Script 재배포·Sheet 저장 확인은 완료됨(2026-09).
+4. `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix 없음) — 실사용 위험은 낮으나, 지역 데이터 빌드 스크립트를 다른 파서로 교체할지 여부는 선택 사항으로 남아있음.
+
+**완료된 항목(과거 이 목록에 있었으나 해소됨)**: Google Apps Script 재배포·Sheet 저장·이메일 알림 확인(2026-09) · `docs/` 3종 문서 운영 정착.

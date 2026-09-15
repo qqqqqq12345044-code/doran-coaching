@@ -565,6 +565,74 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-15 (저녁) — 유지보수/마감 정리: dead code 제거 + 404 페이지 신설 + 문서 stale 정리
+
+### 작업
+신규 기능 추가가 아닌 정리 세션. repo 전체 dead code/TODO/문서 stale 상태를 감사하고,
+확실한 것만 최소 범위로 수정.
+
+### 주요 변경
+- **Dead code 제거**(전부 zero 참조를 repo 전체에서 직접 확인한 뒤 제거, Local SEO/
+  Power Curriculum 등 보호 대상 파일은 유사 사례가 있어도 건드리지 않음):
+  - `data/reviews.ts`: `getReviewsByLanguage`(unfiltered, 어디서도 호출 안 됨),
+    `getPublishedReviewsLanguageBalanced`(`getReviewsPageEntriesBalanced`로 대체되고
+    남은 잔재) 제거. `getPublishedReviews`/`getPublishedReviewsByLanguage`/
+    `getReviewsPageEntries*`/`getFeaturedReviews` 등 실사용 함수는 전혀 건드리지 않음.
+  - `data/media/imageCredits.ts`: `getImageCredit` 제거(정의 후 한 번도 호출된 적 없음).
+  - `data/navigation/languageNavigation.ts`: `getMagazineTopicsForLanguage` 제거
+    ("매거진 Index용"이라는 주석은 있었으나 실제 매거진은 `data/magazine/`을 직접
+    사용해 이 함수를 쓴 적이 없음).
+  - **제거하지 않고 보고만 한 것**: `data/curriculum/powerCurriculum.ts`의
+    `getCurriculumByUsage`/`getSeoCandidateCurriculum`/`getCurriculumLinkedToCluster`,
+    `lib/seo/localHub.ts`의 `getTotalPublishedRegionCount`, `data/seo/previewRegistry.ts`의
+    `buildLocalSeoDescription` — 전부 zero 참조를 확인했지만 Power Curriculum/Local SEO가
+    CLAUDE.md 보호 대상으로 명시돼 있어, dead code 정리만을 이유로는 손대지 않음.
+- **`app/not-found.tsx` 신규 추가(P1)**: 이 파일이 없어 Next.js 기본 404(Header/Footer도
+  없는 완전히 빈 페이지, "This page could not be found"만 표시)가 대신 렌더링되고
+  있었음을 production 대신 로컬 빌드로 직접 확인(`/magazine/존재하지않는-slug`,
+  `/english/존재하지않는-category`, 잘못된 Local 조합 3가지 케이스 모두 재현). 97,905개
+  Local 조합·50개 매거진 slug 규모를 감안하면 사용자가 잘못된 URL에 도달할 가능성이
+  실질적이라 P1로 판단. 새 디자인 시스템 없이 기존 `.btn-primary`/`.btn-secondary`/
+  `.section-shell`/`.eyebrow` 클래스만 재사용, 홈/매거진/지역별 3개 링크만 제공 —
+  루트 `layout.tsx`의 Header/Footer가 자동으로 감싸므로 별도 로직 불필요.
+- **SVG 접근성 재조사(P2 → 문제 없음으로 정정)**: 직전 세션에서 "장식 SVG 14개
+  aria-hidden 누락"으로 보고했던 항목을 소스 레벨에서 재확인한 결과, 전부 SVG 자체
+  또는 부모 요소(`CoachCard.tsx`의 wrapper span, `ProcessSection.tsx`의 wrapper div 등)에
+  이미 `aria-hidden`이 있어 스크린리더에 실제로 노출되지 않음을 확인. 직전 감사의 런타임
+  체크가 SVG 자기 자신만 검사하고 부모 체인의 `aria-hidden`을 확인하지 않아 생긴
+  false positive였음 — 코드 수정 없음.
+- **Reviews `prototype` 9건**: 여전히 production 어디에도 노출되지 않음을 재확인
+  (`getPublishedReviews*`/`getFeaturedReviews`/`getReviewsPageEntries*` 전부 `official-case`/
+  `example-case`만 필터링). 다만 주석에 "추후 실제 후기로 교체될 수 있다"는 의도적 placeholder로
+  명시돼 있어, 코드 정리 세션에서 임의로 삭제하지 않고 기존 P2 상태 그대로 보고만 함.
+- **TODO/FIXME 전수 검색**: repo 전체에서 `ConsultationSection.tsx`의 개인정보 정책
+  TODO 1건만 발견 — 여전히 유효한 실제 보류 항목(사업자명/보유기간/정책 링크 미확정)이라
+  그대로 유지.
+- **문서 stale 상태 수정**: `docs/DORAN_MASTER.md`의 "다음 작업 후보"가 이미 완료된
+  "Google Apps Script 재배포 필요" 항목을 그대로 담고 있었음 — 사용자가 실제 재배포 완료 +
+  Google Sheet 저장/이메일 알림 정상 확인을 알려와 반영. 오래된 커밋 해시(`4905ddb`) 참조도
+  현재 커밋으로 갱신.
+- **의존성/보안**: `npm audit` 결과 기존 `xlsx`(devDependency, fixAvailable: false) 1건만
+  유지, `next`/postcss override(8.5.26→실제 8.5.28 resolve)도 기존 문서와 일치 확인.
+  하드코딩된 secret/API key/이메일/Spreadsheet ID 없음 재확인. 대규모 패키지 업데이트나
+  `npm audit fix --force` 시도하지 않음.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build`(50개 매거진 + `/_not-found` 라우트 정상 생성) clean.
+- `npm run validate:seo`/`validate:detail-content`/`validate:curriculum` 이상 없음
+  (Power Curriculum 73개 그대로).
+- `npm run validate:local-seo` 1회 실행 — 97,905/97,905 유지, 이상 없음.
+- 로컬 프로덕션 서버에서 404 시나리오 3종(매거진 잘못된 slug, 상세페이지 잘못된 category,
+  잘못된 Local 조합) 전부 HTTP 404 + 새 브랜드 404 페이지 렌더링 확인. `/reviews`에서
+  prototype 텍스트("혼자 공부할 때보다...") 미노출 재확인. Header/상담폼(honeypot
+  aria-hidden, required 동의, 라벨 12개)·매거진 허브·신규 매거진 글·Local 허브·Local
+  리프 전부 390/768/1440px에서 콘솔 에러 0, hydration 경고 0, 가로 overflow 0.
+
+### 상태
+- 커밋 후 push, Vercel production 반영은 이 문서 커밋과 함께 최종 확인.
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
