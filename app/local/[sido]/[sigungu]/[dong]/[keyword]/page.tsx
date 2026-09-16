@@ -24,12 +24,12 @@ import type { LanguageSlug } from "@/data/languages";
 import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
-import { getEnabledClusters, getClustersByLanguage } from "@/data/seo/keywords";
-import { CORE_LOCAL_KEYWORDS } from "@/data/seo/publishBatches";
+import { getEnabledClusters } from "@/data/seo/keywords";
 import { getMagazineArticlesByLanguage } from "@/data/magazine";
 import { PUBLISHED_LOCAL_SEO_PAGES, findLocalSeoPreview } from "@/data/seo/previewRegistry";
 import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLocalSeoContent";
 import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
+import { getLocalSiblingKeywords } from "@/lib/seo/localSiblingKeywords";
 
 // 공개 대상은 data/seo/previewRegistry.ts의 PUBLISHED_LOCAL_SEO_PAGES
 // 화이트리스트(2026-09 2차 확장: seo-regions.json 기반 지역 6,527개 ×
@@ -201,10 +201,11 @@ export default async function LocalSeoLandingPage({
   // 관련성 높은 소수의 내부 링크만 모은다(총 7개, 5~10개 권장 범위 내). 97,905개
   // 전부에 링크를 수십~수백 개씩 붙이지 않고, 카테고리당 1~2개로 제한한다.
   // "상담" 링크는 이미 Hero/본문/최종 CTA에 충분히 있어 여기 추가하지 않는다.
-  const siblingKeywords = getClustersByLanguage(cluster.language)
-    .map((c) => c.mainKeyword)
-    .filter((keyword) => keyword !== cluster.mainKeyword && CORE_LOCAL_KEYWORDS.includes(keyword))
-    .slice(0, 2);
+  // sibling keyword 2개는 getLocalSiblingKeywords()가 intent 기반으로 고른다
+  // (회화/과외/화상끼리만 서로 링크를 주고받던 예전 방식은 시험 5종과
+  // 워홀일본어가 같은 지역의 어느 keyword에서도 링크를 받지 못하는 구조적
+  // 결함이 있었다 — lib/seo/localSiblingKeywords.ts 주석 참고).
+  const siblingKeywords = getLocalSiblingKeywords(cluster);
 
   const relatedMagazineArticle = (() => {
     const articles = getMagazineArticlesByLanguage(cluster.language);
