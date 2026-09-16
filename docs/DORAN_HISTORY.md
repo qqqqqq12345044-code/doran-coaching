@@ -633,6 +633,40 @@ Vercel이 Hobby 플랜의 월간 ISR Writes 포함량(200,000건) 대비 300% �
 
 ---
 
+## 2026-09-16 — 최종 디자인 폴리싱 감사 + 3건 수정
+
+### 작업
+기능/SEO 구조 변경이 아닌 시각적 완성도 감사 세션. Home/12개 상세페이지/Reviews/
+Magazine/Local(hub+leaf)/Header·MegaMenu/Footer/404/상담폼을 390·768·1440px에서
+Playwright로 감사. 전반적으로 이미 정돈된 상태임을 확인했고, 실제 사용자 혼동/버그로
+이어지는 항목만 최소 범위로 수정(취향 수준 변경은 보류).
+
+### 주요 변경
+- **CourseSection**(`components/CourseSection.tsx`): href 없는 카드(홈 "목적이 다르면,
+  배우는 방법도 달라야 하니까." 섹션의 `purposeCourses` 6개)가 실제 링크 카드와 동일한
+  hover translate/shadow/arrow 강조를 갖고 있어 클릭 가능해 보이지만 반응이 없는
+  affordance 혼동이 있었음. href 유무로 hover 효과를 분리(링크 카드 동작은 동일 유지,
+  Local 97,905페이지가 쓰는 `coursesByLanguage` 카드는 전부 href가 있어 영향 없음).
+- **HeroQuickNav**(`components/HeroQuickNav.tsx`): 3열 전환 breakpoint를 `md`(768px)에서
+  `lg`(1024px)로 변경. 768px 태블릿 폭에서 3열이 라벨 텍스트를 `truncate`로 잘라 "…"로
+  표시되던 문제(예: "수업은 어떻게 진행될까요?" → "수업은 어떻게 …") 해결.
+- **404 페이지**(`app/not-found.tsx`): 상단에 두 마리 새 브랜드 심볼 추가. 기존엔 배경이
+  넓게 비어 보여 미완성처럼 느껴졌음. `BrandLogo.tsx`의 `BrandSymbol`에 `className` override
+  prop을 추가해(기본값은 Header 크기 그대로 유지) 크기만 키워 재사용, 새 SVG 자산 생성 없음.
+
+### 검증
+- `npx tsc --noEmit`, `npm run build` clean.
+- `validate:seo`/`validate:detail-content`(12페이지)/`validate:curriculum`(73개)/
+  `validate:local-seo`(97,905/97,905) 전부 이상 없음, Magazine 50개(17+15+17+1) 유지 확인.
+- Playwright로 390/768/1440 재확인, 콘솔 에러 없음, page-level 가로 overflow 없음.
+- 커밋 `d346bfb` push 후 Vercel production(`dorancoaching.com`) READY 확인, `/`·`/english`·
+  `/reviews`·`/magazine`·상세 1개·Local leaf 1개·404 전부 프로덕션 200/404 정상 확인.
+
+### 상태
+- commit/push/Vercel 배포까지 완료.
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
