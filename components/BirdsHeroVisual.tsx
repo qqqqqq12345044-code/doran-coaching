@@ -1,4 +1,4 @@
-import { Sparkles, Check } from "lucide-react";
+import { Sparkles, Check, ChevronDown } from "lucide-react";
 import type { LanguageSlug } from "@/data/languages";
 import { trustStats } from "@/data/trustStats";
 
@@ -7,9 +7,9 @@ interface BirdsHeroVisualProps {
   /** 언어별 accent 그라디언트를 적용하기 위한 값. Local SEO 리프 페이지 97,905개
    *  전부 지역/keyword와 무관하게 language 하나로만 색이 결정된다. */
   language: LanguageSlug;
-  /** 이 지역×keyword 조합의 핵심 특징 2개(짧은 구 단위). content.benefits의
+  /** 이 지역×keyword 조합의 핵심 특징 3개(짧은 구 단위). content.benefits의
    *  title을 그대로 재사용하고, 이 컴포넌트 안에서 새 문구를 만들지 않는다. */
-  features: readonly [string, string];
+  features: readonly [string, string, string];
 }
 
 const DOT_DELAYS = ["0ms", "180ms", "360ms"];
@@ -29,21 +29,31 @@ const GRADIENT_BY_LANGUAGE: Record<LanguageSlug, string> = {
 // 이 배경이 language와 무관하게 항상 영어 색으로 고정돼 있어 일본어/중국어
 // 페이지에서도 영어 색이 노출되는 문제가 있었다.
 //
-// 기존에는 브랜드 애니메이션 아래로 그라디언트만 있는 빈 공간이 많아 카드가
-// 밋밋하다는 피드백이 있었다. 지역명을 하드코딩하지 않고 재사용 가능한 방식으로,
-// 그 공간에 실제 서비스 핵심 특징 2개 + 검증된 신뢰 지표(trustStats) 1줄을 채운다.
+// "전문적인 교육 서비스의 핵심 요약 카드"가 되도록 정보 위계를 4단으로 정리한다
+// (2026-09 리디자인): 상단 지역/keyword context → 브랜드 심볼(절제된 supporting
+// 요소로 축소) → 실제 benefits 3개 + 검증된 trustStats를 한 패널에 정돈 → 맨
+// 아래 "더 볼 내용이 있다"는 절제된 scroll cue. 장식을 더 추가하는 대신 같은
+// 요소(그라디언트 1개, glass 패널 1개)를 재배치해 위계로 완성도를 만든다 —
+// 새 gradient/glow/pill을 추가하지 않는다.
 export default function BirdsHeroVisual({ badgeLabel, language, features }: BirdsHeroVisualProps) {
   return (
     <div
-      className={`relative min-h-[420px] w-full overflow-hidden rounded-xl3 bg-gradient-to-br shadow-soft ${GRADIENT_BY_LANGUAGE[language]}`}
+      className={`relative flex min-h-[400px] w-full flex-col overflow-hidden rounded-xl3 bg-gradient-to-br shadow-soft ${GRADIENT_BY_LANGUAGE[language]}`}
       aria-hidden="true"
     >
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10 animate-float-slow" />
       <div className="absolute -bottom-16 -left-10 h-52 w-52 rounded-full bg-white/10 animate-float-slow-delayed" />
 
-      <div className="relative flex h-full flex-col items-center justify-center gap-6 px-6 pb-7 pt-10 text-center sm:px-8">
-        <div className="flex items-center gap-3 sm:gap-5">
-          <svg viewBox="0 0 40 34" className="h-14 w-auto shrink-0 animate-float sm:h-16" focusable="false">
+      <div className="relative flex h-full flex-col px-6 pb-6 pt-6 sm:px-7 sm:pt-7">
+        {/* A. 상단 context — 지역 + keyword를 micro-label로 */}
+        <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-wide text-white/90 backdrop-blur-sm">
+          <Sparkles size={12} aria-hidden />
+          {badgeLabel}
+        </div>
+
+        {/* 브랜드 심볼 — 중심 요소가 아니라 절제된 supporting motif로 축소 */}
+        <div className="flex items-center justify-center gap-3 py-6">
+          <svg viewBox="0 0 40 34" className="h-11 w-auto shrink-0 animate-float" focusable="false">
             <ellipse cx="14" cy="21" rx="11" ry="9" fill="#1C1B2E" />
             <circle cx="23" cy="13" r="7.5" fill="#1C1B2E" />
             <polygon points="29.5,12.2 36,10.5 29.5,15.5" fill="#1C1B2E" />
@@ -55,12 +65,12 @@ export default function BirdsHeroVisual({ badgeLabel, language, features }: Bird
               <span
                 key={index}
                 style={{ animationDelay: delay }}
-                className="h-2 w-2 rounded-full bg-white/85 opacity-0 [animation:dot-in_0.5s_ease-out_forwards]"
+                className="h-1.5 w-1.5 rounded-full bg-white/85 opacity-0 [animation:dot-in_0.5s_ease-out_forwards]"
               />
             ))}
           </div>
 
-          <svg viewBox="0 0 40 34" className="h-14 w-auto shrink-0 animate-float-delayed sm:h-16" focusable="false">
+          <svg viewBox="0 0 40 34" className="h-11 w-auto shrink-0 animate-float-delayed" focusable="false">
             <g transform="translate(40,0) scale(-1,1)">
               <ellipse cx="14" cy="21" rx="11" ry="9" fill="#E2604A" />
               <circle cx="23" cy="13" r="7.5" fill="#E2604A" />
@@ -70,12 +80,8 @@ export default function BirdsHeroVisual({ badgeLabel, language, features }: Bird
           </svg>
         </div>
 
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
-          <Sparkles size={14} aria-hidden />
-          {badgeLabel}
-        </div>
-
-        <div className="mt-1 w-full max-w-[280px] rounded-2xl bg-white/12 px-5 py-4 text-left ring-1 ring-white/20 backdrop-blur-sm">
+        {/* B. 핵심 효익 + C. trust row를 하나의 패널로 정돈 */}
+        <div className="mt-auto w-full rounded-2xl bg-white/12 px-5 py-4 text-left ring-1 ring-white/20 backdrop-blur-sm">
           <ul className="space-y-2">
             {features.map((feature) => (
               <li key={feature} className="flex items-start gap-2 text-[13px] font-medium leading-snug text-white/95">
@@ -84,10 +90,25 @@ export default function BirdsHeroVisual({ badgeLabel, language, features }: Bird
               </li>
             ))}
           </ul>
-          <p className="mt-3 border-t border-white/15 pt-3 text-[12px] text-white/75">
-            {trustStats.satisfaction.label} {trustStats.satisfaction.value} · {trustStats.cumulativeStudents.label} {trustStats.cumulativeStudents.value}
-          </p>
+
+          <div className="mt-3 flex items-center gap-3 border-t border-white/15 pt-3">
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[14px] font-bold text-white">{trustStats.satisfaction.value}</span>
+              <span className="text-[11px] text-white/70">{trustStats.satisfaction.label}</span>
+            </div>
+            <div className="h-3 w-px bg-white/20" aria-hidden />
+            <div className="flex items-baseline gap-1.5">
+              <span className="text-[14px] font-bold text-white">{trustStats.cumulativeStudents.value}</span>
+              <span className="text-[11px] text-white/70">{trustStats.cumulativeStudents.label}</span>
+            </div>
+          </div>
         </div>
+
+        {/* D. 아래 콘텐츠 탐색 유도 — 절제된 scroll cue, 실제 anchor scroll은 없음 */}
+        <p className="mt-4 flex items-center justify-center gap-1 text-center text-[12px] text-white/70">
+          수업 방식 · 추천 대상 · 실제 수강 사례를 아래에서 확인하세요
+          <ChevronDown size={13} className="shrink-0" aria-hidden />
+        </p>
       </div>
     </div>
   );

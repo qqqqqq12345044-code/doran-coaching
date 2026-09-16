@@ -261,7 +261,7 @@ export default async function LocalSeoLandingPage({
           <BirdsHeroVisual
             badgeLabel={`${region.regionName} · 1:1 화상 ${cluster.mainKeyword}`}
             language={cluster.language}
-            features={[content.benefits[0].title, content.benefits[1].title]}
+            features={[content.benefits[0].title, content.benefits[1].title, content.benefits[2].title]}
           />
         }
         background={<HeroBackgroundBlobs />}
