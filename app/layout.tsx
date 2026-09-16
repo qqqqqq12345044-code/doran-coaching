@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingConsultationButton from "@/components/FloatingConsultationButton";
+import FloatingCallButton from "@/components/FloatingCallButton";
 import { brand } from "@/data/brand";
 
 const notoSansKR = Noto_Sans_KR({
@@ -61,6 +62,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <FloatingCallButton />
         <FloatingConsultationButton />
       </body>
     </html>
