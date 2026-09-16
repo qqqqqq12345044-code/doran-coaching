@@ -37,8 +37,12 @@ export default function CourseSection({
 
         <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {courses.map((course, index) => {
-            const cardClassName =
-              "group flex h-full items-center justify-between gap-3 rounded-xl2 border border-ink/8 bg-white px-4 py-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-ink/14 hover:shadow-card sm:px-5";
+            // href가 없는 카드(목적 개요 등)는 실제로 이동하지 않으므로, 링크 카드와
+            // 같은 hover affordance(translate/shadow/arrow 강조)를 주지 않는다 —
+            // 클릭 가능해 보이는데 아무 반응이 없는 혼동을 막기 위함.
+            const baseClassName =
+              "group flex h-full items-center justify-between gap-3 rounded-xl2 border border-ink/8 bg-white px-4 py-4 transition-all duration-200 sm:px-5";
+            const linkClassName = `${baseClassName} hover:-translate-y-0.5 hover:border-ink/14 hover:shadow-card`;
             const cardContent = (
               <>
                 <div className="flex min-w-0 items-center gap-3">
@@ -53,7 +57,7 @@ export default function CourseSection({
                 </div>
                 <ArrowRight
                   size={15}
-                  className="shrink-0 text-ink/20 transition-all duration-200 group-hover:translate-x-0.5 group-hover:text-ink/45"
+                  className={`shrink-0 text-ink/20 transition-all duration-200 ${course.href ? "group-hover:translate-x-0.5 group-hover:text-ink/45" : ""}`}
                   aria-hidden
                 />
               </>
@@ -61,11 +65,11 @@ export default function CourseSection({
             return (
               <Reveal key={course.title} delay={Math.min(index * 60, 480)}>
                 {course.href ? (
-                  <Link href={course.href} className={cardClassName}>
+                  <Link href={course.href} className={linkClassName}>
                     {cardContent}
                   </Link>
                 ) : (
-                  <div className={cardClassName}>{cardContent}</div>
+                  <div className={baseClassName}>{cardContent}</div>
                 )}
               </Reveal>
             );

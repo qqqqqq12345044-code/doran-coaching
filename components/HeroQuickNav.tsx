@@ -25,7 +25,7 @@ export default function HeroQuickNav() {
       <div className="section-shell">
         <nav
           aria-label="빠른 이동"
-          className="grid grid-cols-1 divide-y divide-ink/8 overflow-hidden rounded-xl2 border border-ink/8 bg-white/85 shadow-soft backdrop-blur-md md:grid-cols-3 md:divide-x md:divide-y-0"
+          className="grid grid-cols-1 divide-y divide-ink/8 overflow-hidden rounded-xl2 border border-ink/8 bg-white/85 shadow-soft backdrop-blur-md lg:grid-cols-3 lg:divide-x lg:divide-y-0"
         >
           {ITEMS.map((item) => (
             <AnchorLink

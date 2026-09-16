@@ -57,7 +57,14 @@ export default function BrandLogo({
   );
 }
 
-export function BrandSymbol({ light = false }: { light?: boolean }) {
+export function BrandSymbol({
+  light = false,
+  className = "h-6 w-auto shrink-0 md:h-7",
+}: {
+  light?: boolean;
+  /** 기본 Header/Favicon 크기(24~28px)를 다른 곳(예: 404)에서 키워 쓸 때만 덮어쓴다. */
+  className?: string;
+}) {
   const leftFill = light ? "#FFFFFF" : "#1C1B2E";
   const rightFill = light ? "#FFFFFF" : "#E2604A";
   const eyeFill = light ? "#1C1B2E" : "#FFFFFF";
@@ -65,7 +72,7 @@ export function BrandSymbol({ light = false }: { light?: boolean }) {
   return (
     <svg
       viewBox="0 0 76 34"
-      className="h-6 w-auto shrink-0 md:h-7"
+      className={className}
       aria-hidden="true"
       focusable="false"
     >

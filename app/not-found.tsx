@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BrandSymbol } from "@/components/BrandLogo";
 
 // App Router는 이 파일이 없으면 Next.js 기본 404 페이지(Header/Footer 없이 완전히
 // 빈 페이지)를 대신 렌더링한다. 이 파일을 두면 루트 layout.tsx의 Header/Footer가
@@ -8,7 +9,8 @@ export default function NotFound() {
   return (
     <section className="section-pad">
       <div className="section-shell max-w-lg text-center">
-        <p className="eyebrow">404</p>
+        <BrandSymbol className="mx-auto h-9 w-auto opacity-90 md:h-10" />
+        <p className="eyebrow mt-6">404</p>
         <h1 className="text-balance mt-4 text-[28px] font-extrabold leading-tight text-ink md:text-[34px]">
           찾으시는 페이지가 없어요
         </h1>
