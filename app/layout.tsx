@@ -49,6 +49,11 @@ export const metadata: Metadata = {
     title: siteTitle,
     description: siteDescription,
   },
+  alternates: {
+    types: {
+      "application/rss+xml": [{ url: "/rss.xml", title: "도란 매거진 RSS" }],
+    },
+  },
 };
 
 export default function RootLayout({

@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandSymbol } from "@/components/BrandLogo";
+
+export const metadata: Metadata = {
+  title: "페이지를 찾을 수 없어요 | 도란 DORAN",
+  description: "주소가 바뀌었거나 잘못 입력됐을 수 있어요. 홈, 매거진, 지역별 페이지에서 원하는 곳으로 이동해보세요.",
+};
 
 // App Router는 이 파일이 없으면 Next.js 기본 404 페이지(Header/Footer 없이 완전히
 // 빈 페이지)를 대신 렌더링한다. 이 파일을 두면 루트 layout.tsx의 Header/Footer가
