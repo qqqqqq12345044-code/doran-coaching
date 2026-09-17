@@ -265,6 +265,13 @@ local whitelist, image crop, build를 필요할 때 확인한다.
   브랜드명/카피/후기 등은 일반화해서 적는다.
 - 문서가 코드보다 오래된 정보를 갖지 않도록, 갱신 전 항상 관련 코드를 실제로 다시 확인한다.
 
+## [AI handoff — ChatGPT 등 다른 AI와 상태 공유]
+
+작업 단위(기능/디자인/SEO/QA)가 끝나면 `npm run handoff`로 `docs/ai/AI_HANDOFF.md`의 자동
+블록(Current state/Validation)만 갱신하고, Completed task/Files changed/Issues/Next task는
+Claude가 직접 채운다. `npm run handoff:copy`는 갱신 후 클립보드에 복사(다른 AI에게 붙여넣기용).
+DORAN_MASTER.md/HISTORY.md와 달리 이 문서는 매 체크포인트마다 가볍게 갱신해도 된다.
+
 ## [최종 목표]
 
 빠르다 · 안정적이다 · 정확하다 · 이해하기 쉽다 · 디자인이 고급스럽다 · SEO에 안전하다 ·

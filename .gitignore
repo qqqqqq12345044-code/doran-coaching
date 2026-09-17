@@ -11,3 +11,5 @@ Thumbs.db
 .vercel
 
 .playwright-mcp
+
+scripts/.validation-cache.json

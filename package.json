@@ -16,7 +16,11 @@
     "preview:multi-intent": "node scripts/preview-multi-intent-content.mts",
     "preview:exam-profiles": "node scripts/preview-exam-profiles.mts",
     "validate:detail-content": "node scripts/validate-detail-content.mts",
-    "validate:local-seo": "node scripts/validate-local-seo-published.mts"
+    "validate:local-seo": "node scripts/validate-local-seo-published.mts",
+    "validate:quick": "node scripts/validate-quick.mts",
+    "validate:full": "node scripts/validate-full.mts",
+    "handoff": "node scripts/update-ai-handoff.mts",
+    "handoff:copy": "npm run handoff --silent && powershell -ExecutionPolicy Bypass -File scripts/copy-handoff.ps1"
   },
   "dependencies": {
     "lucide-react": "^0.451.0",
