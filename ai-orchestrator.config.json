@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "projectName": "doran-coaching",
+  "handoff": {
+    "handoff": "docs/ai/AI_HANDOFF.md"
+  },
+  "commands": {
+    "validateQuick": "npm run validate:quick",
+    "validateFull": "npm run validate:full"
+  },
+  "policy": {
+    "defaultRisk": "SAFE_EDIT",
+    "allowCommit": false,
+    "allowPush": false,
+    "allowDeploy": false,
+    "allowDestructiveCommands": false
+  }
+}
