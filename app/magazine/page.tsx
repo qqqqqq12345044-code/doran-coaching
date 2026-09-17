@@ -92,6 +92,19 @@ function latestUpdateLabel(articles: MagazineArticle[]): string {
   return `${year}년 ${Number(month)}월`;
 }
 
+// 카테고리 대표글 카드의 preview/"다루는 내용"은 새 문구를 쓰지 않고
+// article에 이미 있는 실제 필드만 재사용한다: cardSummary + intro(있으면) +
+// 첫 Section 본문 첫 문단을 이어 붙여 2~4문장 preview를 만들고, 그 다음
+// Section들의 실제 heading(최대 3개)을 "이 글에서 다루는 내용"으로 노출한다.
+function buildFeaturedHighlights(article: MagazineArticle): { preview: string; topics: string[] } {
+  const firstBodyParagraph = article.sections[0]?.paragraphs[0];
+  const preview = [article.cardSummary, ...(article.intro ?? []), firstBodyParagraph]
+    .filter((part): part is string => Boolean(part))
+    .join(" ");
+  const topics = article.sections.slice(1, 4).map((section) => section.heading);
+  return { preview, topics };
+}
+
 export default function MagazinePage() {
   const featuredBig = getMagazineArticle(FEATURED_SLUG);
   const featuredSmall = LANGUAGE_SECTIONS.map((lang) => getMagazineArticle(FEATURED_LANGUAGE_SLUGS[lang])).filter(
@@ -274,6 +287,7 @@ export default function MagazinePage() {
                   // 화면에 두 번 "대표"로 노출되지 않게 한다.
                   const featured = groupArticles.find((a) => !topFeaturedSlugs.has(a.slug)) ?? groupArticles[0];
                   const rest = groupArticles.filter((a) => a.slug !== featured.slug);
+                  const { preview: featuredPreview, topics: featuredTopics } = buildFeaturedHighlights(featured);
                   return (
                     <div key={categoryLabel}>
                       <div
@@ -304,13 +318,38 @@ export default function MagazinePage() {
                             <p className="mt-3 text-[17px] font-bold leading-snug text-ink sm:text-[19px]">
                               {featured.h1}
                             </p>
-                            <p className="mt-2.5 text-[14px] leading-relaxed text-ink-soft">{featured.cardSummary}</p>
+                            <p className="mt-2.5 line-clamp-4 text-[14px] leading-relaxed text-ink-soft">
+                              {featuredPreview}
+                            </p>
+                            {featuredTopics.length > 0 && (
+                              <div className="mt-4 border-t border-ink/8 pt-4">
+                                <p className="text-[11.5px] font-semibold text-ink-faint">이 글에서 다루는 내용</p>
+                                <ul className="mt-2 space-y-1.5">
+                                  {featuredTopics.map((topic, index) => (
+                                    <li
+                                      key={topic}
+                                      className={`flex gap-1.5 text-[13px] leading-snug text-ink-soft ${
+                                        index === 2 ? "hidden sm:flex" : ""
+                                      }`}
+                                    >
+                                      <span aria-hidden className="text-ink-faint">
+                                        ·
+                                      </span>
+                                      <span>{topic}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                           </div>
-                          <ArrowRight
-                            size={16}
-                            className="mt-5 text-ink-faint transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-ink"
-                            aria-hidden
-                          />
+                          <span className="mt-5 inline-flex items-center gap-1.5 text-[13px] font-semibold text-ink-soft">
+                            글 계속 읽기
+                            <ArrowRight
+                              size={15}
+                              className="transition-transform duration-200 group-hover:translate-x-0.5"
+                              aria-hidden
+                            />
+                          </span>
                         </Link>
 
                         <div className="flex min-w-0 flex-col">
