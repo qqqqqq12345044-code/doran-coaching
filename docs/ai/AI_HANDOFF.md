@@ -3,35 +3,34 @@
 <!-- AUTO:CURRENT_STATE:START -->
 ## Current state
 - Branch: main
-- HEAD: 95ce037
-- Working tree: dirty (9개 파일)
+- HEAD: 2940d53
+- Working tree: dirty (3개 파일)
 <!-- AUTO:CURRENT_STATE:END -->
 
 ## Completed task
-- 최종 운영 readiness 감사(delta audit): 최근 5개 커밋(전화 CTA/RSS/매거진 카드/Local hero/sibling link) 회귀 여부 확인 — broken link/SEO technical/RSS/접근성/390·768·1440 QA/console/성능/Local 97,905 전수 validator 전부 이상 없음
-- `app/not-found.tsx`에 전용 title/description 추가(기존엔 홈 title 상속)
-- RSS `<link rel="alternate">` 추가 시도 → Next.js metadata 병합 특성(각 page.tsx의 alternates가 layout의 types를 통째로 덮어씀)으로 실제 렌더링 안 되는 것 확인 후 되돌림
-- `docs/ops/search-monitoring-checklist.md` 신규(GSC/Naver/Bing 2·4·8주 체크리스트)
-- `CLAUDE.md`를 전역 `~/.claude/CLAUDE.md`와 중복되는 범용 규칙만 축약(DORAN 고유 규칙은 그대로)
+- `npm run validate:full` 최초 실행 — tsc/build/validate:seo/curriculum/detail-content/local-seo 전부 PASS, cache가 현재 HEAD 기준으로 정상 기록되는 것까지 확인
+- `docs/DORAN_MASTER.md`를 production 현재 상태로 동기화: RSS route/404 metadata/전화 CTA/Local sibling link 균형/Hero 카드 4단 위계/Magazine 카드 보강/AI handoff 워크플로우 반영, reviews 총계 오탈자 정정(26→25)
+- `docs/DORAN_HISTORY.md`에 2026-09-16(sibling link/hero/전화CTA/RSS)·2026-09-17(magazine 카드/최종 감사/AI handoff) 날짜 항목 신규 추가
+- (이전 체크포인트) 최종 운영 readiness 감사·404 metadata 수정·AI handoff/validation 워크플로우 신설 — 상세는 HISTORY 2026-09-17 항목 참고
 
 <!-- AUTO:VALIDATION:START -->
 ## Validation
-- Quick: PASS — Typecheck PASS
-- Full: 실행 기록 없음 (`npm run validate:full` 필요)
+- Quick: PASS — Typecheck PASS [stale — 95ce037 기준, 현재 HEAD와 다름]
+- Full: PASS — Typecheck PASS / Build PASS / SEO PASS / Curriculum PASS / Detail content PASS / Local SEO PASS
 <!-- AUTO:VALIDATION:END -->
 
 ## Files changed
-- 이 체크포인트: `app/not-found.tsx`, `app/layout.tsx`(net 변경 없음 — 시도 후 원복), `CLAUDE.md`, `docs/ops/search-monitoring-checklist.md`, `docs/ai/AI_HANDOFF.md`(신규), `scripts/{validate-quick,validate-full,update-ai-handoff}.mts`(신규), `scripts/lib/validation-cache.mts`(신규), `scripts/copy-handoff.ps1`(신규), `package.json`(handoff 스크립트 4개 추가)
+- 이 체크포인트: `docs/DORAN_MASTER.md`, `docs/DORAN_HISTORY.md`, `docs/ai/AI_HANDOFF.md`(자동 블록) — production code(`app/`/`components/`/`data/`/`lib/`)는 변경 없음, `scripts/.validation-cache.json`은 gitignored 상태 유지
 
 ## Issues / decisions needed
 - 상담폼 개인정보: 처리주체(사업자명)/보유기간/개인정보처리방침 링크/문의처 여전히 미확정 (`ConsultationSection.tsx` TODO)
-- `docs/DORAN_MASTER.md`가 최근 5개 커밋을 아직 반영하지 못함 — 다음 문서 갱신 세션에서 업데이트 필요
-- `docs/DORAN_MASTER.md`의 reviews 총계(26개) vs 실제 코드 카운트(25개, 10+6+9) 불일치 — 사소한 오탈자, 정정 필요
 
 ## Recommended next task
-- 상담폼 개인정보 정책 최종 확정 → 확정되면 동의 문구 반영
-- (선택) Bing Webmaster Tools 사이트 등록 + sitemap 제출 — 코드는 이미 준비된 상태
-- `docs/DORAN_MASTER.md` 최근 커밋 반영 + reviews 카운트 정정
+1. 상담폼 개인정보 정책 최종 확정 → 확정되면 동의 문구 반영
+2. (선택) Bing Webmaster Tools 사이트 등록 — sitemap/RSS 제출 준비는 완료된 상태
+3. GSC/네이버 2주·4주·8주 관찰(`docs/ops/search-monitoring-checklist.md`)
+4. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험 없음, 급하지 않음
+5. `/local` 지역 허브 sitemap 편입 여부는 위 3번 관찰 결과 보고 판단
 
 ## Context for ChatGPT
 도란(DORAN)은 Next.js 15(App Router) 기반 영어/일본어/중국어 1:1 화상 외국어 코칭 마케팅

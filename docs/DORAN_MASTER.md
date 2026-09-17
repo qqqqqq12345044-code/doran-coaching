@@ -1,6 +1,6 @@
 # DORAN Coaching — 프로젝트 현재 상태 (MASTER)
 
-이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-15 (커밋 `2689da9`
+이 문서는 **현재 코드 상태의 스냅샷**이다. 작성 기준일: 2026-09-17 (커밋 `2940d53`
 push 완료, production 반영 확인됨). 이 문서와
 실제 코드가 다르면 항상 **코드가 우선**한다 — 큰 작업 완료 후 이 문서를 갱신하되,
 갱신을 놓친 부분이 있을 수 있음을 전제하고 의심되면 코드를 다시 읽는다.
@@ -35,6 +35,10 @@ validate:seo             → scripts/validate-seo-keywords.mts
 validate:curriculum      → scripts/validate-power-curriculum.mts
 validate:detail-content  → scripts/validate-detail-content.mts
 validate:local-seo       → scripts/validate-local-seo-published.mts
+validate:quick           → scripts/validate-quick.mts   (tsc만 — 작은 UI/CSS 수정용)
+validate:full            → scripts/validate-full.mts    (tsc+build+위 4개 validator 전부 — Route/Architecture 변경용)
+handoff                  → scripts/update-ai-handoff.mts (docs/ai/AI_HANDOFF.md 자동 블록 갱신)
+handoff:copy             → handoff 실행 후 클립보드 복사(scripts/copy-handoff.ps1)
 preview:seo              → scripts/preview-seo-combinations.mts
 preview:content          → scripts/preview-local-seo-content.mts
 preview:multi-intent     → scripts/preview-multi-intent-content.mts
@@ -45,6 +49,12 @@ preview:exam-profiles    → scripts/preview-exam-profiles.mts
 전체 조합(97,905개)에 대해 Content Engine 결과물의 title/description 중복, H1 중복,
 canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유효성을 검사한다
 (`scripts/validate-local-seo-published.mts`).
+
+`validate:quick`/`validate:full`/`handoff`/`handoff:copy`(2026-09-17 추가): 검증 결과를
+`scripts/.validation-cache.json`(git 미포함)에 기록하고, `npm run handoff`가 그 캐시와
+현재 git 상태(branch/HEAD/working tree)를 읽어 `docs/ai/AI_HANDOFF.md`의 자동 블록만
+갱신한다(Completed task/Files changed/Issues/Next task는 Claude가 직접 작성). ChatGPT 등
+다른 AI에게 현재 상태를 넘길 때 `npm run handoff:copy`로 클립보드에 복사해 붙여넣는다.
 
 ## 3. 사이트 구조 / 주요 Route
 
@@ -62,7 +72,8 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 | `/local/[sido]/[sigungu]/[dong]/[keyword]` | Local SEO 리프 페이지(실제 콘텐츠) |
 | `/local/region-search` | 지역 허브 검색창용 JSON API(`route.ts`, `force-static`) |
 | `app/robots.ts`, `app/sitemap.ts`, `app/sitemap.xml/route.ts` | 기술 SEO 엔드포인트 |
-| `app/not-found.tsx` | 전역 404 페이지(2026-09 추가). 이 파일이 없으면 Next.js 기본 404(Header/Footer 없는 빈 페이지)가 대신 렌더링돼, 잘못된 URL로 들어온 사용자가 홈으로 돌아갈 방법이 없었다. 새 디자인 없이 기존 `.btn-primary`/`.btn-secondary`/`.section-shell` 클래스만 재사용, 홈/매거진/지역별 3개 링크만 제공. |
+| `app/rss.xml/route.ts` | Magazine 50개 전용 RSS 2.0 feed(2026-09-17 추가). Local/Detail/상담 페이지는 의도적으로 제외, `data/magazine`의 기존 필드만 재사용(새 콘텐츠 없음). `force-static`. Google Search Console·네이버 서치어드바이저 제출 완료. |
+| `app/not-found.tsx` | 전역 404 페이지(2026-09 추가, 2026-09-17에 전용 title/description 메타데이터 추가 — 이전엔 홈 title을 그대로 상속했음). Header/Footer 그대로 유지, 홈/매거진/지역별 3개 링크 제공. |
 
 `/local` 허브(0~3-depth 브라우징 페이지)는 2026-09-11 커밋(`d7bfe34` 외)에서 새로
 추가된 구조로, 기존 4-segment 리프 페이지와 **완전히 별개의 진입 경로**다 — 리프 페이지는
@@ -86,9 +97,11 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - `data/magazine/{english,japanese,chinese,common}.ts` → `data/magazine/index.ts`가 합쳐서 export.
 - `/magazine/[slug]`는 `dynamicParams = false` + `getAllMagazineSlugs()` 화이트리스트 — 화이트리스트 밖은 build-time에도 404.
 - `getRelatedMagazineArticles()`로 글 간 상호 연결(`relatedArticleSlugs`, 2~3개 관례). 신규 시험 글은 examFacts.ts/courseDetails.ts에 이미 존재하는 사실만 사용했고, DET 관련 대학·기관 인정 여부처럼 확인이 필요한 내용은 "지원처 최신 공식 요건 확인" 안내로 대체했다(새 시험 사실 창작 없음).
+- `/magazine` 목록 페이지의 카테고리별 "대표글" 카드(2026-09-17 개선): 기존엔 배지+제목+한 줄 요약뿐이라 빈 공간이 많았다. `buildFeaturedHighlights()`가 그 글의 기존 필드(cardSummary+intro+첫 Section 첫 문단으로 preview, 다음 Section들의 실제 heading으로 "이 글에서 다루는 내용")만 재사용해 채운다 — 새 문구 작성 없음. 3번째 topic은 390px에서 숨김.
+- `/rss.xml`(위 라우트 표 참고): Magazine 50개 전용 RSS 2.0 feed, GSC/네이버 제출 완료.
 
 **Reviews**
-- `data/reviews.ts` 총 **26개** 레코드(`sourceType`으로 구분): `official-case` 10건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약 — 이전 문서에 "11건"으로 잘못 기재돼 있었음, 실제 합은 8+1+1=10), `example-case` 6건(2026-09-14 신규, 일본어 3 / 중국어 3, "대표 학습 사례" — 아래 참고), `prototype` 9건(더미, 실제 화면에는 미노출).
+- `data/reviews.ts` 총 **25개** 레코드(`sourceType`으로 구분, 2026-09-17 코드로 재확인): `official-case` 10건(영어 8 / 일본어 1 / 중국어 1, 실제 공식 수강 사례, vinemagazine.co.kr 등 공개 원문 기반 요약), `example-case` 6건(일본어 3 / 중국어 3, "대표 학습 사례" — 아래 참고), `prototype` 9건(더미, 실제 화면에는 미노출). **10+6+9=25가 맞는 합계다 — 이전 버전 문서에 "26개"로 잘못 기재돼 있었다.** Production에 실제로 노출되는 것은 `official-case`(전 화면 공통)와 `example-case`(`/reviews`에서만) 뿐이며, `prototype`은 데이터 파일에만 존재하고 어떤 화면에도 렌더링되지 않는다.
 - `example-case`(2026-09-14 추가): 특정 개인의 실제 후기가 아니라 상담에서 흔한 고민·과정·변화 패턴을 재구성한 예시. 일본어/중국어 official-case가 각 1건뿐이라 `/reviews` 노출을 보강하는 용도로만 존재하며, **`/reviews` 페이지에서만** 노출된다(`getReviewsPageEntriesByLanguage`/`getReviewsPageEntriesBalanced`). 상세페이지(`DetailReviews`)·홈(`getFeaturedReviews`)·Local SEO(`ReviewSection`)는 여전히 `official-case`만 사용 — 이 함수들과 `getPublishedReviews*`는 이번에 변경하지 않았다. `ReviewStoryCard.tsx`가 sourceType으로 배지("실제 수강 사례" vs "대표 학습 사례")와 하단 안내 문구를 분기해 시각적으로 구분한다. 가짜 이름/회사명/학교명/점수/합격여부/구체 기간은 없음, `sourceUrl`/`sourceLabel`도 없음(외부 원문이 없으므로).
 - 2026-09(2회 재확인, 최신 2026-09-14): 일본어/중국어 official-case 추가 확보를 위해 growth-success(Google Sites 공식 성공사례 허브) + vinemagazine.co.kr 사이트 내 검색("파워재팬"/"파워차이나"/"일본어"/"중국어"/"HSK"/"JLPT")을 브라우저로 직접 재확인. 새로 발견된 후보는 전부 기존 jp-01/cn-01과 동일 게시물(워드프레스 퍼머링크만 다른 alias, 본문 내용 동일)이었고, 두 언어 모두 공개적으로 확인 가능한 사례는 여전히 각 1건뿐 — 개수를 늘리지 않음(정직한 0건 보고).
 - Production 화면(`getPublishedReviews*` 함수들)은 **`official-case`만** 필터링해서 사용 — `prototype`은 데이터 파일에 남아있지만 어떤 화면에도 노출되지 않는다.
@@ -113,8 +126,19 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
   - 어떤 조합이든 렌더링 전에 `findLocalSeoPreview()`가 whitelist를 재검사 → whitelist 밖은 `notFound()`.
 - 지역명 disambiguation: 전국 확장 후 동명 법정동(예: "신교동")이 여러 시/군/구에 존재할 수 있어, 본문 노출 지역명은 `buildDisambiguatedRegionName()`으로 시/군/구(필요 시 시/도)까지 포함해 유일하게 만든다. URL 자체(`preview.url`)는 법정동 단독 표기 그대로 유지.
 - 내부 링크("가지치기"): 리프 페이지당 관련 링크 약 7개(같은 지역의 다른 keyword 최대 2개 + 관련 과정 + 매거진 글 + 다른 언어 + SELF-CHECK) — 화이트리스트 전체에 대량 링크를 걸지 않음.
+  같은 지역 내 다른 keyword 2개(`lib/seo/localSiblingKeywords.ts`)는 2026-09-16 전까지 배열
+  선언 순서에서 앞 2개만 자르는 방식이라 회화/과외는 서로 4곳씩 inbound를 받는 반면 시험
+  5종+워홀일본어는 어디서도 링크를 못 받는 구조적 결함이 있었다(`scripts/qa/
+  sibling-link-audit.mts`로 발견). CORE_LOCAL_KEYWORDS를 intent 기준 general(회화/과외/화상)/
+  special(시험·워홀) 두 그룹으로 나눠 순환·교차 연결하도록 고쳐 15개 keyword 전부 inbound
+  1건 이상을 받게 했다 — 페이지당 링크 수(2개)와 URL 구조는 그대로.
 - `CourseSection`(리프 페이지의 "목표에 맞는 {언어} 과정을 선택하세요" 8~11개 카드, 홈의 "목적이 다르면..." 6개 카드에도 재사용)은 2026-09 감사 전까지 `data/courses.ts`의 `Course`에 `href`가 없어 화살표 아이콘과 hover 애니메이션만 있고 실제로는 클릭해도 아무 데도 가지 않는 카드였다(97,905개 리프 페이지 전체 영향). `Course.href`(선택 필드)를 추가해 `coursesByLanguage`의 각 항목을 `data/navigation/languageNavigation.ts`의 `CATEGORY_BY_ITEM_ID`와 같은 기준(말하기=conversation/시험=certification/내신=school/유학·워홀·비즈니스=other)으로 실제 상세페이지에 연결했다. 홈의 `purposeCourses`(언어를 가로지르는 목적 개요)는 특정 언어 페이지로 단정할 수 없어 의도적으로 href 없이 유지.
-- `components/BirdsHeroVisual.tsx`(리프 페이지 Hero 우측 비주얼, 97,905개 전체 재사용)는 2026-09-14 전까지 배경 그라디언트가 `language`와 무관하게 항상 `from-english to-english-dark`로 고정돼 있어, 일본어/중국어 페이지에서도 영어 색이 노출되는 문제가 있었다(카드 자체도 배지 아래로 빈 그라디언트 공간이 많아 "밋밋하다"는 피드백의 원인). `language`/`features`(그 keyword의 `content.benefits` 상위 2개 title) prop을 추가해 언어별 accent 그라디언트로 고치고, 빈 공간에 핵심 특징 2개 + `trustStats`(만족도/누적 수강생, 검증된 값) 1줄을 채웠다. 새 새(bird) SVG 좌표·색상은 그대로(브랜드 심볼, 언어와 무관), 지역명/keyword 하드코딩 없음(공용 구조).
+- `components/BirdsHeroVisual.tsx`(리프 페이지 Hero 우측 비주얼, 97,905개 전체 재사용)는 2026-09-14 전까지 배경 그라디언트가 `language`와 무관하게 항상 `from-english to-english-dark`로 고정돼 있어, 일본어/중국어 페이지에서도 영어 색이 노출되는 문제가 있었다. `language`/`features` prop을 추가해 언어별 accent 그라디언트로 고치고 빈 공간에 핵심 특징 + `trustStats`(만족도/누적 수강생, 검증된 값)를 채웠다.
+  2026-09-16에 카드 정보 위계를 4단으로 재정리(사실/기능 변경 없이 배치만): A) 상단 지역+keyword
+  micro-label → B) 핵심 효익(`content.benefits[0..2]` 실 데이터, 기존 2개→**3개**로 확장) → C)
+  trust row(만족도/누적 수강생을 compact stat 2개로) → D) "수업 방식·추천 대상·실제 수강 사례를
+  아래에서 확인하세요" scroll cue(실제 anchor scroll 없음, 절제된 유도 문구일 뿐). 새 새(bird) SVG
+  좌표·색상은 그대로(브랜드 심볼, 언어와 무관), 지역명/keyword 하드코딩 없음(공용 구조).
 
 ## 7. `/local` 지역 허브 구조 (2026-09-11 신규)
 
@@ -145,6 +169,9 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - **canonical**: `SITE_URL = "https://dorancoaching.com"` 하드코딩 상수를 `lib/seo/schema.ts`(`absoluteUrl()`)와 각 local leaf page가 공유 — env 변수에 의존하지 않아 localhost/vercel.app이 canonical에 섞일 위험이 없음.
 - **JSON-LD (`lib/seo/schema.ts` + `components/seo/JsonLd.tsx`)**: `buildWebSiteSchema`(홈) / `buildOrganizationSchema`(홈, logo는 `/apple-icon` 라우트 재사용) / `buildBreadcrumbListSchema`(상세12 + local) / `buildFaqPageSchema`(FAQ 실렌더 페이지) / `buildArticleSchema`(매거진, author/publisher는 브랜드 Organization으로만) / `buildCourseSchema`(상세12 + local 리프, 가격/기간/수료증 등 실제 값 없는 필드는 아예 넣지 않음). SearchAction/LocalBusiness/가짜 AggregateRating·Review·Offer 없음.
 - Google/Naver site verification 커밋(`0240b17`, `e0e2659`) 존재 — 실제 값 기반으로만 추가됐다는 전제(값 자체는 문서에 기록하지 않음).
+- 운영 단계 검색엔진 관찰 체크리스트: `docs/ops/search-monitoring-checklist.md`(2026-09-17 신규,
+  2주/4주/8주 + Bing 섹션). GSC/네이버는 sitemap과 함께 `/rss.xml`도 제출 완료(아래 RSS 참고).
+  Bing Webmaster Tools는 아직 미등록(코드는 준비된 상태, 등록만 남음).
 
 ## 10. ISR / revalidate 구조 요약
 
@@ -190,6 +217,13 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - Apps Script(`consultation.gs`) Sheet 컬럼: 기존 9개 컬럼 순서를 그대로 두고 "상세주소"/"우편번호" 2개를 **맨 뒤에만** 추가(중간 삽입 금지 — 기존 데이터 열 의미 보호). `getSheet()`가 `ensureHeaderColumns()`로 이미 운영 중인 시트의 헤더 행이 짧으면 빈 칸에 새 라벨만 채워 넣어 기존 헤더/데이터를 건드리지 않는다.
 - **주의**: `consultation.gs`는 레포에 있는 소스 사본일 뿐 자동 배포되지 않는다 — 실제 운영 Google Apps Script Web App 편집기에 이 파일 내용을 복사해 붙여넣고 재배포해야 반영된다. **사용자가 실제 재배포를 완료했고, 상세주소/우편번호를 포함한 상담 신청이 실제 Google Sheet에 정상 저장되며 이메일 알림도 정상 동작함을 확인함(2026-09)** — 더 이상 "재배포 필요" 상태가 아니다.
 
+**전화 플로팅 CTA(2026-09-16 추가)**: `components/FloatingCallButton.tsx`(전역 `app/layout.tsx`,
+모든 페이지 공통). 기존 `FloatingConsultationButton`(우측 하단 상담 버튼)은 그대로 두고 바로
+위에 "전화하기" 버튼을 쌓았다 — 모바일 원형 56px, 데스크톱 아이콘+라벨 pill, 상담 버튼보다
+시각적으로 약한 흰 배경+테두리로 위계를 맞춤. 번호는 `data/contact.ts`(`010-2813-1821`, 사용자
+직접 확인값, Single Source of Truth) 하나만 참조. 두 버튼 겹침 없음(실측 gap 12px 이상, 390/768/
+1440 확인).
+
 ## 12. 주요 데이터 Source of Truth
 
 | 데이터 | 파일 | 비고 |
@@ -230,6 +264,10 @@ npm run validate:seo                # SEO Keyword Cluster 검증
 npm run validate:curriculum         # Power Curriculum 검증
 npm run validate:detail-content     # 12개 상세페이지 본문 검증
 npm run validate:local-seo          # Local SEO 97,905개 조합 품질 검증(제목/H1 중복, canonical, offline 표현 등)
+npm run validate:quick              # tsc만(위 "작은 수정 최소 기준"을 스크립트화)
+npm run validate:full               # tsc+build+위 4개 validator 전부(위 "Route/Architecture 변경"을 스크립트화, 느림)
+npm run handoff                     # docs/ai/AI_HANDOFF.md 자동 블록(Current state/Validation) 갱신
+npm run handoff:copy                # handoff 실행 후 클립보드 복사(다른 AI에게 상태 공유용)
 npm run preview:seo                 # SEO 조합 미리보기
 npm run preview:content             # Local SEO 콘텐츠 미리보기
 npm run preview:multi-intent        # Multi-intent 콘텐츠 미리보기
@@ -278,12 +316,27 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(최근 push된 커밋 `ceb8ca1`, production 반영 확인됨) 기준, 현재 코드
-상태에서 자연스럽게 이어질 수 있는 작업 후보(우선순위 판단은 사용자 몫):
+이 문서 작성 시점(최근 push된 커밋 `2940d53`, production 반영 확인됨) 기준, 실제로 남아있는
+작업만 정리(우선순위 판단은 사용자 몫):
 
-1. `/local` 지역 허브의 실사용/크롤링 지표 확인 후 sido/sigungu 허브를 sitemap에 정식 편입할지 결정.
-2. Reviews `prototype` 9건 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험은 없음(검증 완료), 급하지 않음. "추후 실제 후기로 교체될 수 있다"는 원래 의도가 남아 있어, 삭제 여부는 코드가 아니라 콘텐츠 확보 계획에 달려 있음.
-3. 상담폼 개인정보 정책 최종 확정(보유기간/처리주체/정책 링크) → 확정되면 동의 문구에 반영. 수집 항목/목적 명시와 실제 Apps Script 재배포·Sheet 저장 확인은 완료됨(2026-09).
-4. `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix 없음) — 실사용 위험은 낮으나, 지역 데이터 빌드 스크립트를 다른 파서로 교체할지 여부는 선택 사항으로 남아있음.
+1. **상담폼 개인정보 정책 최종 확정** — 처리주체(사업자명)/보유기간/개인정보 문의처/최종 정책
+   URL. 수집 항목·목적 명시, 동의 거부 안내, Apps Script 재배포·Sheet 저장·이메일 알림 확인은
+   전부 완료됨(2026-09).
+2. **Bing Webmaster Tools 등록**(선택) — sitemap/RSS는 이미 제출 준비 완료 상태, 등록만 남음.
+   IndexNow는 현재 whitelist가 이미 전부 안정 공개된 상태라 우선순위 낮음.
+3. **GSC/네이버 2주·4주·8주 관찰** — `docs/ops/search-monitoring-checklist.md` 체크리스트대로
+   진행.
+4. **Reviews `prototype` 9건** 정리(실제 후기로 교체 또는 명시적 폐기) — 노출 위험 없음(검증 완료),
+   급하지 않음. 삭제 여부는 코드가 아니라 콘텐츠 확보 계획에 달려 있음.
+5. **`/local` 지역 허브**의 sido/sigungu를 sitemap에 정식 편입할지는 실사용/크롤링 지표를 보고
+   판단(2번 관찰 결과에 달려있음).
+6. (낮은 우선순위, 위 5개와 무관) `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix
+   없음) — 지역 데이터 빌드 스크립트 전용이라 런타임 노출 경로 없음, 다른 파서로 교체할지는 선택 사항.
 
-**완료된 항목(과거 이 목록에 있었으나 해소됨)**: Google Apps Script 재배포·Sheet 저장·이메일 알림 확인(2026-09) · `docs/` 3종 문서 운영 정착.
+**완료된 항목(과거 이 목록에 있었으나 해소됨, 2026-09-17 기준)**: Google Apps Script 재배포·
+Sheet 저장·이메일 알림 확인 · `docs/` 3종 문서 운영 정착 · 전화 플로팅 CTA 추가 · RSS 2.0
+`/rss.xml` 추가 및 GSC/네이버 제출 · Local sibling 내부링크 15개 keyword 불균형 해소 · Local
+Hero 카드 4단 위계 재정리 · Magazine 대표글 카드 preview/topic 보강 · branded 404 전용
+metadata · 최종 운영 readiness 감사(broken link/SEO/RSS/접근성/390·768·1440 QA/성능/Local
+97,905 전수 검증, 이상 없음) · AI handoff(`npm run handoff`/`handoff:copy`) 및
+`validate:quick`/`validate:full` 워크플로우 구축.

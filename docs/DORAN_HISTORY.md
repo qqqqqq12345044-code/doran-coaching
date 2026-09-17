@@ -1,6 +1,6 @@
 # DORAN Coaching — 작업 이력 (HISTORY)
 
-`git log`(전체 30개 commit, `a139acc` ~ `61d8f4c`)와 현재 코드에서 확인 가능한 범위로
+`git log`(전체 66개 commit, `a139acc` ~ `2940d53`)와 현재 코드에서 확인 가능한 범위로
 정리한 이력이다. 대화 내용이 아니라 **commit 단위로 확인 가능한 사실**만 담았고,
 "나중에 왜 이렇게 만들어졌는지" 이해에 필요한 결정 위주로 요약했다.
 
@@ -664,6 +664,73 @@ Playwright로 감사. 전반적으로 이미 정돈된 상태임을 확인했고
 
 ### 상태
 - commit/push/Vercel 배포까지 완료.
+
+---
+
+## 2026-09-16 — Local 내부링크 균형 + Hero 카드 재정리 + 전화 CTA + RSS 추가
+
+### 작업
+Local SEO 리프 페이지(97,905개) 공용 컴포넌트 2건 개선(sibling 내부링크 불균형 해소,
+Hero 카드 정보 위계 재정리), 전역 전화 플로팅 CTA 추가, Magazine 전용 RSS 2.0 feed 신설.
+
+### 주요 변경
+- `3bbbf3a` Balance Local leaf sibling keyword links by search intent — `lib/seo/
+  localSiblingKeywords.ts`가 예전엔 배열 앞 2개만 자르는 방식이라 시험 5종+워홀일본어가
+  같은 지역 내 다른 keyword로부터 inbound 링크를 하나도 못 받던 구조적 결함(`scripts/qa/
+  sibling-link-audit.mts`로 발견)을 intent 기준 순환/교차 연결로 해소. 15개 keyword 전부
+  inbound 1건 이상, 페이지당 링크 수(2개)와 URL 구조는 그대로.
+- `07cecd1` Redesign Local leaf hero card into a 4-tier info hierarchy —
+  `BirdsHeroVisual.tsx`를 micro-label → benefits(2→3개) → trust row → scroll cue 4단
+  위계로 재배치. 새 gradient/장식 추가 없이 기존 요소 재배치만.
+- `cda6d94` Add floating call button above the existing consultation button —
+  `FloatingCallButton.tsx` 신설(`data/contact.ts` 단일 출처, 010-2813-1821), 기존 상담
+  버튼 바로 위에 쌓음.
+- `5e65468` Add RSS 2.0 feed for Magazine content at /rss.xml — Magazine 50개 전용,
+  Local/Detail/상담 페이지는 의도적으로 제외, 기존 필드만 재사용(새 콘텐츠 없음).
+
+### 검증
+- 각 커밋 시점 tsc/build 확인, 390/768/1440에서 겹침·overflow 확인(전화 CTA는 gap
+  12~17.5px 실측), `sibling-link-audit.mts`로 inbound 0건 해소 재검증, RSS는 XML
+  well-formed/50 items/guid 중복 0 확인.
+
+### 상태
+- 4개 커밋 모두 commit/push/Vercel 배포 완료.
+
+---
+
+## 2026-09-17 — Magazine 카드 보강 + 최종 운영 readiness 감사 + AI handoff 워크플로우
+
+### 작업
+Magazine 목록 카드를 보강한 뒤, 최근 변경 전체(위 09-16 4건 포함)에 회귀가 없는지
+delta audit을 수행하고 낮은 위험도 gap 1건을 수정. 이어서 ChatGPT 등 다른 AI와 현재
+상태를 공유할 수 있는 AI handoff/validation 워크플로우를 신설.
+
+### 주요 변경
+- `1b72d9c` Enrich magazine category featured cards — `buildFeaturedHighlights()`가
+  기존 필드(cardSummary+intro+첫 Section 첫 문단, 다음 Section heading)만 재사용해 카드
+  빈 공간을 채움, 새 문구 작성 없음.
+- `93a0c5d`→`95ce037` 최종 readiness 감사 — broken link/SEO technical/RSS/접근성/
+  390·768·1440 QA/console/성능/Local 97,905 전수 validator 전부 이상 없음 확인.
+  `app/not-found.tsx`에 전용 title/description 추가(기존엔 홈 title을 그대로 상속).
+  RSS `<link rel="alternate">` autodiscovery는 추가를 시도했으나 모든 page.tsx가 자체
+  `alternates.canonical`을 export해 layout의 `types`를 Next.js 메타데이터 병합 과정에서
+  통째로 덮어쓰는 바람에 실제로는 렌더링되지 않는 것을 production HTML에서 직접 확인하고
+  되돌림(제대로 하려면 모든 page 수정이 필요해 범위 밖으로 보류). `docs/ops/
+  search-monitoring-checklist.md` 신규.
+- `2940d53` AI handoff/validation 워크플로우 추가 — `scripts/{validate-quick,validate-full,
+  update-ai-handoff}.mts`, `scripts/lib/validation-cache.mts`, `scripts/copy-handoff.ps1`,
+  `docs/ai/AI_HANDOFF.md` 신설. `npm run validate:quick`(tsc)/`validate:full`(tsc+build+
+  기존 4개 validator)로 CLAUDE.md `[검증]`의 2단계 기준을 스크립트화, `npm run handoff`/
+  `handoff:copy`로 현재 상태를 다른 AI에게 공유 가능.
+
+### 검증
+- `validate:full` 최초 실행 PASS(tsc/build/seo/curriculum/detail-content/local-seo 전부),
+  Local 97,905/Magazine 50/Detail 12/Curriculum 73 전부 코드로 재확인.
+- `docs/DORAN_MASTER.md`의 Reviews 총계 오탈자 정정(26→25, `official-case` 10 +
+  `example-case` 6 + `prototype` 9).
+
+### 상태
+- 3개 커밋(`1b72d9c`/`93a0c5d`~`95ce037`/`2940d53`) 모두 commit/push/Vercel READY 확인 완료.
 
 ---
 
