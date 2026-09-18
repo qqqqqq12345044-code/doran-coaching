@@ -11,6 +11,17 @@ const INTEREST_OPTIONS = [...languages.map((lang) => lang.nameKo), "아직 고�
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
+// 처리주체(사업자명)/보유기간/개인정보처리방침 링크/문의처 — 아직 확정되지 않아
+// 전부 비워 둔다. 값이 확정되면 이 객체만 채우면 동의 문구 아래에 한 줄씩 자동으로
+// 노출된다(JSX를 다시 손댈 필요 없음). 확정 전까지는 전부 undefined라 화면에는
+// 아무것도 추가되지 않는다.
+const PRIVACY_POLICY_INFO: {
+  processor?: string;
+  retentionPeriod?: string;
+  policyUrl?: string;
+  contact?: string;
+} = {};
+
 // 카카오(구 다음) 우편번호 서비스. 공식 가이드(postcode.map.kakao.com/guide) 기준
 // API 키 없이 무료로(상업적 사용 포함, 사용량 제한 없음) embed 가능한 방식만 사용한다.
 // 임의의 키를 만들거나 하드코딩하지 않는다.
@@ -245,7 +256,9 @@ export default function ConsultationSection({
                 <label htmlFor="address" className="text-[14px] font-medium text-ink">
                   주소
                 </label>
-                <p className="mt-1 text-[12.5px] text-ink-faint">주소 검색으로 기본주소를 입력해주세요.</p>
+                <p className="mt-1 text-[12.5px] text-ink-faint">
+                  무료 체험 수업 안내 및 학습 관리 목적으로 활용됩니다. 주소 검색으로 기본주소를 입력해주세요.
+                </p>
                 <div className="mt-2 flex gap-2">
                   <input
                     ref={baseAddressRef}
@@ -325,13 +338,30 @@ export default function ConsultationSection({
                   링크나 구체적인 보유기간·담당자 연락처를 추가하지 않는다. 수집
                   항목/목적, 동의 거부 권리와 거부 시 제한(체크박스 required 속성과
                   실제 일치)은 이미 명시했다 — 필드가 추가/삭제되면 이 문구도 함께
-                  갱신한다. */}
+                  갱신한다. 실제 값이 확정되면 위 PRIVACY_POLICY_INFO만 채우면 된다. */}
               <div className="sm:col-span-2">
                 <p className="text-[12.5px] leading-relaxed text-ink-faint">
                   이름·연락처·주소(상세주소 포함)·관심 언어·문의 내용을 상담 회신과 수업
                   매칭 목적으로만 수집합니다. 동의를 거부하실 수 있으며, 거부 시 상담
                   신청이 제한될 수 있습니다.
                 </p>
+                {(PRIVACY_POLICY_INFO.processor ||
+                  PRIVACY_POLICY_INFO.retentionPeriod ||
+                  PRIVACY_POLICY_INFO.contact ||
+                  PRIVACY_POLICY_INFO.policyUrl) && (
+                  <ul className="mt-1.5 space-y-0.5 text-[12px] leading-relaxed text-ink-faint">
+                    {PRIVACY_POLICY_INFO.processor && <li>처리주체: {PRIVACY_POLICY_INFO.processor}</li>}
+                    {PRIVACY_POLICY_INFO.retentionPeriod && <li>보유기간: {PRIVACY_POLICY_INFO.retentionPeriod}</li>}
+                    {PRIVACY_POLICY_INFO.contact && <li>문의처: {PRIVACY_POLICY_INFO.contact}</li>}
+                    {PRIVACY_POLICY_INFO.policyUrl && (
+                      <li>
+                        <a href={PRIVACY_POLICY_INFO.policyUrl} className="underline hover:text-brand">
+                          개인정보처리방침 보기
+                        </a>
+                      </li>
+                    )}
+                  </ul>
+                )}
                 <label className="mt-2 flex cursor-pointer items-start gap-2.5 text-[13px] leading-relaxed text-ink-soft">
                   <input
                     type="checkbox"

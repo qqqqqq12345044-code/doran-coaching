@@ -31,6 +31,11 @@ export const faqItems: FAQItem[] = [
     answer:
       "아닙니다. 상담은 학습 방향을 함께 찾아보는 과정이며, 수업 시작 여부는 상담 후 편하게 결정하실 수 있습니다.",
   },
+  {
+    question: "수강료는 어떻게 정해지나요?",
+    answer:
+      "학습 목표와 현재 수준, 희망 수업 방식에 따라 구성이 달라져 상담에서 정확한 안내를 받아보실 수 있습니다. 상담 신청은 무료이며, 상담만으로 별도 비용이 발생하지 않습니다.",
+  },
 ];
 
 export const faqByLanguage: Record<LanguageSlug, FAQItem[]> = {
@@ -60,6 +65,11 @@ export const faqByLanguage: Record<LanguageSlug, FAQItem[]> = {
       answer:
         "네, 화상 수업을 기본으로 진행하며 지역에 상관없이 원하는 코치와 수업할 수 있습니다.",
     },
+    {
+      question: "영어 수업 수강료는 어떻게 정해지나요?",
+      answer:
+        "목표(회화·시험·내신 등)와 현재 수준에 따라 구성이 달라져 상담에서 정확한 안내를 받아보실 수 있습니다. 상담 신청은 무료이며, 상담만으로 별도 비용이 발생하지 않습니다.",
+    },
   ],
   japanese: [
     {
@@ -87,6 +97,11 @@ export const faqByLanguage: Record<LanguageSlug, FAQItem[]> = {
       answer:
         "화상 수업을 기본으로 하며, 코치와 협의한 요일과 시간에 1:1로 진행됩니다.",
     },
+    {
+      question: "일본어 수업 수강료는 어떻게 정해지나요?",
+      answer:
+        "목표(회화·JLPT·유학 준비 등)와 현재 수준에 따라 구성이 달라져 상담에서 정확한 안내를 받아보실 수 있습니다. 상담 신청은 무료이며, 상담만으로 별도 비용이 발생하지 않습니다.",
+    },
   ],
   chinese: [
     {
@@ -110,6 +125,11 @@ export const faqByLanguage: Record<LanguageSlug, FAQItem[]> = {
     {
       question: "초보자도 수업을 받을 수 있나요?",
       answer: "물론입니다. 상담을 통해 현재 수준을 확인한 뒤 맞는 속도로 시작합니다.",
+    },
+    {
+      question: "중국어 수업 수강료는 어떻게 정해지나요?",
+      answer:
+        "목표(회화·HSK·비즈니스 등)와 현재 수준에 따라 구성이 달라져 상담에서 정확한 안내를 받아보실 수 있습니다. 상담 신청은 무료이며, 상담만으로 별도 비용이 발생하지 않습니다.",
     },
   ],
 };
