@@ -19,6 +19,7 @@ import RoadmapTimeline from "@/components/curriculum/RoadmapTimeline";
 import CertificationExplorer from "@/components/curriculum/CertificationExplorer";
 import OtherPurposeGrid from "@/components/curriculum/OtherPurposeGrid";
 import Reveal from "@/components/Reveal";
+import CoachSection from "@/components/CoachSection";
 import type { DetailCategory, DetailPageContent } from "@/data/detailPages/types";
 import type { CurriculumLanguage } from "@/data/curriculum/powerCurriculum";
 import {
@@ -29,6 +30,30 @@ import {
   getLinkedCurriculumLabels,
 } from "@/data/curriculum/courseDetails";
 import { COURSE_CATEGORIES } from "@/data/navigation/languageNavigation";
+import { getCoachesByLanguage, type Coach, type CoachTypeId } from "@/data/coaches";
+
+// 카테고리 목적에 맞는 코치 "유형"만 보수적으로 매핑한다(실제 개별 강사를
+// 배정하는 것이 아니라 data/coaches.ts에 이미 있는 유형 중 "추천 코치 유형"을
+// 고르는 것). 새로운 학력/경력/전문성 데이터는 만들지 않는다.
+// - 회화: 실전 대화 환경(원어민) → 발음·뉘앙스(이중언어) 순으로 우선
+// - 자격증(시험 대비): 각 언어 native 유형 tags에 이미 시험 관련 태그
+//   (#시험말하기/#JLPT·JPT/#HSK·HSKK)가 있어 native 유형이 가장 부합
+// - 내신: 문법 개념을 한국어로 짚어주는 한국인 전문 코치가 가장 부합
+// - 기타(유학/워홀/취업/비즈니스 등): 발음+한국어 설명을 함께 짚어주는
+//   이중언어 코치 우선
+const CATEGORY_COACH_TYPES: Record<DetailCategory, CoachTypeId[]> = {
+  conversation: ["native", "bilingual"],
+  certification: ["native"],
+  school: ["korean"],
+  other: ["bilingual"],
+};
+
+function getRecommendedCoaches(language: CurriculumLanguage, category: DetailCategory): Coach[] {
+  const coachesByLanguage = getCoachesByLanguage(language);
+  return CATEGORY_COACH_TYPES[category]
+    .map((type) => coachesByLanguage.find((coach) => coach.type === type))
+    .filter((coach): coach is Coach => Boolean(coach));
+}
 
 interface DetailPageAccent {
   /** DORAN LEARNING ROADMAP 뱃지, STEP 배지 등에 쓰는 진한 배경. 예: "bg-english text-white" */
@@ -316,6 +341,11 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
       </div>
 
       <ProcessSection eyebrow="HOW TO START" title={["이렇게 시작합니다"]} steps={START_STEPS} background="soft" />
+
+      <CoachSection
+        title={["이 과정과 잘 맞는", "추천 코치 유형입니다"]}
+        coaches={getRecommendedCoaches(content.language, content.category)}
+      />
 
       <Reveal>
         <DetailCTABand

@@ -15,9 +15,14 @@ const TYPE_NUMBER: Record<CoachTypeId, string> = {
   native: "03",
 };
 
-// todaktalk.com의 "간결한 코치 카드"를 UX 참고만 해서, 한 카드 안에서
-// 유형 → 2줄 설명 → 태그 → 추천 대상까지 5초 안에 훑을 수 있도록 구성한다.
-// 실명/실사진이 없는 "코치 유형" 카드이므로 얼굴 사진 자리에 abstract icon을 쓴다.
+// todaktalk.com의 "간결한 코치 카드"를 UX 참고만 해서, 한 카드 안에서 5초 안에
+// 훑을 수 있도록 구성한다. 실명/실사진이 없는 "코치 유형" 카드이므로 얼굴
+// 사진 자리에 abstract icon을 쓴다.
+//
+// 기존 headline/tags/recommendedFor 데이터를 그대로 재사용하되, "전문 분야
+// (tags) → 코칭 방향(headline) → 추천 학습자(recommendedFor)" 3단 구조로
+// 라벨을 붙여 구획을 명확히 한다(ReviewStoryCard.tsx의 라벨 스타일 재사용,
+// 새 gradient/shadow 없음). 새로운 학력/경력/자격 데이터는 추가하지 않는다.
 export default function CoachCard({ coach }: { coach: Coach }) {
   const Icon = TYPE_ICON[coach.type];
 
@@ -34,20 +39,28 @@ export default function CoachCard({ coach }: { coach: Coach }) {
       </div>
 
       <p className="mt-4 text-[16px] font-bold text-ink">{coach.typeLabel}</p>
-      <p className="mt-1.5 text-[13.5px] leading-relaxed text-ink-soft">{coach.headline}</p>
 
-      <ul className="mt-3.5 flex flex-wrap gap-1.5">
-        {coach.tags.map((tag) => (
-          <li key={tag} className="rounded-full bg-brand-tint px-2.5 py-1 text-[11.5px] font-medium text-brand">
-            {tag}
-          </li>
-        ))}
-      </ul>
+      <div className="mt-4 space-y-3.5 border-t border-ink/8 pt-3.5">
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide text-ink-faint">전문 분야</p>
+          <ul className="mt-1.5 flex flex-wrap gap-1.5">
+            {coach.tags.map((tag) => (
+              <li key={tag} className="rounded-full bg-brand-tint px-2.5 py-1 text-[11.5px] font-medium text-brand">
+                {tag}
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="mt-4 border-t border-ink/8 pt-3">
-        <p className="text-[12px] leading-relaxed text-ink-faint">
-          <span className="font-semibold text-ink-soft">추천</span> {coach.recommendedFor}
-        </p>
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide text-ink-faint">코칭 방향</p>
+          <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">{coach.headline}</p>
+        </div>
+
+        <div>
+          <p className="text-[11px] font-bold uppercase tracking-wide text-ink-faint">추천 학습자</p>
+          <p className="mt-1 text-[12px] leading-relaxed text-ink-faint">{coach.recommendedFor}</p>
+        </div>
       </div>
     </div>
   );
