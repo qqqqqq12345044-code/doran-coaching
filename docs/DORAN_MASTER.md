@@ -86,6 +86,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - Power Curriculum 실제 개수: **영어 28 / 중국어 27 / 일본어 18 = 총 73개** (코드로 카운트 검증됨, CLAUDE.md 수치와 일치).
 - 시험 공식 사실(TOEIC/OPIc/IELTS/DET/JLPT/JPT/HSK/HSKK/TSC/BCT 등)은 `data/curriculum/examFacts.ts`.
 - 2026-09-14: 12개 상세페이지가 공유하는 `DetailPageLayout.tsx`의 Key Summary 바로 아래에 `components/detail/TrustPreviewStrip.tsx`(검증된 `trustStats` 1줄 + "실제 수강 후기 보기" 링크)를 추가했다. 실제 후기(`DetailReviews`)는 기존 위치(본문 이후) 그대로 두고 옮기지 않았다 — 과정 설명을 먼저 읽게 하면서도 신뢰 신호를 스크롤 초반에 보여주기 위함(광고형 랜딩페이지 방지). 링크는 그 페이지에 연결된 `reviewIds`가 있으면 `#detail-reviews`(`DetailReviews` section에 id 추가), 없으면(예: 현재 중국어 회화 등) `/reviews`로 자동 분기 — 페이지마다 다르게 처리할 필요 없이 12개 전체에 동일하게 안전하게 적용됨.
+- 2026-09-18: `DetailPageLayout.tsx`의 HOW TO START 이후·상담 CTA 밴드 이전에 `CoachSection`(카테고리별 "추천 코치 유형")을 추가했다. 새 강사 데이터를 만들지 않고 `data/coaches.ts`의 기존 유형(`native`/`bilingual`/`korean`)만 카테고리별로 매핑 — 회화=원어민+이중언어, 자격증=원어민, 내신=한국인, 기타=이중언어. `CoachCard`는 headline/tags/recommendedFor를 전문 분야·코칭 방향·추천 학습자 3단 구조로 재구성(기존 필드 재사용), `CoachSection`은 카드 1~2개일 때 4열 대신 2열 grid로 좁혀 빈 칸 방지(기존 3장/9장 페이지는 동일 클래스 유지).
 
 ## 5. Magazine / Reviews 구조
 
@@ -209,7 +210,9 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
   (2026-09 갱신: aria-hidden이 없어 스크린리더 사용자가 실수로 채우면 상담 신청이
   조용히 유실되는 문제를 발견해 수정).
 - 필드: 이름/연락처/주소(기본주소+상세주소 분리, 2026-09 갱신)/관심 언어(체크박스, `data/languages.ts` 재사용)/문의 내용/개인정보 동의(필수).
+- 주소 입력란 안내 문구(2026-09-18 추가): "무료 체험 수업 안내 및 학습 관리 목적으로 활용됩니다."를 주소 검색 안내 문구 앞에 추가 — 실제 수집 목적(체험 수업 안내/학습 관리)을 있는 그대로 문구화, 새 목적을 만들지 않음.
 - 개인정보 동의 문구(2026-09 갱신, 2026-09-14 추가 보강): 실제 수집 항목(이름/연락처/주소·상세주소/관심 언어/문의 내용)과 수집 목적(상담 회신·수업 매칭)을 동의 체크박스 위에 명시했고, 동의 거부 권리와 거부 시 상담 신청 제한 안내를 추가했다(체크박스가 이미 `required`라 실제 폼 동작과 일치하는 사실만 문구화 — 새 정책을 만들지 않음). **보유기간/처리주체(사업자명)/개인정보처리방침 링크/문의처는 여전히 미확정** — 확정 전까지 이 항목들은 문구에 추가하지 않는다(코드 내 `TODO` 주석 유지). 별도 `/privacy` 페이지는 아직 없음(운영 정보 미확정 상태에서 껍데기 페이지를 만들지 않기로 함).
+- `PRIVACY_POLICY_INFO`(2026-09-18 추가, `ConsultationSection.tsx`): 처리주체/보유기간/정책 링크/문의처를 담을 조건부 렌더링용 객체. 현재는 4개 필드 전부 비어 있어 화면에는 아무것도 추가되지 않음 — 값이 확정되면 이 객체만 채우면 동의 문구 아래에 자동으로 한 줄씩 노출된다(JSX 재작업 불필요). 값 확정 전까지는 위 TODO 상태와 동일.
 - 환경변수 `NEXT_PUBLIC_CONSULTATION_ENDPOINT`는 `.env.local`(git 미포함)에만 존재, `.env.example`에 키 이름만 기록.
 - `defaultInterest` prop으로 언어별/지역 랜딩페이지에서 해당 언어 체크박스를 기본 선택 상태로 표시 가능.
 
@@ -217,11 +220,12 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 - Apps Script(`consultation.gs`) Sheet 컬럼: 기존 9개 컬럼 순서를 그대로 두고 "상세주소"/"우편번호" 2개를 **맨 뒤에만** 추가(중간 삽입 금지 — 기존 데이터 열 의미 보호). `getSheet()`가 `ensureHeaderColumns()`로 이미 운영 중인 시트의 헤더 행이 짧으면 빈 칸에 새 라벨만 채워 넣어 기존 헤더/데이터를 건드리지 않는다.
 - **주의**: `consultation.gs`는 레포에 있는 소스 사본일 뿐 자동 배포되지 않는다 — 실제 운영 Google Apps Script Web App 편집기에 이 파일 내용을 복사해 붙여넣고 재배포해야 반영된다. **사용자가 실제 재배포를 완료했고, 상세주소/우편번호를 포함한 상담 신청이 실제 Google Sheet에 정상 저장되며 이메일 알림도 정상 동작함을 확인함(2026-09)** — 더 이상 "재배포 필요" 상태가 아니다.
 
-**전화 플로팅 CTA(2026-09-16 추가)**: `components/FloatingCallButton.tsx`(전역 `app/layout.tsx`,
-모든 페이지 공통). 기존 `FloatingConsultationButton`(우측 하단 상담 버튼)은 그대로 두고 바로
-위에 "전화하기" 버튼을 쌓았다 — 모바일 원형 56px, 데스크톱 아이콘+라벨 pill, 상담 버튼보다
-시각적으로 약한 흰 배경+테두리로 위계를 맞춤. 번호는 `data/contact.ts`(`010-2813-1821`, 사용자
-직접 확인값, Single Source of Truth) 하나만 참조. 두 버튼 겹침 없음(실측 gap 12px 이상, 390/768/
+**전화 플로팅 CTA(2026-09-16 추가, 2026-09-18 크기 조정)**: `components/FloatingCallButton.tsx`(전역
+`app/layout.tsx`, 모든 페이지 공통). 기존 `FloatingConsultationButton`(우측 하단 상담 버튼)은 그대로
+두고 바로 위에 "전화하기" 버튼을 쌓았다 — 모바일 원형 48px(2026-09-18: 56px→48px 축소, 44px 최소
+터치 영역은 유지하면서 주 CTA인 상담 버튼과 크기로 위계 구분), 데스크톱 아이콘+라벨 pill(변경 없음),
+상담 버튼보다 시각적으로 약한 흰 배경+테두리로 위계를 맞춤. 번호는 `data/contact.ts`(`010-2813-1821`,
+사용자 직접 확인값, Single Source of Truth) 하나만 참조. 두 버튼 겹침 없음(실측 gap 12px 이상, 390/768/
 1440 확인).
 
 ## 12. 주요 데이터 Source of Truth
@@ -243,7 +247,7 @@ canonical 형식, offline 지점 표현 사용 여부, 추천 과정 링크 유�
 | 언어 네비게이션 | `data/navigation/languageNavigation.ts` | `COURSE_CATEGORIES`, Power Curriculum 재사용 |
 | 상세페이지 본문 | `data/detailPages/{index,types,english,japanese,chinese}.ts` | 12개 |
 | 이미지 출처 | `data/media/imageCredits.ts` | |
-| 브랜드/과정/코치/후기/FAQ/신뢰지표/언어 메타 | `data/{brand,courses,coaches,reviews,faq,trustStats,languages}.ts` | |
+| 브랜드/과정/코치/후기/FAQ/신뢰지표/언어 메타 | `data/{brand,courses,coaches,reviews,faq,trustStats,languages}.ts` | 2026-09-18: `faq.ts`에 "수강료는 어떻게 정해지나요?" 공통 FAQ 1개(홈)+언어별 FAQ 3개(영/일/중) 추가(구체적 가격 없이 상담 무료·별도 비용 없음만 안내) |
 | SELF-CHECK 데이터 | `data/selfCheck.ts`, `data/selfCheckCurriculum.ts` | 홈 `SelfCheck` 컴포넌트가 사용 |
 | 매거진 | `data/magazine/{index,types,english,japanese,chinese,common}.ts` | 50개(영17/중17/일15/공통1) |
 | 지역 허브 인덱스 | `lib/seo/localHub.ts` | `publishBatches.ts` 재사용 |
@@ -316,12 +320,13 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 
 ## 20. 다음 작업 후보
 
-이 문서 작성 시점(최근 push된 커밋 `2940d53`, production 반영 확인됨) 기준, 실제로 남아있는
+이 문서 작성 시점(최근 push된 커밋 `f9cdcee`, production 반영 확인됨) 기준, 실제로 남아있는
 작업만 정리(우선순위 판단은 사용자 몫):
 
 1. **상담폼 개인정보 정책 최종 확정** — 처리주체(사업자명)/보유기간/개인정보 문의처/최종 정책
    URL. 수집 항목·목적 명시, 동의 거부 안내, Apps Script 재배포·Sheet 저장·이메일 알림 확인은
-   전부 완료됨(2026-09).
+   전부 완료됨(2026-09). 값 반영용 조건부 렌더링 구조(`PRIVACY_POLICY_INFO`)는 2026-09-18에
+   미리 준비됨 — 실제 값만 확정되면 코드 수정 없이 채우면 됨.
 2. **Bing Webmaster Tools 등록**(선택) — sitemap/RSS는 이미 제출 준비 완료 상태, 등록만 남음.
    IndexNow는 현재 whitelist가 이미 전부 안정 공개된 상태라 우선순위 낮음.
 3. **GSC/네이버 2주·4주·8주 관찰** — `docs/ops/search-monitoring-checklist.md` 체크리스트대로
@@ -333,10 +338,13 @@ HomeHero · 12개 상세페이지 본문 · Power Curriculum · examFacts · 실
 6. (낮은 우선순위, 위 5개와 무관) `xlsx` 패키지 취약점(Prototype Pollution/ReDoS, npm에 공개 fix
    없음) — 지역 데이터 빌드 스크립트 전용이라 런타임 노출 경로 없음, 다른 파서로 교체할지는 선택 사항.
 
-**완료된 항목(과거 이 목록에 있었으나 해소됨, 2026-09-17 기준)**: Google Apps Script 재배포·
-Sheet 저장·이메일 알림 확인 · `docs/` 3종 문서 운영 정착 · 전화 플로팅 CTA 추가 · RSS 2.0
-`/rss.xml` 추가 및 GSC/네이버 제출 · Local sibling 내부링크 15개 keyword 불균형 해소 · Local
-Hero 카드 4단 위계 재정리 · Magazine 대표글 카드 preview/topic 보강 · branded 404 전용
-metadata · 최종 운영 readiness 감사(broken link/SEO/RSS/접근성/390·768·1440 QA/성능/Local
-97,905 전수 검증, 이상 없음) · AI handoff(`npm run handoff`/`handoff:copy`) 및
-`validate:quick`/`validate:full` 워크플로우 구축.
+**완료된 항목(과거 이 목록에 있었으나 해소됨, 2026-09-18 기준)**: Google Apps Script 재배포·
+Sheet 저장·이메일 알림 확인 · `docs/` 3종 문서 운영 정착 · 전화 플로팅 CTA 추가(2026-09-16)
+및 모바일 48px 크기 조정(2026-09-18) · RSS 2.0 `/rss.xml` 추가 및 GSC/네이버 제출 · Local
+sibling 내부링크 15개 keyword 불균형 해소 · Local Hero 카드 4단 위계 재정리 · Magazine
+대표글 카드 preview/topic 보강 · branded 404 전용 metadata · 최종 운영 readiness 감사
+(broken link/SEO/RSS/접근성/390·768·1440 QA/성능/Local 97,905 전수 검증, 이상 없음) ·
+AI handoff(`npm run handoff`/`handoff:copy`) 및 `validate:quick`/`validate:full` 워크플로우
+구축 · 12개 상세페이지 카테고리별 추천 코치 유형(`CoachSection`) 노출(2026-09-18) · 상담폼
+주소 안내 문구 및 개인정보 정책 확정 대비 조건부 렌더링 구조(`PRIVACY_POLICY_INFO`) 준비
+(2026-09-18) · 수강료 안내 FAQ 4건 추가(2026-09-18).

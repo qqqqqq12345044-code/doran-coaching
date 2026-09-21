@@ -3,14 +3,18 @@
 <!-- AUTO:CURRENT_STATE:START -->
 ## Current state
 - Branch: main
-- HEAD: 2940d53
+- HEAD: f9cdcee
 - Working tree: dirty (3개 파일)
 <!-- AUTO:CURRENT_STATE:END -->
 
 ## Completed task
-- `npm run validate:full` 최초 실행 — tsc/build/validate:seo/curriculum/detail-content/local-seo 전부 PASS, cache가 현재 HEAD 기준으로 정상 기록되는 것까지 확인
-- `docs/DORAN_MASTER.md`를 production 현재 상태로 동기화: RSS route/404 metadata/전화 CTA/Local sibling link 균형/Hero 카드 4단 위계/Magazine 카드 보강/AI handoff 워크플로우 반영, reviews 총계 오탈자 정정(26→25)
-- `docs/DORAN_HISTORY.md`에 2026-09-16(sibling link/hero/전화CTA/RSS)·2026-09-17(magazine 카드/최종 감사/AI handoff) 날짜 항목 신규 추가
+- (커밋 완료, 이전 세션) `91a1ca2` 상세페이지 코치 신뢰 영역 추가 — 12개 상세페이지에 카테고리별
+  "추천 코치 유형"(`CoachSection`) 노출, `CoachCard` 3단 구조 재구성. `f9cdcee` 상담 전환 UX
+  개선 — 주소 안내문구, 개인정보 정책용 조건부 렌더링 구조(`PRIVACY_POLICY_INFO`), Floating
+  전화 CTA 48px 축소, 수강료 FAQ 4건 추가.
+- 이번 체크포인트: 위 2개 커밋이 문서에 반영되지 않은 것을 발견해 `docs/DORAN_MASTER.md`
+  (섹션 4/11/12/19/20)·`docs/DORAN_HISTORY.md`(2026-09-18 항목 신규)를 실제 코드 기준으로 동기화
+- `npm run validate:full` 재실행 — tsc/build/validate:seo/curriculum/detail-content/local-seo 전부 PASS, 현재 HEAD 기준으로 정상 기록되는 것까지 확인
 - (이전 체크포인트) 최종 운영 readiness 감사·404 metadata 수정·AI handoff/validation 워크플로우 신설 — 상세는 HISTORY 2026-09-17 항목 참고
 
 <!-- AUTO:VALIDATION:START -->

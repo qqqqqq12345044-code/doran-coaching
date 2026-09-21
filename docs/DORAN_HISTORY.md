@@ -734,6 +734,40 @@ delta audit을 수행하고 낮은 위험도 gap 1건을 수정. 이어서 ChatG
 
 ---
 
+## 2026-09-18 — 상세페이지 코치 신뢰 영역 + 상담 전환 UX 개선
+
+### 작업
+검색 유입 → 랜딩 → 상담 CTA 전환 경로 감사 후속으로, 상세페이지 신뢰 신호 보강과
+상담폼 전환 UX 개선을 진행.
+
+### 주요 변경
+- `91a1ca2` 상세페이지 코치 신뢰 영역 추가 — `DetailPageLayout.tsx`의 HOW TO START 이후·
+  상담 CTA 밴드 이전에 `CoachSection`(카테고리별 "추천 코치 유형") 추가. 새 강사 데이터
+  없이 `data/coaches.ts` 기존 유형(원어민/이중언어/한국인)만 카테고리별 매핑(회화=원어민+
+  이중언어, 자격증=원어민, 내신=한국인, 기타=이중언어). `CoachCard`는 headline/tags/
+  recommendedFor를 전문 분야·코칭 방향·추천 학습자 3단 구조로 재구성(기존 필드 재사용).
+  `CoachSection`은 카드 1~2개일 때 2열 grid로 좁혀 빈 칸 방지(기존 3장/9장 페이지 회귀 없음).
+- `f9cdcee` 상담 전환 UX 개선 — `ConsultationSection.tsx` 주소 필드에 수집 목적 안내 문구
+  추가. 개인정보 동의 영역에 처리주체/보유기간/정책 링크/문의처를 위한 조건부 렌더링 구조
+  `PRIVACY_POLICY_INFO` 신설(현재 전부 미확정이라 빈 객체 — 값 확정 시 이 객체만 채우면
+  자동 노출, 지금은 화면에 아무것도 추가되지 않음). `FloatingCallButton` 모바일 크기를
+  56px→48px로 축소해 주 CTA(상담)와 크기로 위계 구분(44px 최소 터치 영역 유지, 데스크톱
+  pill 변경 없음). `data/faq.ts`에 "수강료는 어떻게 정해지나요?" FAQ를 홈+영어/일본어/
+  중국어 페이지에 추가(구체적 가격 없이 상담 무료·별도 비용 없음만 안내).
+
+### 검증
+- 두 커밋 모두 코드 변경 전 `CoachCard`/`CoachSection`/`ConsultationSection`/
+  `FloatingCallButton`/`data/faq.ts` 기존 구현을 먼저 확인 후 최소 변경으로 진행.
+- Power Curriculum 73개/Local SEO 97,905개/Magazine 50개/Detail 12개 등 보호 대상 수치는
+  변경하지 않음(코치 유형 매핑은 기존 `data/coaches.ts` 데이터만 재사용, 신규 필드 없음).
+
+### 상태
+- 2개 커밋(`91a1ca2`/`f9cdcee`) 모두 commit/push/Vercel 반영 완료(origin/main과 동기화됨).
+- 상담폼 개인정보 처리주체/보유기간/정책 링크는 여전히 미확정 — `PRIVACY_POLICY_INFO`
+  구조만 준비된 상태로 남음(값 확정은 사용자 몫).
+
+---
+
 ## 이력 갱신 규칙
 
 - 큰 작업이 commit/push까지 끝난 경우에만 새 날짜 항목을 추가한다.
