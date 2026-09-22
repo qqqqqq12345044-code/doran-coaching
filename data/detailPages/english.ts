@@ -223,7 +223,7 @@ const englishCertification: DetailPageContent = {
     },
   ],
   linkedCurriculumIds: ["english-toeic-opic", "english-ielts", "english-duolingo"],
-  reviewIds: [],
+  reviewIds: ["review-official-en-05"],
   faq: [
     {
       question: "TOEIC과 OPIc을 동시에 준비할 수 있나요?",
@@ -357,7 +357,7 @@ const englishSchool: DetailPageContent = {
     "english-suneung-listening",
     "english-suneung-reading",
   ],
-  reviewIds: [],
+  reviewIds: ["review-official-en-06"],
   faq: [
     {
       question: "상담을 신청하면 내신 관리는 어떻게 시작되나요?",
@@ -486,7 +486,7 @@ const englishOther: DetailPageContent = {
     "english-grammar",
     "english-civil-service",
   ],
-  reviewIds: ["review-official-en-03"],
+  reviewIds: ["review-official-en-07"],
   faq: [
     {
       question: "상담을 신청하면 어떤 순서로 진행되나요?",

@@ -362,7 +362,7 @@ export default function ConsultationSection({
                     )}
                   </ul>
                 )}
-                <label className="mt-2 flex cursor-pointer items-start gap-2.5 text-[13px] leading-relaxed text-ink-soft">
+                <label className="mt-2 flex cursor-pointer items-start gap-2.5 py-3 text-[13px] leading-relaxed text-ink-soft">
                   <input
                     type="checkbox"
                     name="privacyConsent"
