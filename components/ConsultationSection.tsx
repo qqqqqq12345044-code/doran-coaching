@@ -4,6 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { CheckCircle2, AlertCircle, Search } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
+import { getAttribution } from "@/lib/attribution";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
@@ -85,6 +86,8 @@ export default function ConsultationSection({
 }: ConsultationSectionProps) {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [addressSearchError, setAddressSearchError] = useState(false);
+  const [ageError, setAgeError] = useState(false);
+  const ageRef = useRef<HTMLInputElement>(null);
   const baseAddressRef = useRef<HTMLInputElement>(null);
   const zonecodeRef = useRef<HTMLInputElement>(null);
   const addressDetailRef = useRef<HTMLInputElement>(null);
@@ -124,6 +127,16 @@ export default function ConsultationSection({
       return;
     }
 
+    // 나이는 1~120 정수만 허용한다(Apps Script validate와 동일 기준).
+    const ageText = String(formData.get("age") ?? "").trim();
+    const ageValue = /^\d{1,3}$/.test(ageText) ? parseInt(ageText, 10) : 0;
+    if (ageValue < 1 || ageValue > 120) {
+      setAgeError(true);
+      ageRef.current?.focus();
+      return;
+    }
+    setAgeError(false);
+
     const endpoint = process.env.NEXT_PUBLIC_CONSULTATION_ENDPOINT;
     if (!endpoint) {
       // 운영 endpoint가 아직 설정되지 않은 상태. 사용자에게는 실패로만 안내하고,
@@ -143,7 +156,11 @@ export default function ConsultationSection({
       interest: formData.getAll("interest").map(String),
       message: String(formData.get("message") ?? ""),
       privacyConsent: formData.get("privacyConsent") === "on",
+      age: String(ageValue),
       pageUrl: typeof window !== "undefined" ? window.location.href : "",
+      // 실제 제출 시점의 경로(하드코딩 아님). UTM/referrer는 lib/attribution.ts가 자동 수집.
+      sourcePage: typeof window !== "undefined" ? window.location.pathname : "",
+      ...getAttribution(),
       userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
     };
 
@@ -253,6 +270,29 @@ export default function ConsultationSection({
               </div>
 
               <div className="sm:col-span-2">
+                <label htmlFor="age" className="text-[14px] font-medium text-ink">
+                  나이
+                </label>
+                <input
+                  ref={ageRef}
+                  id="age"
+                  name="age"
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]{1,3}"
+                  maxLength={3}
+                  required
+                  autoComplete="off"
+                  placeholder="예: 25"
+                  onChange={() => ageError && setAgeError(false)}
+                  className="mt-2 w-full rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
+                />
+                {ageError && (
+                  <p className="mt-2 text-[12.5px] text-red-600">나이를 1~120 사이 숫자로 입력해주세요.</p>
+                )}
+              </div>
+
+              <div className="sm:col-span-2">
                 <label htmlFor="address" className="text-[14px] font-medium text-ink">
                   주소
                 </label>
@@ -341,7 +381,7 @@ export default function ConsultationSection({
                   갱신한다. 실제 값이 확정되면 위 PRIVACY_POLICY_INFO만 채우면 된다. */}
               <div className="sm:col-span-2">
                 <p className="text-[12.5px] leading-relaxed text-ink-faint">
-                  이름·연락처·주소(상세주소 포함)·관심 언어·문의 내용을 상담 회신과 수업
+                  이름·연락처·나이·주소(상세주소 포함)·관심 언어·문의 내용을 상담 회신과 수업
                   매칭 목적으로만 수집합니다. 동의를 거부하실 수 있으며, 거부 시 상담
                   신청이 제한될 수 있습니다.
                 </p>

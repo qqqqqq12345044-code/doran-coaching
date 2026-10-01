@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingConsultationButton from "@/components/FloatingConsultationButton";
 import FloatingCallButton from "@/components/FloatingCallButton";
+import AttributionCapture from "@/components/AttributionCapture";
 import { brand } from "@/data/brand";
 
 const notoSansKR = Noto_Sans_KR({
@@ -64,6 +65,7 @@ export default function RootLayout({
         <Footer />
         <FloatingCallButton />
         <FloatingConsultationButton />
+        <AttributionCapture />
       </body>
     </html>
   );

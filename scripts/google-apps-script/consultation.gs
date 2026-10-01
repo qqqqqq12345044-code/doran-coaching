@@ -41,7 +41,35 @@ const HEADERS = [
   "user agent",
   "상세주소",
   "우편번호",
+  // 2026-10 추가: 나이 + 유입 추적. 마찬가지로 맨 뒤에만 추가한다.
+  "나이",
+  "유입 페이지",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "referrer",
+  "최초 유입 페이지",
 ];
+
+// 사용자 입력은 전부 신뢰하지 않는다. 길이 제한 + 제어문자 제거 후, 스프레드시트
+// 수식 주입(=,+,-,@로 시작)을 막기 위해 앞에 작은따옴표를 붙인다.
+function sanitizeText(value) {
+  const text = String(value == null ? "" : value)
+    .replace(/[\u0000-\u001f\u007f]/g, " ")
+    .trim()
+    .slice(0, 200);
+  return /^[=+\-@]/.test(text) ? "'" + text : text;
+}
+
+// 나이는 1~120 정수만 허용한다. 비어 있거나(구버전 폼 포함) 형식이 다르면 빈 값.
+function sanitizeAge(value) {
+  const text = String(value == null ? "" : value).trim();
+  if (!/^\d{1,3}$/.test(text)) return "";
+  const age = parseInt(text, 10);
+  return age >= 1 && age <= 120 ? String(age) : "";
+}
 
 function doPost(e) {
   try {
@@ -96,6 +124,7 @@ function parseRequest(e) {
 function validate(data) {
   if (!data.name || !String(data.name).trim()) return "이름을 입력해주세요.";
   if (!data.phone || !String(data.phone).trim()) return "연락처를 입력해주세요.";
+  if (!sanitizeAge(data.age)) return "나이를 1~120 사이 숫자로 입력해주세요.";
   if (!data.address || !String(data.address).trim()) return "주소를 입력해주세요.";
   if (data.privacyConsent !== true && data.privacyConsent !== "true" && data.privacyConsent !== "on") {
     return "개인정보 수집·이용에 동의해주세요.";
@@ -151,6 +180,15 @@ function toRow(data) {
     data.userAgent || "",
     data.addressDetail || "",
     data.zonecode || "",
+    sanitizeAge(data.age),
+    sanitizeText(data.sourcePage),
+    sanitizeText(data.utm_source),
+    sanitizeText(data.utm_medium),
+    sanitizeText(data.utm_campaign),
+    sanitizeText(data.utm_content),
+    sanitizeText(data.utm_term),
+    sanitizeText(data.referrer),
+    sanitizeText(data.landingPage),
   ];
 }
 
@@ -180,12 +218,25 @@ function maybeSendNotificationEmail(data) {
     const fullAddress = [data.address, data.addressDetail].filter(Boolean).join(" ");
     const subject = "[DORAN] 새로운 상담 신청 - " + (data.name || "");
     const body = [
-      "접수일시: " + new Date().toLocaleString("ko-KR"),
+      "사이트: 도란 DORAN",
       "이름: " + (data.name || ""),
       "연락처: " + (data.phone || ""),
+      "나이: " + sanitizeAge(data.age),
       "주소: " + fullAddress,
+      "우편번호: " + (data.zonecode || ""),
       "관심 언어: " + interest,
       "문의 내용: " + (data.message || ""),
+      "유입 페이지: " + sanitizeText(data.sourcePage),
+      "",
+      "--- 추적 정보 ---",
+      "접수일시: " + new Date().toLocaleString("ko-KR"),
+      "utm_source: " + sanitizeText(data.utm_source),
+      "utm_medium: " + sanitizeText(data.utm_medium),
+      "utm_campaign: " + sanitizeText(data.utm_campaign),
+      "utm_content: " + sanitizeText(data.utm_content),
+      "utm_term: " + sanitizeText(data.utm_term),
+      "referrer: " + sanitizeText(data.referrer),
+      "최초 유입 페이지: " + sanitizeText(data.landingPage),
     ].join("\n");
 
     MailApp.sendEmail(CONFIG.NOTIFICATION_EMAIL, subject, body);
