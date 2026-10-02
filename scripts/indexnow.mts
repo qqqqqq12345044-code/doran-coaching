@@ -92,7 +92,8 @@ try {
   prev = null;
 }
 
-const manual = (opt("urls") ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+// 공식 규격(RFC3986)에 맞게 한글 등 비ASCII 경로를 퍼센트 인코딩해 정규화한다(이미 인코딩된 URL은 그대로).
+const manual = (opt("urls") ?? "").split(",").map((s) => s.trim()).filter(Boolean).map((u) => new URL(u).toString());
 const added: string[] = [];
 const modified: string[] = [];
 const deleted: string[] = [];
@@ -112,7 +113,7 @@ if (prev) {
 }
 
 for (const u of manual) {
-  if (!u.startsWith(SITE_URL + "/") && u !== SITE_URL) throw new Error(`다른 host URL: ${u}`);
+  if (new URL(u).origin !== SITE_URL) throw new Error(`다른 host URL: ${u}`);
 }
 const urlList = [...new Set([...added, ...modified, ...deleted, ...manual])];
 console.log(`\n제출 후보: 신규 ${added.length} / 수정 ${modified.length} / 삭제 ${deleted.length} / 수동 ${manual.length} = ${urlList.length}개 (상한 ${MAX})`);
@@ -133,7 +134,7 @@ if (!isValidIndexNowKey(key)) {
 }
 const effectiveKey = isValidIndexNowKey(key) ? key : "00000000000000000000000000000000";
 const batches = chunk(urlList, INDEXNOW_MAX_URLS_PER_POST).map((b) => buildIndexNowPayload(SITE_URL, effectiveKey, b));
-const masked = { ...batches[0], key: "(masked)", urlList: `[${batches[0].urlList.length} urls]` };
+const masked = { ...batches[0], key: "(masked)", keyLocation: `${SITE_URL}/(masked).txt`, urlList: `[${batches[0].urlList.length} urls]` };
 console.log(`\nPOST ${endpoint}  (batch ${batches.length}개)\n${JSON.stringify(masked, null, 2)}`);
 
 if (!flag("send")) {
