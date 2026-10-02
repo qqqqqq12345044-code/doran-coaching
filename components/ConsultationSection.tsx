@@ -5,6 +5,7 @@ import { CheckCircle2, AlertCircle, Search } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
 import { getAttribution } from "@/lib/attribution";
+import { sendNaverLeadConversion } from "@/lib/naverWcs";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
@@ -185,6 +186,8 @@ export default function ConsultationSection({
       if (response.ok && result?.success) {
         form.reset();
         setStatus("success");
+        // 네이버 광고 상담 전환: Apps Script 저장이 확인된 제출에서만 1회(허니팟 분기는 위에서 return).
+        sendNaverLeadConversion();
       } else {
         setStatus("error");
       }
