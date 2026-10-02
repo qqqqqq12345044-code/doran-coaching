@@ -1,0 +1,7 @@
+{
+  "note": "1차 감사 기준 기존 상태. 같은 키워드/다른 지역 지역 리프의 단어 3-gram 유사도(실질 콘텐츠 기준). 개선됐을 때만 갱신한다.",
+  "measuredAt": "2026-10-02",
+  "localSimilarityMax": 0.824,
+  "localSimilarityMean": 0.807,
+  "localMinCoreChars": 739
+}

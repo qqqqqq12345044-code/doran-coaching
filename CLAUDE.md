@@ -29,7 +29,7 @@ git 안전, 파일 우선 확인, 검증 원칙, 효율/토큰, 커뮤니케이�
 - `/` — 홈
 - `/english`, `/japanese`, `/chinese` — 언어별 종합 랜딩페이지
 - `/[language]/[category]` — 12개 세부 과정 상세페이지(언어 3 × `conversation`/`certification`/`school`/`other` 4)
-- `/magazine` — 매거진 목록, `/magazine/[slug]` — 매거진 상세(`data/magazine`, 총 25개,
+- `/magazine` — 매거진 목록, `/magazine/[slug]` — 매거진 상세(`data/magazine`, 총 50개,
   `dynamicParams = false`로 화이트리스트(`getAllMagazineSlugs()`) 밖은 build-time에도 404)
 - `/reviews` — 수강후기
 - `/local/[sido]/[sigungu]/[dong]/[keyword]` — 지역 SEO 랜딩페이지
@@ -37,7 +37,7 @@ git 안전, 파일 우선 확인, 검증 원칙, 효율/토큰, 커뮤니케이�
     = 97,905개, `data/regions/generated/seo-regions.json` 기반)가 `data/seo/previewRegistry.ts`의
     `PUBLISHED_LOCAL_SEO_PAGES`를 만들고, 실제 렌더링 전 `findLocalSeoPreview()`가 이
     화이트리스트를 검사해 그 외 모든 조합은 `notFound()`로 404.
-  - **ISR(On-Demand)**: `dynamicParams = true`, `revalidate = 86400`. `generateStaticParams`는
+  - **ISR(On-Demand)**: `dynamicParams = true`, `revalidate = false`(최초 생성 후 다음 배포 전까지 영구 캐시 — 2026-09 ISR Writes 한도 초과 대응). `generateStaticParams`는
     대표 지역(공덕동) × keyword 15개만 build-time에 미리 만들고, 나머지 97,890개는
     최초 요청 시 on-demand로 생성돼 이후 캐시된다 — 97,905개를 build-time에 전부
     SSG하지 않는다.
@@ -46,6 +46,7 @@ git 안전, 파일 우선 확인, 검증 원칙, 효율/토큰, 커뮤니케이�
   - 콘텐츠는 하드코딩이 아니라 `lib/seo/generateLocalSeoContent.ts` Content Engine이
     지역 + Keyword Cluster를 입력받아 실시간 조립
 - `app/robots.ts`, `app/sitemap.ts` — 기술 SEO 엔드포인트(아래 [SEO] 참고)
+- `/{INDEXNOW_KEY}.txt` — IndexNow key 파일(환경변수 `INDEXNOW_KEY`, `next.config.ts` rewrite → `app/indexnow-key/[key]/route.ts`)
 
 ## [DATA] (Source of Truth — 중복 하드코딩 금지)
 
@@ -60,6 +61,7 @@ git 안전, 파일 우선 확인, 검증 원칙, 효율/토큰, 커뮤니케이�
 - `data/seo/examProfiles.ts` — exam Intent 하위 시험별 세부 Profile(없으면 공용 exam 문구로 fallback)
 - `data/seo/serviceFacts.ts` — GEO 서술의 사실 소스(brand/languages 재사용, 새 사실 생성 금지)
 - `lib/seo/generateLocalSeoContent.ts` — 지역 SEO Content Engine(순수 함수, 전국 페이지 스스로 생성 안 함)
+- `data/seo/relatedMagazine.ts` — 지역 리프(키워드별 1개)/상세 12개(최대 3개)가 연결할 관련 매거진 매핑(없으면 링크 안 만듦)
 - `data/seo/previewRegistry.ts` — 지역 SEO 공개 화이트리스트(`PUBLISHED_LOCAL_SEO_PAGES`)
 - `lib/seo/schema.ts` / `components/seo/JsonLd.tsx` — JSON-LD Builder(WebSite/Organization/
   BreadcrumbList/FAQPage/Course) + 서버 컴포넌트 출력 헬퍼
@@ -155,11 +157,18 @@ Claude Code 사용량/토큰 절약 습관. 마지막 항목(예외)이 항상 �
 
 **기술 SEO**
 - `app/robots.ts` — 전체 Allow, 과도한 Disallow 금지, `sitemap`/`host`에 `https://dorancoaching.com` 명시
-- `app/sitemap.ts` — `generateSitemaps()`로 4-shard 분할(0: 홈/언어3/상세12/magazine/reviews,
+- `app/sitemap.ts` — `generateSitemaps()`로 4-shard 분할(0: 홈/언어3/상세12/magazine/reviews/`/local`+시도+시군구 허브(동 허브 제외)/매거진 글,
   1~3: local을 영어/일본어/중국어별로 3등분). local은 `PUBLISHED_LOCAL_SEO_PAGES`만 자동
   포함(6,560개 지역 전체 순회 금지), 절대 URL만 사용. `app/sitemap.xml/route.ts`가
   `<sitemapindex>`를 직접 서빙해 `/sitemap.xml`은 계속 유효한 진입점(Next.js는
-  `generateSitemaps` 사용 시 이 경로를 자동으로 만들어주지 않음)
+  `generateSitemaps` 사용 시 이 경로를 자동으로 만들어주지 않음).
+  **lastmod는 실제 수정일이 있는 URL(매거진: `updatedAt ?? publishedAt`)만 넣고 나머지는 생략**
+  (`new Date()` 금지 — 배포마다 전 URL이 수정된 것처럼 보임). 매거진 Article `dateModified`도 같은
+  `getMagazineModifiedDate()`를 쓴다. 실제로 글을 고친 날에만 `updatedAt`을 직접 입력한다.
+- IndexNow: `npm run indexnow`(기본 dry-run, `--send`에서만 전송, key는 환경변수 `INDEXNOW_KEY`).
+  기준선(`data/seo/indexnow-state.json`) 없이는 아무것도 보내지 않는다. 대량 전송 금지.
+- SEO 품질 게이트: `npm run validate:seo-quality`(`-- --base URL`로 서버 실측). 기존 문제는
+  `data/seo/seo-quality-baseline.json`(BASELINE), 신규 악화만 ERROR.
 - `lib/seo/schema.ts` — WebSite(홈)/Organization(홈)/BreadcrumbList(상세12+local)/FAQPage(FAQ 실제 렌더 페이지)/
   Course(단일 과정 페이지만: 상세12+local). SearchAction/LocalBusiness/fake AggregateRating·Review·Offer·가격
   절대 금지. google/naver-site-verification은 실제 값 없이 생성 금지

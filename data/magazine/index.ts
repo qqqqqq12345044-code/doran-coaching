@@ -34,3 +34,9 @@ export function getRelatedMagazineArticles(article: MagazineArticle): MagazineAr
     .map((slug) => getMagazineArticle(slug))
     .filter((related): related is MagazineArticle => related !== null);
 }
+
+/** sitemap lastmod와 Article JSON-LD dateModified가 같은 값을 쓰도록 하는 단일 출처.
+ *  실제 수정일(updatedAt)이 있으면 그 값, 없으면 게시일(publishedAt). */
+export function getMagazineModifiedDate(article: MagazineArticle): string {
+  return article.updatedAt ?? article.publishedAt;
+}

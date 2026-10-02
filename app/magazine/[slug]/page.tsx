@@ -14,6 +14,7 @@ import {
   getMagazineArticle,
   getAllMagazineSlugs,
   getRelatedMagazineArticles,
+  getMagazineModifiedDate,
   type MagazineLanguage,
 } from "@/data/magazine";
 
@@ -98,6 +99,7 @@ export default async function MagazineArticlePage({
           description: article.metaDescription,
           url: `/magazine/${article.slug}`,
           datePublished: article.publishedAt,
+          dateModified: getMagazineModifiedDate(article),
         })}
       />
 
@@ -146,7 +148,14 @@ export default async function MagazineArticlePage({
       <div className="bg-surface-soft py-14 sm:py-16">
         <div className="section-shell space-y-10">
           <Reveal>
-            <RelatedLinks title="관련 DORAN 과정" links={article.relatedCourses} accentTextClass={accent.text} />
+            <RelatedLinks title="관련 DORAN 과정" links={[
+                ...article.relatedCourses,
+                {
+                  label: "내 지역에서 1:1 수업 알아보기",
+                  href: "/local",
+                  description: "이동 없이 온라인 화상으로 시작할 수 있어요",
+                },
+              ]} accentTextClass={accent.text} />
           </Reveal>
 
           {relatedArticles.length > 0 && (

@@ -40,4 +40,8 @@ export interface MagazineArticle {
   faq: DetailFaqItem[];
   /** 실제 작업일 기준 게시일. ISO 날짜 문자열(YYYY-MM-DD). */
   publishedAt: string;
+  /** 본문/FAQ가 실제로 수정된 날짜(YYYY-MM-DD). 없으면 수정 이력이 없다는 뜻이며
+   *  sitemap lastmod / Article dateModified 모두 publishedAt을 쓴다. 날짜를
+   *  주기적으로 자동 갱신하지 않는다 — 실제 내용을 고친 날에만 직접 입력한다. */
+  updatedAt?: string;
 }

@@ -25,7 +25,7 @@ import { coursesByLanguage } from "@/data/courses";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
 import { getEnabledClusters } from "@/data/seo/keywords";
-import { getMagazineArticlesByLanguage } from "@/data/magazine";
+import { getLocalRelatedMagazine } from "@/data/seo/relatedMagazine";
 import { PUBLISHED_LOCAL_SEO_PAGES, findLocalSeoPreview } from "@/data/seo/previewRegistry";
 import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLocalSeoContent";
 import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
@@ -181,13 +181,15 @@ export default async function LocalSeoLandingPage({
 
   // 화면에 실제로 보이는 Breadcrumb과 JSON-LD BreadcrumbList가 항상 일치하도록
   // 같은 배열을 두 곳(Breadcrumb 컴포넌트 / schema builder)에서 그대로 재사용한다.
-  // URL 구조(/local/[sido]/[sigungu]/[dong]/[keyword])와 동일한 4단계로 맞춰
-  // 시도/시군구/읍면동을 모두 별도 crumb으로 보여준다. 지역 허브(/local/[sido],
+  // URL 구조(/local/[sido]/[sigungu]/[dong]/[keyword])와 동일한 4단계에
+  // 허브 진입점("지역별", /local)을 더해 시도/시군구/읍면동을 모두 별도 crumb으로 보여준다.
+  // 시/도·시/군/구·동 허브 페이지의 Breadcrumb(홈 > 지역별 > ...)과 같은 구조다. 지역 허브(/local/[sido],
   // /local/[sido]/[sigungu], /local/[sido]/[sigungu]/[dong])가 실제로 존재하는
   // 페이지이므로 각 crumb에 해당 허브 URL을 연결한다 — 화이트리스트 기반이라
   // (이 리프 페이지 자체가 화이트리스트를 통과했으므로) 상위 지역도 항상 존재.
   const breadcrumbItems = [
     { label: "홈", href: "/" },
+    { label: "지역별", href: "/local" },
     { label: region.sido, href: `/local/${region.sido}` },
     { label: region.sigungu ?? "", href: region.sigungu ? `/local/${region.sido}/${region.sigungu}` : undefined },
     {
@@ -207,11 +209,10 @@ export default async function LocalSeoLandingPage({
   // 결함이 있었다 — lib/seo/localSiblingKeywords.ts 주석 참고).
   const siblingKeywords = getLocalSiblingKeywords(cluster);
 
-  const relatedMagazineArticle = (() => {
-    const articles = getMagazineArticlesByLanguage(cluster.language);
-    const wantsExam = cluster.intent === "exam";
-    return articles.find((a) => a.categoryLabel.includes(wantsExam ? "자격증" : "학습법")) ?? articles[0] ?? null;
-  })();
+  // 키워드와 실제로 관련 있는 매거진 1개만 연결한다(data/seo/relatedMagazine.ts).
+  // 예전에는 "언어의 첫 학습법/자격증 글"로 연결해 HSKK 페이지가 HSK 글 대신 엉뚱한
+  // 글로 가는 문제가 있었다. 매핑이 없으면 링크를 만들지 않는다.
+  const relatedMagazineArticle = getLocalRelatedMagazine(cluster.mainKeyword);
 
   const otherLanguages = languages.filter((l) => l.slug !== cluster.language);
 

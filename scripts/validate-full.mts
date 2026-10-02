@@ -22,8 +22,9 @@ const seo = run("SEO keywords", "npm run validate:seo");
 const curriculum = run("Curriculum", "npm run validate:curriculum");
 const detailContent = run("Detail content", "npm run validate:detail-content");
 const localSeo = run("Local SEO (97,905)", "npm run validate:local-seo");
+const seoQuality = run("SEO quality gate", "npm run validate:seo-quality");
 
-const pass = typecheck && build && seo && curriculum && detailContent && localSeo;
+const pass = typecheck && build && seo && curriculum && detailContent && localSeo && seoQuality;
 writeCacheEntry("full", pass, {
   typecheck: typecheck ? "PASS" : "FAIL",
   build: build ? "PASS" : "FAIL",
@@ -31,6 +32,7 @@ writeCacheEntry("full", pass, {
   curriculum: curriculum ? "PASS" : "FAIL",
   detailContent: detailContent ? "PASS" : "FAIL",
   localSeo: localSeo ? "PASS" : "FAIL",
+  seoQuality: seoQuality ? "PASS" : "FAIL",
 });
 
 console.log(`\n종합: ${pass ? "PASS" : "FAIL"}`);

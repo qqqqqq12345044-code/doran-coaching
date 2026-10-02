@@ -30,6 +30,7 @@ import {
   getLinkedCurriculumLabels,
 } from "@/data/curriculum/courseDetails";
 import { COURSE_CATEGORIES } from "@/data/navigation/languageNavigation";
+import { getDetailRelatedMagazines } from "@/data/seo/relatedMagazine";
 import { getCoachesByLanguage, type Coach, type CoachTypeId } from "@/data/coaches";
 
 // 카테고리 목적에 맞는 코치 "유형"만 보수적으로 매핑한다(실제 개별 강사를
@@ -175,6 +176,21 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
   const images = DETAIL_IMAGES[content.language][content.category];
   const heroImage = images.hero;
   const breakImage = images.mid;
+
+  // 문맥 링크: 이 과정과 실제로 관련 있는 교육정보(매거진) + 지역 탐색 진입점(/local).
+  const relatedMagazines = getDetailRelatedMagazines(content.language, content.category);
+  const exploreLinks = [
+    ...relatedMagazines.map((article) => ({
+      label: article.h1,
+      href: `/magazine/${article.slug}`,
+      description: article.cardSummary,
+    })),
+    {
+      label: "내 지역에서 시작하기",
+      href: "/local",
+      description: "지역과 관계없이 이동 없이 1:1 온라인 화상으로 수업합니다",
+    },
+  ];
 
   const heroChips = ["온라인 화상 수업", categoryMeta.label, "1:1 맞춤 수업"];
 
@@ -335,6 +351,13 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
                 })),
                 { label: `${languageNameKo} 전체 과정 보기`, href: languageHref },
               ]}
+            />
+          </Reveal>
+          <Reveal className="mt-10">
+            <RelatedLinks
+              title={relatedMagazines.length > 0 ? "함께 읽어보면 좋은 교육정보" : "내 지역에서 시작하기"}
+              accentTextClass={accent.text}
+              links={exploreLinks}
             />
           </Reveal>
         </div>
