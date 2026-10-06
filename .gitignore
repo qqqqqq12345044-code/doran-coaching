@@ -13,3 +13,6 @@ Thumbs.db
 .playwright-mcp
 
 scripts/.validation-cache.json
+
+# 네이버 광고 API 원본 데이터(계정 식별정보 포함 가능, 대용량). 저장소가 public이라 실수 커밋 방지.
+data/advertising/
