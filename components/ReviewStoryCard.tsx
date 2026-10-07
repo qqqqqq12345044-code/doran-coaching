@@ -20,13 +20,16 @@ const STAGES = [
   { key: "change", label: "변화" },
 ] as const;
 
-// /reviews 전용 카드. 기존 ReviewCard(홈 등 다른 화면에서 재사용 중)는 건드리지
+// /reviews(및 홈 Case Study — ReviewSection variant="story") 카드. 기존 ReviewCard(홈 등 다른 화면에서 재사용 중)는 건드리지
 // 않고, Before → Learning → Change 서사가 있는 official-case/example-case만
 // 이 카드로 보여준다. review.story가 없으면(=아직 구조화 전 사례) 렌더링하지
 // 않는다. example-case("대표 학습 사례")는 배지 색과 하단 안내 문구로만
 // official-case와 구분하고, 카드 레이아웃 자체는 동일하게 유지한다 — 실제
 // 후기와 부자연스럽게 달라 보이지 않으면서도 오인하지 않도록 하기 위함.
-export default function ReviewStoryCard({ review }: { review: Review }) {
+// compact(홈 Case Study 전용): 모바일에서만 인용문 블록을 숨겨 카드 길이를 줄인다.
+// 인용문은 아래 시작 전 고민/학습 과정/변화와 같은 원문 사실의 요약이라 정보
+// 손실이 없고, Desktop(md 이상)과 /reviews(기본값)는 기존 그대로다.
+export default function ReviewStoryCard({ review, compact = false }: { review: Review; compact?: boolean }) {
   const story = review.story;
   if (!story) return null;
   const isExample = review.sourceType === "example-case";
@@ -49,12 +52,12 @@ export default function ReviewStoryCard({ review }: { review: Review }) {
         <span className="text-[12.5px] font-medium text-ink-faint">{review.meta}</span>
       </div>
 
-      <div className="mt-4 flex items-start gap-2.5">
+      <div className={`mt-4 items-start gap-2.5 ${compact ? "hidden md:flex" : "flex"}`}>
         <Quote size={18} className="mt-0.5 shrink-0 text-brand/40" aria-hidden />
         <p className="text-[14.5px] leading-relaxed text-ink">{review.quote}</p>
       </div>
 
-      <ol className="mt-5 space-y-4 border-l border-ink/10 pl-4">
+      <ol className={`space-y-4 border-l border-ink/10 pl-4 ${compact ? "mt-4 md:mt-5" : "mt-5"}`}>
         {STAGES.map((stage) => (
           <li key={stage.key} className="relative">
             <span

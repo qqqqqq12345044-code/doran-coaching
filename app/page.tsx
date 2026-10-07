@@ -9,25 +9,17 @@ import LanguageSelectSection from "@/components/LanguageSelectSection";
 import LocalHubTeaser from "@/components/LocalHubTeaser";
 import SelfCheck from "@/components/SelfCheck";
 import TrustBar from "@/components/TrustBar";
-import ProblemSection from "@/components/ProblemSection";
+import HomeConcernSection from "@/components/HomeConcernSection";
+import HomeSituationPicker from "@/components/HomeSituationPicker";
 import ProcessSection from "@/components/ProcessSection";
 import FeatureSection from "@/components/FeatureSection";
-import CourseSection from "@/components/CourseSection";
 import CoachSection from "@/components/CoachSection";
 import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
-import { purposeCourses } from "@/data/courses";
 import { coaches } from "@/data/coaches";
 import { getFeaturedReviews } from "@/data/reviews";
 import { faqItems } from "@/data/faq";
-
-const PROBLEMS = [
-  "몇 년을 공부했는데 막상 말하려면 입이 안 떨어져요.",
-  "JLPT나 HSK를 준비하고 싶은데 어디서부터 시작해야 할지 모르겠어요.",
-  "우리 아이 수준에 맞는 제2외국어 선생님을 찾기 어려워요.",
-  "학원 진도를 따라가기보다 내 수준에 맞게 배우고 싶어요.",
-];
 
 const SOLUTION_STEPS = [
   { title: "수준 및 목표 확인" },
@@ -77,29 +69,34 @@ export default function HomePage() {
 
       <HeroQuickNav />
 
-      <SelfCheck />
-
-      <TrustBar />
+      {/* 홈 전환 흐름: 고객 고민 → 실제 Case Study → 상황별 학습 방향(#course)
+          → SELF-CHECK → (언어/방식/코치 등 상세 정보) → 상담. 기존 일반
+          ProblemSection(중간 위치)은 Hero 직후 언어별 고민 섹션으로, 링크 없는
+          목적 카드(CourseSection, #course)는 같은 anchor의 상황 선택 UI로 통합했다. */}
+      <HomeConcernSection />
 
       <ReviewSection
         id="review"
         title={["비슷한 고민으로", "시작한 사람들의 이야기"]}
-        reviews={getFeaturedReviews(4)}
+        intro="공개된 실제 수강 사례를 고민 → 수업 → 변화 순서로 짧게 정리했어요."
+        reviews={getFeaturedReviews(3)}
+        variant="story"
         moreHref="/reviews"
       />
+
+      <TrustBar />
+
+      <HomeSituationPicker />
+
+      <SelfCheck />
 
       <LanguageSelectSection eyebrow="언어별 과정" title="관심 있는 언어의 전체 과정을 살펴보세요" />
 
       <LocalHubTeaser />
 
-      <ProblemSection
-        title={["외국어 공부,", "이런 고민 있으셨나요?"]}
-        problems={PROBLEMS}
-      />
-
       <ProcessSection
         eyebrow="도란의 방식"
-        title={["그래서 외국어 수업도", "1:1로 시작합니다."]}
+        title={["외국어 수업,", "도란은 1:1로 시작합니다."]}
         intro={
           "학생마다 현재 실력도 다르고 외국어를 배우는 목적도 다릅니다.\n도란은 학생의 수준과 목표를 파악하고 그에 맞는 코치와 학습 방향을 설계합니다."
         }
@@ -110,12 +107,6 @@ export default function HomePage() {
       <FeatureSection
         title={["왜 도란일까요?"]}
         features={FEATURES}
-      />
-
-      <CourseSection
-        id="course"
-        title={["목적이 다르면,", "배우는 방법도 달라야 하니까."]}
-        courses={purposeCourses}
       />
 
       <CoachSection
