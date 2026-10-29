@@ -1,4 +1,5 @@
 import type { CurriculumLanguage } from "../curriculum/powerCurriculum";
+import type { PurposeLink } from "../purposeEntries";
 
 // 언어별 세부 과정 페이지(/english/conversation 등) 전용 콘텐츠 타입.
 //
@@ -54,6 +55,9 @@ export interface DetailPageContent {
   sections: DetailContentSection[];
   /** 자격증 페이지에서만 사용. */
   examWalkthrough?: ExamWalkthroughItem[];
+  /** 회화 페이지에서만 사용(선택). 로드맵 위에 "내 상황에서 시작하기" 칩을 보여준다. href는 같은 페이지
+   *  로드맵 단계("#<stage.id>")로만 연결한다. 없으면 아무것도 렌더링하지 않는다. 글자 수 검증 대상이 아니다. */
+  startPoints?: { label: string; links: PurposeLink[] };
   /** 이 페이지가 근거로 삼는 실제 Power Curriculum 항목 id 목록(칩 표시용). */
   linkedCurriculumIds: string[];
   /** 이 페이지에 실제로 관련된 reviews.ts의 official-case id만. 없으면 빈 배열. */
