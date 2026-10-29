@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
 import { getAttribution } from "@/lib/attribution";
 import { sendNaverLeadConversion } from "@/lib/naverWcs";
+import { privacyPolicyInfo } from "@/data/privacy";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
@@ -13,16 +14,10 @@ const INTEREST_OPTIONS = [...languages.map((lang) => lang.nameKo), "아직 고�
 
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
-// 처리주체(사업자명)/보유기간/개인정보처리방침 링크/문의처 — 아직 확정되지 않아
-// 전부 비워 둔다. 값이 확정되면 이 객체만 채우면 동의 문구 아래에 한 줄씩 자동으로
-// 노출된다(JSX를 다시 손댈 필요 없음). 확정 전까지는 전부 undefined라 화면에는
-// 아무것도 추가되지 않는다.
-const PRIVACY_POLICY_INFO: {
-  processor?: string;
-  retentionPeriod?: string;
-  policyUrl?: string;
-  contact?: string;
-} = {};
+// 처리주체(사업자명)/보유기간/문의처는 아직 확정되지 않아 data/privacy.ts에서 비워 두고,
+// 개인정보처리방침 링크(/privacy)만 채워져 있다. 값이 확정되면 data/privacy.ts만 채우면
+// 동의 문구 아래에 한 줄씩 자동으로 노출된다(JSX를 다시 손댈 필요 없음).
+const PRIVACY_POLICY_INFO = privacyPolicyInfo;
 
 // 카카오(구 다음) 우편번호 서비스. 공식 가이드(postcode.map.kakao.com/guide) 기준
 // API 키 없이 무료로(상업적 사용 포함, 사용량 제한 없음) embed 가능한 방식만 사용한다.
@@ -395,9 +390,9 @@ export default function ConsultationSection({
               </div>
 
               {/* TODO(개인정보 정책 확정 전 문구 확장 금지):
-                  처리 주체(사업자명)/보유·이용 기간/개인정보처리방침 링크/문의처가
-                  아직 확정되지 않았다. 확정 전까지는 아래 동의 문구에 정책
-                  링크나 구체적인 보유기간·담당자 연락처를 추가하지 않는다. 수집
+                  처리 주체(사업자명)/보유·이용 기간/문의처가 아직 확정되지 않았다.
+                  확정 전까지는 아래 동의 문구에 구체적인 보유기간·담당자 연락처를
+                  추가하지 않는다(/privacy 링크만 연결). 수집
                   항목/목적, 동의 거부 권리와 거부 시 제한(체크박스 required 속성과
                   실제 일치)은 이미 명시했다 — 필드가 추가/삭제되면 이 문구도 함께
                   갱신한다. 실제 값이 확정되면 위 PRIVACY_POLICY_INFO만 채우면 된다. */}
@@ -417,7 +412,13 @@ export default function ConsultationSection({
                     {PRIVACY_POLICY_INFO.contact && <li>문의처: {PRIVACY_POLICY_INFO.contact}</li>}
                     {PRIVACY_POLICY_INFO.policyUrl && (
                       <li>
-                        <a href={PRIVACY_POLICY_INFO.policyUrl} className="underline hover:text-brand">
+                        {/* 새 탭: 작성 중인 상담폼 입력값이 사라지지 않게 한다. */}
+                        <a
+                          href={PRIVACY_POLICY_INFO.policyUrl}
+                          target="_blank"
+                          rel="noopener"
+                          className="underline hover:text-brand"
+                        >
                           개인정보처리방침 보기
                         </a>
                       </li>

@@ -81,11 +81,14 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-ink/5">
-        <div className="section-shell py-8 text-xs leading-relaxed text-ink-faint">
+        <div className="section-shell flex flex-col gap-3 py-8 text-xs leading-relaxed text-ink-faint sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {brand.nameEn}. All Rights
             Reserved.
           </p>
+          <Link href="/privacy" className="font-semibold text-ink-soft transition-colors hover:text-ink">
+            개인정보처리방침
+          </Link>
         </div>
       </div>
     </footer>
