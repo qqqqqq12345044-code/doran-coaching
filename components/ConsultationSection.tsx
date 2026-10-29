@@ -11,6 +11,26 @@ import { sendNaverLeadConversion } from "@/lib/naverWcs";
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
 const INTEREST_OPTIONS = [...languages.map((lang) => lang.nameKo), "아직 고민 중이에요"];
 
+// 학습 목적/현재 수준은 선택 항목이다(필수 입력을 늘려 제출률을 떨어뜨리지 않는다).
+// 문의 내용을 사람이 일일이 읽지 않아도 상담 목적을 분류할 수 있게 하는 용도다.
+const STUDY_GOAL_OPTIONS = ["회화", "시험", "여행", "비즈니스/업무", "유학/워킹홀리데이", "학교/학업", "기타"];
+const CURRENT_LEVEL_OPTIONS = ["처음 시작", "기초", "예전에 공부함", "중급 이상", "잘 모르겠음"];
+
+// 운영 중인 Apps Script/Sheet에는 아직 학습 목적·현재 수준 열이 없어 별도 필드(studyGoal,
+// currentLevel)만 보내면 저장되지 않는다. 열이 추가되기 전까지 기존 "문의 내용" 열과 알림
+// 메일에서 바로 보이도록 첫 줄에 한 번 더 붙인다. Apps Script에 열을 추가한 뒤에는 이 접두를
+// 제거해도 된다(composeMessage가 message를 그대로 돌려주도록 바꾸면 된다).
+function composeMessage(message: string, studyGoal: string[], currentLevel: string): string {
+  const tags = [
+    studyGoal.length > 0 ? `학습 목적: ${studyGoal.join(", ")}` : "",
+    currentLevel ? `현재 수준: ${currentLevel}` : "",
+  ]
+    .filter(Boolean)
+    .join(" / ");
+  if (!tags) return message;
+  return message ? `[${tags}]\n${message}` : `[${tags}]`;
+}
+
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
 // 처리주체(사업자명)/보유기간/개인정보처리방침 링크/문의처 — 아직 확정되지 않아
@@ -161,6 +181,9 @@ export default function ConsultationSection({
       return;
     }
 
+    const studyGoal = formData.getAll("studyGoal").map(String);
+    const currentLevel = String(formData.get("currentLevel") ?? "");
+
     const payload = {
       name: String(formData.get("name") ?? ""),
       phone: String(formData.get("phone") ?? ""),
@@ -168,7 +191,9 @@ export default function ConsultationSection({
       addressDetail: String(formData.get("addressDetail") ?? ""),
       zonecode: String(formData.get("zonecode") ?? ""),
       interest: formData.getAll("interest").map(String),
-      message: String(formData.get("message") ?? ""),
+      studyGoal,
+      currentLevel,
+      message: composeMessage(String(formData.get("message") ?? ""), studyGoal, currentLevel),
       privacyConsent: formData.get("privacyConsent") === "on",
       age: String(ageValue),
       pageUrl: typeof window !== "undefined" ? window.location.href : "",
@@ -381,6 +406,40 @@ export default function ConsultationSection({
                 </div>
               </fieldset>
 
+              <fieldset className="sm:col-span-2">
+                <legend className="text-[14px] font-medium text-ink">
+                  학습 목적 <span className="text-[12.5px] font-normal text-ink-faint">(선택, 중복 선택 가능)</span>
+                </legend>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {STUDY_GOAL_OPTIONS.map((goal) => (
+                    <label
+                      key={goal}
+                      className="flex cursor-pointer items-center gap-2 rounded-full border border-ink/12 bg-surface-soft px-4 py-2 text-[14px] text-ink transition-colors has-[:checked]:border-brand has-[:checked]:bg-brand-tint has-[:checked]:text-brand"
+                    >
+                      <input type="checkbox" name="studyGoal" value={goal} className="h-3.5 w-3.5 accent-brand" />
+                      {goal}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <fieldset className="sm:col-span-2">
+                <legend className="text-[14px] font-medium text-ink">
+                  현재 수준 <span className="text-[12.5px] font-normal text-ink-faint">(선택)</span>
+                </legend>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {CURRENT_LEVEL_OPTIONS.map((level) => (
+                    <label
+                      key={level}
+                      className="flex cursor-pointer items-center gap-2 rounded-full border border-ink/12 bg-surface-soft px-4 py-2 text-[14px] text-ink transition-colors has-[:checked]:border-brand has-[:checked]:bg-brand-tint has-[:checked]:text-brand"
+                    >
+                      <input type="radio" name="currentLevel" value={level} className="h-3.5 w-3.5 accent-brand" />
+                      {level}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
               <div className="sm:col-span-2">
                 <label htmlFor="message" className="text-[14px] font-medium text-ink">
                   문의 내용
@@ -403,8 +462,8 @@ export default function ConsultationSection({
                   갱신한다. 실제 값이 확정되면 위 PRIVACY_POLICY_INFO만 채우면 된다. */}
               <div className="sm:col-span-2">
                 <p className="text-[12.5px] leading-relaxed text-ink-faint">
-                  이름·연락처·나이·주소(상세주소 포함)·관심 언어·문의 내용을 상담 회신과 수업
-                  매칭 목적으로만 수집합니다. 동의를 거부하실 수 있으며, 거부 시 상담
+                  이름·연락처·나이·주소(상세주소 포함)·관심 언어·학습 목적·현재 수준·문의 내용을
+                  상담 회신과 수업 매칭 목적으로만 수집합니다. 동의를 거부하실 수 있으며, 거부 시 상담
                   신청이 제한될 수 있습니다.
                 </p>
                 {(PRIVACY_POLICY_INFO.processor ||
