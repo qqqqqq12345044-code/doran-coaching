@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
 import { getAttribution } from "@/lib/attribution";
 import { sendNaverLeadConversion } from "@/lib/naverWcs";
+import { reportDoranWebLead } from "@/lib/leads/doranClient";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
@@ -201,6 +202,8 @@ export default function ConsultationSection({
         setStatus("success");
         // 네이버 광고 상담 전환: Apps Script 저장이 확인된 제출에서만 1회(허니팟 분기는 위에서 return).
         sendNaverLeadConversion();
+        // 공통 Lead 이벤트(비식별 유입/선택값만, flag OFF면 no-op). 실패해도 제출 결과에 영향 없음.
+        reportDoranWebLead(formData);
       } else {
         setStatus("error");
       }

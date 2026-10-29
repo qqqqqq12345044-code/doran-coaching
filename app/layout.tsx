@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import FloatingConsultationButton from "@/components/FloatingConsultationButton";
 import FloatingCallButton from "@/components/FloatingCallButton";
 import AttributionCapture from "@/components/AttributionCapture";
+import LeadTracking from "@/components/LeadTracking";
 import NaverWcs from "@/components/NaverWcs";
 import { brand } from "@/data/brand";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
         <FloatingCallButton />
         <FloatingConsultationButton />
         <AttributionCapture />
+        <LeadTracking />
         <NaverWcs />
       </body>
     </html>
