@@ -4,7 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import { CheckCircle2, AlertCircle, Search } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import { languages } from "@/data/languages";
-import { getAttribution } from "@/lib/attribution";
+import { getAttribution, getAttributionSource } from "@/lib/attribution";
 import { sendNaverLeadConversion } from "@/lib/naverWcs";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
@@ -175,6 +175,8 @@ export default function ConsultationSection({
       // 실제 제출 시점의 경로(하드코딩 아님). UTM/referrer는 lib/attribution.ts가 자동 수집.
       sourcePage: typeof window !== "undefined" ? window.location.pathname : "",
       ...getAttribution(),
+      // raw 유입 값은 위에서 그대로 보내고, 파생 분류(NaPm만으로 광고 단정하지 않음)를 추가한다.
+      attributionSource: getAttributionSource(),
       userAgent: typeof window !== "undefined" ? window.navigator.userAgent : "",
     };
 
