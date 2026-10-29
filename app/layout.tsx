@@ -7,6 +7,7 @@ import FloatingConsultationButton from "@/components/FloatingConsultationButton"
 import FloatingCallButton from "@/components/FloatingCallButton";
 import AttributionCapture from "@/components/AttributionCapture";
 import NaverWcs from "@/components/NaverWcs";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { brand } from "@/data/brand";
 
 const notoSansKR = Noto_Sans_KR({
@@ -68,6 +69,7 @@ export default function RootLayout({
         <FloatingConsultationButton />
         <AttributionCapture />
         <NaverWcs />
+        <GoogleAnalytics />
       </body>
     </html>
   );
