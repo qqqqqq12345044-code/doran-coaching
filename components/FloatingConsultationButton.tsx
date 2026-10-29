@@ -1,6 +1,7 @@
 "use client";
 
 import { MessageCircle } from "lucide-react";
+import { getConsultationFallbackHref } from "@/lib/consultationHref";
 
 function scrollToConsultation() {
   const target = document.getElementById("consultation");
@@ -8,7 +9,7 @@ function scrollToConsultation() {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
     return;
   }
-  window.location.href = "/#consultation";
+  window.location.href = getConsultationFallbackHref(window.location.pathname);
 }
 
 export default function FloatingConsultationButton() {

@@ -198,6 +198,7 @@ export default function EnglishPage() {
       <ConsultationSection
         title={language.finalCta.lines}
         subtitle={language.finalCta.subtitle}
+        defaultInterest={[language.nameKo]}
       />
     </div>
   );

@@ -8,6 +8,7 @@ import BrandLogo from "@/components/BrandLogo";
 import LanguageMegaMenu from "@/components/LanguageMegaMenu";
 import MobileLanguageAccordion from "@/components/MobileLanguageAccordion";
 import type { LanguageSlug } from "@/data/languages";
+import { getConsultationFallbackHref } from "@/lib/consultationHref";
 
 const LANGUAGES: LanguageSlug[] = ["english", "japanese", "chinese"];
 
@@ -63,12 +64,13 @@ export default function Header() {
   // Header는 모든 페이지에 공통으로 뜨지만 "#consultation" 섹션은 12개 세부
   // 과정 상세페이지(/[language]/[category])에는 없다(그 페이지들은 자체 CTA에서
   // "{languageHref}#consultation"으로 이동한다). 이 전역 CTA만은 현재 페이지에
-  // 대상이 없을 때 홈의 상담 섹션으로 보내 죽은 anchor가 되지 않게 한다.
-  // FloatingConsultationButton.tsx와 동일한 fallback 방식이다.
+  // 대상이 없을 때 상담 섹션으로 보내 죽은 anchor가 되지 않게 한다(언어 하위
+  // 경로면 해당 언어 랜딩, 그 외에는 홈). FloatingConsultationButton.tsx와
+  // 동일한 fallback 방식이다.
   function handleConsultationClick(event: MouseEvent<HTMLAnchorElement>) {
     if (!document.getElementById("consultation")) {
       event.preventDefault();
-      window.location.href = "/#consultation";
+      window.location.href = getConsultationFallbackHref(window.location.pathname);
     }
   }
 

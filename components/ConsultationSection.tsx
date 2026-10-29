@@ -88,8 +88,10 @@ export default function ConsultationSection({
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [addressSearchError, setAddressSearchError] = useState(false);
   const [ageError, setAgeError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
   const ageRef = useRef<HTMLInputElement>(null);
   const baseAddressRef = useRef<HTMLInputElement>(null);
+  const addressSearchButtonRef = useRef<HTMLButtonElement>(null);
   const zonecodeRef = useRef<HTMLInputElement>(null);
   const addressDetailRef = useRef<HTMLInputElement>(null);
 
@@ -105,6 +107,7 @@ export default function ConsultationSection({
           if (zonecodeRef.current) {
             zonecodeRef.current.value = data.zonecode ?? "";
           }
+          setAddressError(false);
           addressDetailRef.current?.focus();
         },
       }).open();
@@ -137,6 +140,16 @@ export default function ConsultationSection({
       return;
     }
     setAgeError(false);
+
+    // 기본주소 입력칸은 readOnly라 브라우저의 required 검사가 적용되지 않는다
+    // (readOnly 입력은 제약 검증에서 제외됨). 주소 없이 전송하면 Apps Script
+    // validate가 거절해 일반 오류 문구만 보이므로, 전송 전에 직접 확인해 안내한다.
+    if (String(formData.get("address") ?? "").trim() === "") {
+      setAddressError(true);
+      addressSearchButtonRef.current?.focus();
+      return;
+    }
+    setAddressError(false);
 
     const endpoint = process.env.NEXT_PUBLIC_CONSULTATION_ENDPOINT;
     if (!endpoint) {
@@ -315,6 +328,7 @@ export default function ConsultationSection({
                     className="w-full min-w-0 flex-1 rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
                   />
                   <button
+                    ref={addressSearchButtonRef}
                     type="button"
                     onClick={handleAddressSearch}
                     className="flex shrink-0 items-center gap-1.5 rounded-xl border border-ink/12 bg-white px-4 py-3 text-[14px] font-medium text-ink transition-colors hover:border-brand hover:text-brand"
@@ -334,6 +348,11 @@ export default function ConsultationSection({
                   className="mt-2 w-full rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
                 />
                 <input ref={zonecodeRef} type="hidden" name="zonecode" />
+                {addressError && (
+                  <p role="alert" className="mt-2 text-[12.5px] text-red-600">
+                    주소 검색 버튼을 눌러 기본주소를 입력해주세요.
+                  </p>
+                )}
                 {addressSearchError && (
                   <p className="mt-2 text-[12.5px] text-red-600">
                     주소 검색을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
