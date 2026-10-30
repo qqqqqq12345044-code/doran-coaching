@@ -20,7 +20,9 @@ export default function RoadmapTimeline({ stages, dotClass, accentTextClass, bad
       {stages.map((stage, index) => {
         const isLast = index === stages.length - 1;
         return (
-          <li key={stage.id} className="flex gap-4 sm:gap-6">
+          // id: 목적별 바로가기(data/purposeEntries.ts)가 "#japanese-conversation-04" 같은 단계로
+          // 바로 이동할 수 있게 한다. 고정 Header 높이만큼 scroll-margin을 둔다.
+          <li key={stage.id} id={stage.id} className="flex scroll-mt-24 gap-4 sm:gap-6 md:scroll-mt-28">
             <div className="flex flex-col items-center">
               <span
                 className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[13px] font-bold ${dotClass}`}

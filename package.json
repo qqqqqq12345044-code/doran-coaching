@@ -17,6 +17,7 @@
     "preview:exam-profiles": "node scripts/preview-exam-profiles.mts",
     "validate:detail-content": "node scripts/validate-detail-content.mts",
     "validate:attribution": "node scripts/validate-attribution.mts",
+    "validate:leads": "node scripts/validate-leads.mts",
     "validate:local-seo": "node scripts/validate-local-seo-published.mts",
     "validate:quick": "node scripts/validate-quick.mts",
     "validate:seo-quality": "node scripts/validate-seo-quality.mts",

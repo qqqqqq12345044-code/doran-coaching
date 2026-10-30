@@ -16,6 +16,17 @@ const chineseConversation: DetailPageContent = {
     "병음과 성조부터 여행·화상·전화 중국어, 비즈니스 기초까지. 왕초보 3개월 과정부터 이어지는 1:1 중국어 회화 수업입니다.",
   eyebrow: "CHINESE · CONVERSATION",
   h1: "중국어 회화, 성조부터 실전 대화까지 이어갑니다",
+  // 실제 Naver 검색 유입 상담(초보·회화 목적)이 이 페이지에서 나왔다. 아래 4개는 새 과정이 아니라
+  // 회화 로드맵 1·2·4단계(courseDetails.ts)로 가는 바로가기다.
+  startPoints: {
+    label: "내 상황에 맞는 단계부터 보기",
+    links: [
+      { label: "처음 시작·기초 회화", href: "#chinese-conversation-01" },
+      { label: "일상 회화", href: "#chinese-conversation-02" },
+      { label: "여행·실생활", href: "#chinese-conversation-02" },
+      { label: "업무·비즈니스", href: "#chinese-conversation-04" },
+    ],
+  },
   directAnswer: {
     question: "중국어 왕초보도 회화까지 배울 수 있나요?",
     answer:

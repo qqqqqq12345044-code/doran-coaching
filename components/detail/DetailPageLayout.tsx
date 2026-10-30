@@ -19,6 +19,7 @@ import RoadmapTimeline from "@/components/curriculum/RoadmapTimeline";
 import CertificationExplorer from "@/components/curriculum/CertificationExplorer";
 import OtherPurposeGrid from "@/components/curriculum/OtherPurposeGrid";
 import Reveal from "@/components/Reveal";
+import { PurposeChips } from "@/components/PurposeEntry";
 import CoachSection from "@/components/CoachSection";
 import type { DetailCategory, DetailPageContent } from "@/data/detailPages/types";
 import type { CurriculumLanguage } from "@/data/curriculum/powerCurriculum";
@@ -277,7 +278,13 @@ export default function DetailPageLayout({ content, accent, languageNameKo, lang
       </div>
 
       {content.category === "conversation" && (
-        <ConversationRoadmap language={content.language} accent={accent} categoryLabel={categoryMeta.label} description={categoryMeta.description} />
+        <ConversationRoadmap
+          language={content.language}
+          accent={accent}
+          categoryLabel={categoryMeta.label}
+          description={categoryMeta.description}
+          startPoints={content.startPoints}
+        />
       )}
       {content.category === "school" && (
         <SchoolRoadmap language={content.language} accent={accent} categoryLabel={categoryMeta.label} description={categoryMeta.description} />
@@ -389,12 +396,15 @@ interface RoadmapBlockProps {
   /** OtherRoadmap 전용. 이 상세페이지에는 "#consultation" 섹션이 없어
    *  OtherPurposeGrid의 CTA를 언어 종합페이지의 상담 섹션으로 보낸다. */
   languageHref?: string;
+  /** ConversationRoadmap 전용. 있으면 로드맵 위에 단계 바로가기 칩을 보여준다. */
+  startPoints?: DetailPageContent["startPoints"];
 }
 
-function ConversationRoadmap({ language, accent, description }: RoadmapBlockProps) {
+function ConversationRoadmap({ language, accent, description, startPoints }: RoadmapBlockProps) {
   const roadmap = getConversationRoadmap(language);
   return (
     <DetailRoadmapBlock eyebrow="DORAN LEARNING ROADMAP" title={roadmap.title} description={description}>
+      {startPoints && <PurposeChips label={startPoints.label} links={startPoints.links} />}
       <RoadmapTimeline stages={roadmap.stages} dotClass={accent.solid} accentTextClass={accent.text} badgeTintClass={accent.tint} />
     </DetailRoadmapBlock>
   );

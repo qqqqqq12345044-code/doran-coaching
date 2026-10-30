@@ -15,6 +15,8 @@ import CoachSection from "@/components/CoachSection";
 import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
 import ConsultationSection from "@/components/ConsultationSection";
+import { PurposeEntryList } from "@/components/PurposeEntry";
+import { japanesePurposeEntries } from "@/data/purposeEntries";
 import { getLanguageBySlug } from "@/data/languages";
 import { getCoachesByLanguage } from "@/data/coaches";
 import { getPublishedReviewsByLanguage } from "@/data/reviews";
@@ -115,6 +117,14 @@ export default function JapanesePage() {
             badgeLabel="일본어 전문 1:1 코칭"
           />
         }
+      />
+
+      <PurposeEntryList
+        eyebrow="PURPOSE"
+        title="어떤 일본어가 필요하신가요?"
+        description="배우는 목적을 먼저 고르면 그에 맞는 과정으로 바로 이동할 수 있습니다."
+        entries={japanesePurposeEntries}
+        accentTextClass="text-japanese"
       />
 
       <CurriculumOverviewSection

@@ -556,15 +556,16 @@ export const chineseMagazineArticles: MagazineArticle[] = [
     slug: "hskk-beginner-intermediate-advanced",
     language: "chinese",
     categoryLabel: "중국어 자격증",
-    metaTitle: "HSKK 초급·중급·고급 차이 | 도란 매거진",
-    metaDescription: "중국어 말하기 시험 HSKK의 초급·중급·고급 등급이 어떻게 다른지, 준비 시 무엇이 달라지는지 정리했습니다.",
+    metaTitle: "HSKK 초급·중급·고급 차이 · HSK와 다른 점 | 도란 매거진",
+    metaDescription:
+      "읽기·듣기 중심의 HSK와 달리 말하기만 평가하는 HSKK의 초급·중급·고급 등급이 어떻게 다른지, 등급별로 준비가 어떻게 달라지는지 정리했습니다.",
     eyebrow: "CHINESE · CERTIFICATION",
     h1: "HSKK 초급·중급·고급, 무엇이 다를까",
     cardSummary: "급수가 올라갈수록 '따라 말하기'에서 '의견 말하기'로 비중이 옮겨갑니다.",
     directAnswer: {
       question: "HSKK 초급·중급·고급은 어떻게 다른가요?",
       answer:
-        "HSKK는 중국어 말하기 능력만 평가하는 시험으로 초급, 중급, 고급 세 등급으로 나뉩니다. 등급이 올라갈수록 듣고 따라 말하기 비중은 줄고, 그림을 보고 설명하거나 주제에 대한 의견을 논리적으로 말하는 비중이 커집니다.",
+        "HSKK는 읽기·듣기 중심의 HSK와 달리 중국어 말하기 능력만 따로 평가하는 시험으로, 초급·중급·고급 세 등급으로 나뉩니다. 등급이 올라갈수록 듣고 따라 말하기 비중은 줄고, 그림을 보고 설명하거나 주제에 대한 의견을 논리적으로 말하는 비중이 커집니다.",
     },
     sections: [
       {
@@ -572,21 +573,27 @@ export const chineseMagazineArticles: MagazineArticle[] = [
         paragraphs: [
           "HSK가 어휘·독해·듣기를 평가하는 시험이라면, HSKK는 말하기만 별도로 평가하는 시험입니다. HSK 급수와 HSKK 등급은 서로 다른 기준이라, HSK 고급이라고 해서 HSKK도 자동으로 고급 수준인 것은 아닙니다.",
         ],
+        bullets: [
+          "평가 영역: HSK는 어휘·독해·듣기 이해력, HSKK는 말하기 능력",
+          "결과 체계: HSK는 급수로, HSKK는 초급·중급·고급 3개 등급으로 나뉩니다",
+          "준비 방식: HSK는 급수별 출제 범위를 반복 학습하고, HSKK는 발음·성조 교정과 실제 답변 말하기 연습이 중심입니다",
+          "필요한 경우: 서류에 급수가 요건이면 HSK, 기관이 실제 말하기 능력을 별도로 요구하면 HSKK",
+        ],
       },
       {
-        heading: "초급: 듣고 따라 말하기 중심",
+        heading: "HSKK 초급: 듣고 따라 말하기 중심",
         paragraphs: [
           "초급은 짧은 문장을 듣고 그대로 따라 말하거나, 간단한 질문에 짧게 답하는 문항이 중심입니다. 발음과 성조를 정확히 재현하는 능력이 핵심 평가 요소입니다.",
         ],
       },
       {
-        heading: "중급: 그림 설명과 대화 완성",
+        heading: "HSKK 중급: 그림 설명과 대화 완성",
         paragraphs: [
           "중급으로 올라가면 그림을 보고 상황을 설명하거나, 주어진 대화 상황에 맞게 답하는 문항이 추가됩니다. 단순히 따라 말하는 것을 넘어 스스로 문장을 구성해 상황을 묘사하는 능력이 필요합니다.",
         ],
       },
       {
-        heading: "고급: 주제에 대한 논리적 의견 말하기",
+        heading: "HSKK 고급: 주제에 대한 논리적 의견 말하기",
         paragraphs: [
           "고급은 사회적 주제나 익숙하지 않은 화제에 대해 자신의 생각을 논리적으로 설명하는 문항 비중이 큽니다. 발음과 성조뿐 아니라 문장 구성력과 논리적 전개 능력까지 함께 평가받습니다.",
         ],
@@ -634,6 +641,7 @@ export const chineseMagazineArticles: MagazineArticle[] = [
       },
     ],
     publishedAt: "2026-09-10",
+    updatedAt: "2026-10-27",
   },
   {
     slug: "hsk-listening-study-method",

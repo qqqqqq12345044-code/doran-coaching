@@ -30,6 +30,8 @@ import { PUBLISHED_LOCAL_SEO_PAGES, findLocalSeoPreview } from "@/data/seo/previ
 import { generateLocalSeoContent, type TargetRegion } from "@/lib/seo/generateLocalSeoContent";
 import { buildDisambiguatedRegionName } from "@/lib/seo/buildLocalPreview";
 import { getLocalSiblingKeywords } from "@/lib/seo/localSiblingKeywords";
+import { PurposeChips } from "@/components/PurposeEntry";
+import { localPurposeLinks } from "@/data/purposeEntries";
 
 // 공개 대상은 data/seo/previewRegistry.ts의 PUBLISHED_LOCAL_SEO_PAGES
 // 화이트리스트(2026-09 2차 확장: seo-regions.json 기반 지역 6,527개 ×
@@ -303,6 +305,17 @@ export default async function LocalSeoLandingPage({
         >
           {cluster.mainKeyword} 관련 {content.relatedCourse.label} 자세히 보기
         </Link>
+        {/* 지역명이 들어가는 본문이 아니라 언어별 고정 링크 4개(data/purposeEntries.ts). 실제 상담
+            유입이 확인된 일본어·중국어에만 있고, 영어는 목록이 없어 렌더링하지 않는다. 상담 CTA는
+            Hero/코치/최종 섹션에 이미 있어 여기서 반복하지 않는다. */}
+        {localPurposeLinks[cluster.language] && (
+          <PurposeChips
+            label="목적에 맞는 과정으로 바로 가기"
+            links={localPurposeLinks[cluster.language]!}
+            align="center"
+            className="mx-auto mt-8 max-w-xl"
+          />
+        )}
       </div>
 
       <CurriculumTopicsSection
