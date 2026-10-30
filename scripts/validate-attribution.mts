@@ -4,6 +4,7 @@
 // F NaPm 존재 여부(hasNaPm) 수집 + 유입 분류(attributionSource). NaPm만으로 광고 확정 금지.
 import fs from "node:fs";
 import { captureAttribution, classifyAttribution, getAttribution, getAttributionSource } from "../lib/attribution.ts";
+import { classifyLeadTouch } from "../lib/leads/classify.ts";
 
 type Mock = {
   window: { location: { pathname: string; search: string; href: string }; sessionStorage: unknown };
@@ -191,6 +192,29 @@ check("F10 sessionStorage 차단 환경: 현재 URL/referrer로 분류(예외 �
 reset();
 visit(`/japanese?${NAPM.replace("NaPm", "napm")}`, NAVER_SEARCH_REF);
 check("F11 파라미터 이름 대소문자 차이(napm)도 존재 여부로 인식", getAttribution().hasNaPm === "1");
+
+// G. 사이트 분류(classifyAttribution)와 Lead 서버 재분류(classifyLeadTouch)가 같은 raw 값에 같은 결과를 낸다.
+// 서버는 브라우저가 보낸 attributionSource를 쓰지 않고 raw 값으로 다시 계산하므로 두 결과가 갈리면 안 된다.
+const parityCases: Array<Partial<typeof base>> = [
+  { utm_source: "naver", utm_medium: "cpc" },
+  { utm_source: "NAVER", utm_medium: "CPC", hasNaPm: "1" },
+  { utm_source: "naver", utm_medium: "display", referrer: NAVER_SEARCH_REF },
+  { referrer: NAVER_SEARCH_REF, hasNaPm: "1" },
+  { referrer: NAVER_SEARCH_REF, hasNaPm: "" },
+  { referrer: "", hasNaPm: "1" },
+  { referrer: "", hasNaPm: "" },
+  { referrer: "", utm_source: "instagram" },
+  { referrer: "https://www.google.com/", hasNaPm: "1" },
+  { referrer: "https://dorancoaching.com/japanese" },
+  { referrer: "not a url" },
+  { referrer: "https://search.naver.com.evil.example/" },
+];
+const parityOk = parityCases.every((c) => {
+  const a = { ...base, hasNaPm: "", referrer: "", utm_source: "", utm_medium: "", ...c };
+  const server = classifyLeadTouch({ source: a.utm_source, medium: a.utm_medium, referrer: a.referrer, hasNaPm: a.hasNaPm === "1" }, "DORAN");
+  return classifyAttribution(a) === server;
+});
+check(`G1 사이트 분류 = Lead 서버 재분류 (${parityCases.length}개 입력)`, parityOk);
 
 console.log(`\n종합: ${failures === 0 ? "PASS" : "FAIL"} (실패 ${failures})`);
 if (failures) process.exit(1);

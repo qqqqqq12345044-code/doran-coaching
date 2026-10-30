@@ -42,7 +42,7 @@ DORAN(dorancoaching.com)과 교과설계소(gyogwaseolgye.com)의 공통 구조.
 | 클릭↔통화 매칭 | `callMatching.ts` | 동일 |
 | CallProvider interface + HMAC | `callProvider.ts`, `providers/{mock,twilio,index}.ts` | 동일 |
 | STT/요약 결정 | `summary.ts` | 동일 |
-| 유입 분류(서버) | `classify.ts` (DORAN만, 10-29) | 미적용 |
+| 유입 분류(서버) | `classify.ts` (DORAN만, 10-29) — 사이트 `lib/attribution.ts`의 `classifyAttribution`/NaPm 판정도 이 core(`classifyLeadTouch`/`hasNaPmParam`)를 재사용(10-30 통합) | 미적용 |
 | 저장소(memory + durable http) | `store.ts` + `scripts/google-apps-script/lead-events.gs` (DORAN만) | memory만 |
 | 대시보드 contract | `dashboard.ts` | 동일 |
 | orchestration(테스트 가능) | `service.ts`, `server.ts` | 동일 |

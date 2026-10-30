@@ -5,6 +5,9 @@
 // 유입"으로 갱신한다(같은 탭에서 영어 광고 → 일본어 광고로 들어온 경우 등).
 // UTM이 없는 진입/내부 이동은 저장값을 바꾸지 않는다.
 // 모든 값은 신뢰할 수 없는 입력이므로 길이 제한 + 제어문자 제거를 거친다.
+import { classifyLeadTouch } from "./leads/classify.ts";
+import { hasNaPmParam } from "./leads/clientCore.ts";
+import type { AttributionSource } from "./leads/types.ts";
 
 const STORAGE_KEY = "doran_attribution";
 const MAX_LEN = 200;
@@ -63,12 +66,9 @@ function hasExplicitUtm(params: URLSearchParams): boolean {
   return clean(params.get("utm_source")) !== "";
 }
 
-/** query에 NaPm 파라미터가 있으면 "1". 값은 읽지 않고 존재 여부만 본다(대소문자 무시). */
+/** query에 NaPm 파라미터가 있으면 "1". 판정은 Lead core의 hasNaPmParam과 같은 함수를 쓴다. */
 function napmFlag(params: URLSearchParams): string {
-  for (const key of params.keys()) {
-    if (key.toLowerCase() === "napm") return "1";
-  }
-  return "";
+  return hasNaPmParam(params.toString()) ? "1" : "";
 }
 
 /**
@@ -119,40 +119,17 @@ export function getAttribution(): Attribution {
 /**
  * 유입 분류(파생값). raw 값(utm_*, referrer, landingPage, hasNaPm)은 그대로 보내고,
  * 이 값은 사람이 시트에서 바로 읽기 위한 요약일 뿐이다.
- * NaPm만으로는 광고로 단정하지 않는다 — 광고는 utm_source=naver AND utm_medium=cpc가
- * 명시된 경우(UTM_NAVER_CPC)에만 분류한다.
+ * 규칙은 lib/leads/classify.ts(Lead 서버 재분류와 같은 순수 함수) 한 곳에만 둔다 —
+ * 광고 확정은 utm_source=naver AND utm_medium=cpc뿐, NaPm 단독은 광고로 단정하지 않는다.
+ * lib/leads는 교과설계소와 공유하는 core라 사이트 파일을 import하지 않으므로 의존 방향은 여기 → core.
  */
-export type AttributionSource =
-  | "UTM_NAVER_CPC"
-  | "NAVER_SEARCH_WITH_NAPM"
-  | "NAVER_SEARCH"
-  | "OTHER_REFERRER"
-  | "DIRECT"
-  | "UNKNOWN";
-
-const NAVER_SEARCH_HOST = /(^|\.)search\.naver\.com$/;
-const OWN_HOST = /(^|\.)dorancoaching\.com$/;
+export type { AttributionSource };
 
 export function classifyAttribution(a: Attribution): AttributionSource {
-  if (a.utm_source.toLowerCase() === "naver" && a.utm_medium.toLowerCase() === "cpc") return "UTM_NAVER_CPC";
-
-  if (a.referrer) {
-    let host: string;
-    try {
-      host = new URL(a.referrer).hostname.toLowerCase();
-    } catch {
-      return "UNKNOWN";
-    }
-    if (NAVER_SEARCH_HOST.test(host)) return a.hasNaPm ? "NAVER_SEARCH_WITH_NAPM" : "NAVER_SEARCH";
-    // 저장소를 못 써서 내부 이동 뒤의 referrer를 읽은 경우 등 — 실제 유입 출처를 알 수 없다.
-    if (OWN_HOST.test(host)) return "UNKNOWN";
-    return "OTHER_REFERRER";
-  }
-
-  // referrer가 비어 있는 경우. NaPm이 있는데 referrer가 지워진 경우(인앱 브라우저 등)는
-  // 직접 방문으로 단정하지 않는다.
-  if (a.hasNaPm) return "UNKNOWN";
-  return a.utm_source ? "OTHER_REFERRER" : "DIRECT";
+  return classifyLeadTouch(
+    { source: a.utm_source, medium: a.utm_medium, referrer: a.referrer, hasNaPm: Boolean(a.hasNaPm) },
+    "DORAN",
+  );
 }
 
 /** 제출 시점의 유입 분류. 폼 payload의 attributionSource로 보낸다. */
