@@ -7,6 +7,7 @@ import { languages } from "@/data/languages";
 import { getAttribution, getAttributionSource } from "@/lib/attribution";
 import { sendNaverLeadConversion } from "@/lib/naverWcs";
 import { reportDoranWebLead } from "@/lib/leads/doranClient";
+import { CONSULTATION_PHONE_ERROR, isValidConsultationPhone } from "@/lib/consultationPhone";
 
 // 관심 언어 체크박스는 data/languages.ts(Source of Truth)의 nameKo를 그대로
 // 재사용한다. "아직 고민 중이에요"는 언어가 아니므로 별도로 추가한다.
@@ -108,8 +109,10 @@ export default function ConsultationSection({
 }: ConsultationSectionProps) {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [addressSearchError, setAddressSearchError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
   const [ageError, setAgeError] = useState(false);
   const [addressError, setAddressError] = useState(false);
+  const phoneRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const baseAddressRef = useRef<HTMLInputElement>(null);
   const addressSearchButtonRef = useRef<HTMLButtonElement>(null);
@@ -151,6 +154,15 @@ export default function ConsultationSection({
       setStatus("success");
       return;
     }
+
+    // 연락처는 010 휴대폰 11자리만 허용한다(Apps Script validate와 동일 기준).
+    // input required만으로는 "010"처럼 일부만 입력한 값도 통과해 그대로 전송됐다.
+    if (!isValidConsultationPhone(formData.get("phone"))) {
+      setPhoneError(true);
+      phoneRef.current?.focus();
+      return;
+    }
+    setPhoneError(false);
 
     // 나이는 1~120 정수만 허용한다(Apps Script validate와 동일 기준).
     const ageText = String(formData.get("age") ?? "").trim();
@@ -304,15 +316,25 @@ export default function ConsultationSection({
                   연락처
                 </label>
                 <input
+                  ref={phoneRef}
                   id="phone"
                   name="phone"
                   type="tel"
                   inputMode="tel"
                   autoComplete="tel"
                   required
+                  maxLength={13}
                   placeholder="010-1234-5678"
+                  aria-invalid={phoneError || undefined}
+                  aria-describedby={phoneError ? "phone-error" : undefined}
+                  onChange={() => phoneError && setPhoneError(false)}
                   className="mt-2 w-full rounded-xl border border-ink/12 bg-surface-soft px-4 py-3 text-[15px] text-ink placeholder:text-ink-faint transition-colors focus:border-brand"
                 />
+                {phoneError && (
+                  <p id="phone-error" className="mt-2 text-[12.5px] text-red-600">
+                    {CONSULTATION_PHONE_ERROR}
+                  </p>
+                )}
               </div>
 
               <div className="sm:col-span-2">

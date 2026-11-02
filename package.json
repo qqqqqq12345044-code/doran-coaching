@@ -18,6 +18,7 @@
     "validate:detail-content": "node scripts/validate-detail-content.mts",
     "validate:attribution": "node scripts/validate-attribution.mts",
     "validate:leads": "node scripts/validate-leads.mts",
+    "validate:consultation-phone": "node scripts/validate-consultation-phone.mts",
     "validate:local-seo": "node scripts/validate-local-seo-published.mts",
     "validate:quick": "node scripts/validate-quick.mts",
     "validate:seo-quality": "node scripts/validate-seo-quality.mts",

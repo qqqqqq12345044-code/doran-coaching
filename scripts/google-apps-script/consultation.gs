@@ -71,6 +71,14 @@ function sanitizeAge(value) {
   return age >= 1 && age <= 120 ? String(age) : "";
 }
 
+// 연락처는 한국 휴대폰 010 번호만 허용한다(숫자·공백·하이픈만, 정규화 후 010 + 8자리).
+// lib/consultationPhone.ts(normalizeConsultationPhone)와 같은 규칙 — 바꾸면 함께 바꾼다.
+function isValidMobilePhone(value) {
+  const text = String(value == null ? "" : value).trim();
+  if (!/^[\d\s-]+$/.test(text)) return false;
+  return /^010\d{8}$/.test(text.replace(/[\s-]/g, ""));
+}
+
 function doPost(e) {
   try {
     const data = parseRequest(e);
@@ -124,6 +132,7 @@ function parseRequest(e) {
 function validate(data) {
   if (!data.name || !String(data.name).trim()) return "이름을 입력해주세요.";
   if (!data.phone || !String(data.phone).trim()) return "연락처를 입력해주세요.";
+  if (!isValidMobilePhone(data.phone)) return "휴대폰 번호 11자리를 정확히 입력해주세요.";
   if (!sanitizeAge(data.age)) return "나이를 1~120 사이 숫자로 입력해주세요.";
   if (!data.address || !String(data.address).trim()) return "주소를 입력해주세요.";
   if (data.privacyConsent !== true && data.privacyConsent !== "true" && data.privacyConsent !== "on") {
