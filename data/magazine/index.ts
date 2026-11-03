@@ -3,16 +3,18 @@ import { englishMagazineArticles } from "./english.ts";
 import { japaneseMagazineArticles } from "./japanese.ts";
 import { chineseMagazineArticles } from "./chinese.ts";
 import { commonMagazineArticles } from "./common.ts";
+import { geoPilotMagazineArticles } from "./geoPilot.ts";
 
 export type { MagazineArticle, MagazineLanguage, MagazineRelatedCourse } from "./types.ts";
 
-// 매거진 글 전체(1차 배치 10개). 언어별 파일(english/japanese/chinese/common)을
-// 그대로 합친다 — data/detailPages/index.ts와 같은 패턴.
+// 매거진 글 전체. 언어별 파일(english/japanese/chinese/common)에 2026-11 GEO 질문형
+// 파일럿(geoPilot.ts, 8개)을 뒤에 합친다 — data/detailPages/index.ts와 같은 패턴.
 export const magazineArticles: MagazineArticle[] = [
   ...englishMagazineArticles,
   ...japaneseMagazineArticles,
   ...chineseMagazineArticles,
   ...commonMagazineArticles,
+  ...geoPilotMagazineArticles,
 ];
 
 export function getMagazineArticle(slug: string): MagazineArticle | null {

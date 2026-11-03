@@ -42,6 +42,38 @@ export const DETAIL_MAGAZINE_SLUGS: Record<string, string[]> = {
   "chinese/other": ["business-chinese-basics", "chinese-business-etiquette-basics"],
 };
 
+/** 언어별 종합 랜딩(/english /japanese /chinese)의 "시작 전에 읽어보면 좋은 질문 가이드" 링크(2026-11 GEO 파일럿).
+ *  랜딩에서 신규 질문 글과 기존 관련 글로 연결하는 소수의 링크만 둔다. 슬러그 존재/언어 일치는
+ *  scripts/validate-geo-pilot.mts가 검사한다. */
+export const LANDING_GUIDE_MAGAZINE_SLUGS: Record<"english" | "japanese" | "chinese", string[]> = {
+  english: [
+    "adult-english-speaking-beginner-start",
+    "online-english-lessons-per-week",
+    "office-worker-english-30-minute-lesson",
+    "online-english-tutoring-vs-academy",
+    "online-english-tutoring-cost-comparison",
+    "self-study-vs-1on1-english-speaking",
+  ],
+  japanese: [
+    "japanese-beginner-online-lesson",
+    "jlpt-and-conversation-together",
+    "japanese-speaking-study-order",
+    "japanese-self-study-plateau",
+  ],
+  chinese: [
+    "chinese-speaking-self-study-vs-online-lesson",
+    "hsk-and-conversation-together",
+    "chinese-speaking-study-order",
+    "chinese-tone-difficulty",
+  ],
+};
+
+export function getLandingGuideArticles(language: "english" | "japanese" | "chinese"): MagazineArticle[] {
+  return LANDING_GUIDE_MAGAZINE_SLUGS[language]
+    .map((slug) => getMagazineArticle(slug))
+    .filter((a): a is MagazineArticle => a !== null);
+}
+
 export function getLocalRelatedMagazine(mainKeyword: string): MagazineArticle | null {
   const slug = LOCAL_KEYWORD_MAGAZINE_SLUG[mainKeyword];
   return slug ? getMagazineArticle(slug) : null;

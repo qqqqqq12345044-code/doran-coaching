@@ -20,6 +20,7 @@
     "validate:local-seo": "node scripts/validate-local-seo-published.mts",
     "validate:quick": "node scripts/validate-quick.mts",
     "validate:seo-quality": "node scripts/validate-seo-quality.mts",
+    "validate:geo-pilot": "node scripts/validate-geo-pilot.mts",
     "validate:full": "node scripts/validate-full.mts",
     "indexnow": "node scripts/indexnow.mts",
     "handoff": "node scripts/update-ai-handoff.mts",

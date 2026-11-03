@@ -137,7 +137,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 회화 과정 보기", href: "/english/conversation" }],
-    relatedArticleSlugs: ["why-english-speaking-not-improving", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: ["why-english-speaking-not-improving", "who-fits-online-language-tutoring", "online-english-tutoring-vs-academy"],
     faq: [
       {
         question: "독학만으로 회화가 늘지 않는 이유가 뭔가요?",
@@ -941,7 +941,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 회화 과정 보기", href: "/english/conversation" }],
-    relatedArticleSlugs: ["why-english-speaking-not-improving", "self-study-vs-1on1-english-speaking", "english-abroad-study-prep-basics"],
+    relatedArticleSlugs: ["why-english-speaking-not-improving", "self-study-vs-1on1-english-speaking", "english-abroad-study-prep-basics", "adult-english-speaking-beginner-start"],
     faq: [
       {
         question: "문법을 아예 공부하지 않아도 되나요?",
@@ -1100,7 +1100,7 @@ export const englishMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "영어 회화 과정 보기", href: "/english/conversation" }],
-    relatedArticleSlugs: ["office-worker-english-study-routine", "self-study-vs-1on1-english-speaking"],
+    relatedArticleSlugs: ["office-worker-english-study-routine", "self-study-vs-1on1-english-speaking", "adult-english-speaking-beginner-start"],
     faq: [
       {
         question: "하루 10분으로도 실력이 늘 수 있나요?",

@@ -1,0 +1,14 @@
+﻿id,language,question,type,target_url,expected_key_points,status
+Q01,english,성인 영어회화 초보는 어떻게 시작하나요?,pilot,/magazine/adult-english-speaking-beginner-start,목표를 장면으로 정하기 → 말하기 기준 현재 수준 확인 → 짧은 문장 말하기 + 교정받는 구조 / 문법을 끝낸 뒤 시작할 필요 없음,신규
+Q02,english,화상영어 주 몇 회가 적당한가요?,pilot,/magazine/online-english-lessons-per-week,초보는 주 2~3회를 출발점으로 목표·복습 시간·일정 유지 가능성에 맞춰 조절 / 정해진 공식 기준은 없음,신규
+Q03,english,직장인 영어회화 30분 수업도 효과가 있나요?,pilot,/magazine/office-worker-english-30-minute-lesson,수업 길이보다 직접 말하는 비중·교정 방식·복습·일정 유지가 중요 / 효과를 수치로 말하지 않음,신규
+Q04,english,영어 화상과외와 학원은 무엇이 다른가요?,pilot,/magazine/online-english-tutoring-vs-academy,인원·진도·이동·시간표·말하는 시간 구조 차이 / 어느 쪽이 항상 낫다고 하지 않음 / 도란은 오프라인 학원이 아닌 1:1 온라인,신규
+Q05,english,영어 화상과외 비용은 어떻게 비교해야 하나요?,pilot,/magazine/online-english-tutoring-cost-comparison,월 총액÷횟수÷시간으로 같은 단위 비교 + 부가 비용·변경 규정 확인 / 가격은 상담에서 안내(공개 가격 없음),신규
+Q06,japanese,일본어 초보가 화상수업을 시작해도 되나요?,pilot,/magazine/japanese-beginner-online-lesson,"히라가나를 몰라도 시작 가능 / 문자는 수업 사이 병행, 발음은 수업에서 교정",신규
+Q07,japanese,JLPT 준비할 때 회화 수업도 필요한가요?,existing,/magazine/jlpt-and-conversation-together,JLPT는 말하기를 직접 평가하지 않아 회화는 별도 연습 필요 / 어휘·문형은 겹침,기존 글 (신규 작성 없음)
+Q08,japanese,JLPT 공부와 일본어 회화를 같이 해도 되나요?,existing,/magazine/jlpt-and-conversation-together,병행 가능 / 겹치는 부분과 겹치지 않는 부분 구분,기존 글 (신규 작성 없음)
+Q09,chinese,중국어 회화 독학과 화상수업의 차이는 무엇인가요?,pilot,/magazine/chinese-speaking-self-study-vs-online-lesson,"독학은 입력, 수업은 성조·발음 교정 / 병행 가능",신규
+Q10,chinese,중국어 초보는 회화부터 시작해도 되나요?,existing,/magazine/chinese-speaking-study-order,병음·성조 기초를 먼저 다지고 회화로 확장 / 한자를 몰라도 회화 시작 가능,기존 글 (신규 작성 없음)
+Q11,chinese,HSK 준비하면서 중국어 회화 수업도 같이 해도 되나요?,pilot,/magazine/hsk-and-conversation-together,"HSK는 어휘·독해·청해, 말하기는 HSKK 별도 / 병행 가능 / 시험 체계 개편 중이므로 최신 공지 확인",신규
+B01,common,도란 DORAN 화상 외국어 과외는 어떤 서비스인가요?,brand,/,영어·일본어·중국어 1:1 온라인 화상 코칭 / 오프라인 지점 없음 (브랜드 언급 기준선),기준선
+B02,common,도란 DORAN 상담 신청은 무료인가요?,brand,/english,"상담 신청 무료, 상담만으로 별도 비용 없음, 시작 여부는 상담 후 결정 (브랜드 언급 기준선)",기준선

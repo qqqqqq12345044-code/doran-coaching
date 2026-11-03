@@ -14,6 +14,7 @@ import ComparisonSection from "@/components/ComparisonSection";
 import CoachSection from "@/components/CoachSection";
 import ReviewSection from "@/components/ReviewSection";
 import FAQ from "@/components/FAQ";
+import LanguageGuideLinks from "@/components/LanguageGuideLinks";
 import ConsultationSection from "@/components/ConsultationSection";
 import { getLanguageBySlug } from "@/data/languages";
 import { getCoachesByLanguage } from "@/data/coaches";
@@ -194,6 +195,8 @@ export default function JapanesePage() {
       />
 
       <FAQ items={faqByLanguage.japanese} />
+
+      <LanguageGuideLinks language="japanese" languageLabel="일본어" />
 
       <ConsultationSection
         title={language.finalCta.lines}
