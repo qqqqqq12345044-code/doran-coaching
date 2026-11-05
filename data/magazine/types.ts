@@ -35,7 +35,7 @@ export interface MagazineArticle {
   sections: DetailContentSection[];
   /** 관련 DORAN 과정 상세페이지 링크. 1~3개. */
   relatedCourses: MagazineRelatedCourse[];
-  /** 관련 매거진 글 slug. 2~3개. */
+  /** 관련 매거진 글 slug. 2~4개. */
   relatedArticleSlugs: string[];
   faq: DetailFaqItem[];
   /** 실제 작업일 기준 게시일. ISO 날짜 문자열(YYYY-MM-DD). */

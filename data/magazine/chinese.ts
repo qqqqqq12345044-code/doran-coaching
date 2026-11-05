@@ -54,7 +54,7 @@ export const chineseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "중국어 자격증 과정 보기", href: "/chinese/certification" }],
-    relatedArticleSlugs: ["hsk-study-order", "tsc-speaking-test-guide", "chinese-speaking-study-order"],
+    relatedArticleSlugs: ["hsk-study-order", "tsc-speaking-test-guide", "chinese-speaking-study-order", "hsk-and-conversation-together"],
     faq: [
       {
         question: "HSK 급수가 있으면 HSKK는 필요 없나요?",
@@ -125,7 +125,7 @@ export const chineseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "중국어 회화 과정 보기", href: "/chinese/conversation" }],
-    relatedArticleSlugs: ["hsk-vs-hskk", "who-fits-online-language-tutoring", "office-worker-chinese-study-routine"],
+    relatedArticleSlugs: ["hsk-vs-hskk", "who-fits-online-language-tutoring", "office-worker-chinese-study-routine", "chinese-speaking-self-study-vs-online-lesson"],
     faq: [
       {
         question: "성조는 왜 그렇게 중요한가요?",

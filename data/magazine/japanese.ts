@@ -190,7 +190,7 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "일본어 회화 과정 보기", href: "/japanese/conversation" }],
-    relatedArticleSlugs: ["jlpt-n3-n2-n1-difference", "who-fits-online-language-tutoring", "office-worker-japanese-study-routine"],
+    relatedArticleSlugs: ["jlpt-n3-n2-n1-difference", "who-fits-online-language-tutoring", "office-worker-japanese-study-routine", "japanese-beginner-online-lesson"],
     faq: [
       {
         question: "히라가나부터 배워야 회화를 시작할 수 있나요?",
@@ -352,7 +352,7 @@ export const japaneseMagazineArticles: MagazineArticle[] = [
       },
     ],
     relatedCourses: [{ label: "일본어 회화 과정 보기", href: "/japanese/conversation" }],
-    relatedArticleSlugs: ["japanese-speaking-study-order", "who-fits-online-language-tutoring"],
+    relatedArticleSlugs: ["japanese-speaking-study-order", "who-fits-online-language-tutoring", "japanese-beginner-online-lesson"],
     faq: [
       {
         question: "한자를 몰라도 일본어 공부를 계속할 수 있나요?",
